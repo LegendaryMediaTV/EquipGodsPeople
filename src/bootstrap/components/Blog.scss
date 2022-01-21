@@ -1,0 +1,28 @@
+/************************
+ ***** Blog Entries *****
+ ***********************/
+
+#BlogEntries {
+  img {
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      box-shadow: 0 0.4rem 0.8rem rgba($black, 0.4) !important;
+      transform: scale(1.05) translateY(-3px);
+      z-index: 1;
+    }
+
+    &:active {
+      box-shadow: 0 0.2rem 0.4rem rgba($black, 0.4) !important;
+      transform: scale(1.03) translateY(-1px);
+    }
+  }
+}
+
+/**********************
+ ***** Blog Entry *****
+ *********************/
+
+#BlogEntryVerses {
+  font-size: 1.31rem;
+}

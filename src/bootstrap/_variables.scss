@@ -1,0 +1,175 @@
+// colors: https://coolors.co/469dd4-0b3a57-8d54a0-d68fd6-67523c-ac3931-da852f-e1ae14-368156-126369
+$blue: #0b3a57; // Carolina blue
+$brown: #67523c; // umber
+$cyan: #469dd4; // indigo dye
+$green: #368156; // Amazon
+$indigo: #4c477c; // purple navy
+$orange: #da852f; // bronze
+$pink: #d68fd6; // plumb web
+$purple: #8d54a0; // purpureus
+$red: #ac3931; // sweet brown
+$teal: #126369; // ming
+$yellow: #e1ae14; // goldenrod
+
+// neutrals: https://coolors.co/1c1c1b-343432-565754-7e7b70-a59e8c-beb69f-d7ceb2-dfddc9-e3e4d5-e9ebe0
+$white: #eef1ea; // alabaster (light)
+$gray-100: #e9ebe0; // alabaster
+$gray-200: #e3e4d5; // alabaster (dark)
+$gray-300: #dfddc9; // bone (light)
+$gray-400: #d7ceb2; // bone
+$gray-500: #beb69f; // khaki web
+$gray-600: #a59e8c; // grullo
+$gray-700: #7e7b70; // nickel
+$gray-800: #565754; // davys grey
+$gray-900: #343432; // jet
+$black: #1c1c1b; // eerie black
+
+// theme colors
+$danger: $red;
+$info: $indigo;
+$primary: $cyan;
+$secondary: $blue;
+$success: $green;
+$warning: $yellow;
+
+// theme neutrals
+$dark: $gray-800;
+$light: $gray-200;
+$text-muted: $gray-700;
+
+// alerts
+$alert-color-scale: 30%;
+
+// // borders
+// $border-width-md: 0.2rem;
+// $border-width-lg: 0.3rem;
+
+// // badge
+// $badge-font-weight: 500;
+
+// blockquote
+$blockquote-font-size: 1rem;
+
+// // breadcrumb
+// $breadcrumb-divider-color: rgba($secondary, 0.5);
+
+// // images
+$thumbnail-border-color: $gray-500;
+$thumbnail-border-radius: 0.6rem;
+
+// // input group
+// $input-group-addon-bg: $gray-300;
+
+// list groups
+$list-group-color: $gray-700;
+
+// // modal
+// $modal-content-bg: darken($white, 4%);
+// $modal-backdrop-bg: darken($secondary, 10%);
+// $modal-backdrop-opacity: 0.5;
+
+// navs
+$nav-link-color: $gray-800;
+$nav-link-disabled-color: $gray-600;
+$nav-link-hover-color: $gray-700;
+$nav-tabs-border-color: $gray-700;
+$nav-tabs-border-width: 0.15rem;
+$nav-tabs-link-hover-border-color: $nav-tabs-border-color;
+$nav-tabs-link-active-color: $gray-900;
+$nav-tabs-link-active-bg: $gray-300;
+$nav-tabs-link-active-border-color: $nav-tabs-border-color
+  $nav-tabs-border-color $gray-400;
+
+// pagination
+$pagination-bg: $secondary;
+$pagination-border-color: darken($secondary, 5%);
+$pagination-color: $white;
+$pagination-focus-bg: $primary;
+$pagination-focus-border-color: darken($primary, 5%);
+$pagination-focus-color: $pagination-color;
+$pagination-hover-bg: $pagination-focus-bg;
+$pagination-hover-border-color: $pagination-focus-border-color;
+$pagination-hover-color: $pagination-focus-color;
+$pagination-active-bg: $pagination-focus-bg;
+$pagination-active-border-color: $pagination-focus-border-color;
+$pagination-active-color: $pagination-focus-color;
+$pagination-disabled-bg: $pagination-bg;
+$pagination-disabled-border-color: $pagination-border-color;
+$pagination-disabled-color: rgba($white, 0.25);
+
+// popover
+$popover-border-color: darken($secondary, 5%);
+$popover-header-bg: $secondary;
+$popover-arrow-color: $popover-header-bg;
+$popover-header-color: $white;
+$popover-max-width: 90vw;
+
+// sizing
+// https://getbootstrap.com/docs/5.1/utilities/sizing/#relative-to-the-parent
+// https://getbootstrap.com/docs/5.1/utilities/api/#modify-utilities
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/utilities";
+$utilities: map-merge(
+  $utilities,
+  (
+    "width":
+      map-merge(
+        map-get($utilities, "width"),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, "width"), "values"),
+              (
+                33: 33%,
+                40: 40%,
+                60: 60%,
+                67: 67%,
+              )
+            ),
+        )
+      ),
+  )
+);
+
+// // tooltip
+// $tooltip-bg: $white;
+// $tooltip-color: $black;
+// $tooltip-arrow-color: $secondary;
+// $tooltip-max-width: 90vw;
+// $tooltip-opacity: 1;
+
+// // typography
+// //$enable-responsive-font-sizes: true;
+$font-family-serif: "EB Garamond", serif; // 'Quando', serif;
+$font-family-sans-serif: "Signika", sans-serif;
+// $display1-weight: $headings-font-weight;
+// $display2-weight: $headings-font-weight;
+// $display3-weight: $headings-font-weight;
+// $display4-weight: $headings-font-weight;
+// $display-line-height: 1.2;
+// $display1-size: 6.85rem;
+// $display2-size: 5.55rem;
+// $display3-size: 4.24rem;
+// $display4-size: 3.43rem;
+// $display5-size: 2.62rem;
+// $display6-size: 2.11rem;
+$headings-font-family: $font-family-serif;
+$headings-font-weight: 400;
+$headings-line-height: 1.2;
+$h1-font-size: 4.24rem;
+$h2-font-size: 2.62rem;
+$h3-font-size: 1.62rem;
+$h4-font-size: 1.41rem;
+$h5-font-size: 1.21rem;
+$h6-font-size: 1rem;
+// $lead-font-weight: 100;
+$lead-font-size: 1.31rem;
+//$small-font-size: 0.8rem;
+
+// custom
+$section-padding: 14.5vh;
+$element-padding: 9vh;
+
+// bug in 5.0.2 where it toggles the modal backdrop instead of the offcanvas backdrop
+$zindex-offcanvas: 1055;

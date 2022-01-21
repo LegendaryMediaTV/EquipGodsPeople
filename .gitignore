@@ -1,0 +1,9 @@
+# folders
+.cache/
+.parcel-cache/
+node_modules/
+public/
+public-old/
+
+# files
+package-lock.json

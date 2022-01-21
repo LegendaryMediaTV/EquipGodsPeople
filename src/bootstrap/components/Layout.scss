@@ -1,0 +1,303 @@
+/******************
+ ***** Banner *****
+ *****************/
+
+.Banner {
+  background-color: $gray-300;
+  color: $gray-700;
+  font-style: italic;
+  font-size: 1.62rem;
+  padding-top: $section-padding;
+  padding-bottom: $section-padding;
+}
+
+/******************
+ ***** Footer *****
+ *****************/
+
+#Footer {
+  //   padding-bottom: $section-padding;
+  //   padding-top: $section-padding;
+
+  .nav {
+    font-family: $font-family-sans-serif;
+    font-variant: unset;
+    font-weight: 300;
+    letter-spacing: 0;
+
+    .nav-link {
+      padding: 0;
+    }
+  }
+
+  #FooterSocialMedia {
+    // margin-top: $element-padding;
+
+    a {
+      color: inherit;
+    }
+
+    i {
+      box-shadow: 2px 2px 6px rgba($black, 0.5);
+      font-size: 1.5rem;
+      min-height: 3.1rem;
+      min-width: 3.1rem;
+      padding: 0.85rem;
+      text-align: center;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        box-shadow: 0 0.4rem 0.8rem rgba($black, 0.4) !important;
+        transform: scale(1.1) translateY(-3px);
+      }
+
+      &:active {
+        box-shadow: 0 0.2rem 0.4rem rgba($black, 0.4) !important;
+        transform: scale(1.05) translateY(-1px);
+      }
+    }
+
+    i.fa-twitter {
+      background-color: #55acee;
+    }
+
+    i.fa-facebook-f {
+      background-color: #3c589a;
+    }
+
+    i.fa-instagram {
+      background-color: #dd3333;
+    }
+
+    i.fa-envelope {
+      background-color: #649a3f;
+    }
+  }
+
+  // #FooterCopyright {
+  //   margin-top: $element-padding;
+  // }
+}
+
+/****************
+ ***** Hero *****
+ ***************/
+
+@import "../../node_modules/animate.css/animate.min.css";
+
+#Hero {
+  background-position: center;
+  background-size: cover;
+  padding: $section-padding 1.5rem;
+
+  &.Home {
+    background-color: $secondary;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba($secondary, 0.9),
+        rgba($secondary, 0.6)
+      ),
+      url("./images/banners/home.jpg");
+    padding: 24vh 1.5rem;
+  }
+
+  &.BibleReadingPlans {
+    background-color: $green;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(darken($green, 20%), 0.8),
+        rgba($green, 0.5)
+      ),
+      url("./images/banners/bible-reading-plans.jpg");
+  }
+
+  &.BibleSearch {
+    background-color: $red;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(darken($red, 30%), 0.8),
+        rgba($red, 0.5)
+      ),
+      url("./images/banners/bible-search.jpg");
+  }
+
+  &.ClassicWorks {
+    background-color: $brown;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(darken($brown, 20%), 0.95),
+        rgba($brown, 0.65)
+      ),
+      url("./images/banners/classic-works.jpg");
+  }
+
+  &.DiscipleshipTools {
+    background-color: $cyan;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(darken($cyan, 20%), 0.8),
+        rgba($cyan, 0.5)
+      ),
+      url("./images/banners/discipleship-tools.jpg");
+  }
+
+  &.EGPBlog {
+    background-color: $purple;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(darken($purple, 45%), 0.8),
+        rgba($purple, 0.6)
+      ),
+      url("./images/banners/egp-blog.jpg");
+  }
+
+  &.WordStudy {
+    background-color: $orange;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(darken($orange, 30%), 0.8),
+        rgba($orange, 0.5)
+      ),
+      url("./images/banners/word-study.jpg");
+  }
+
+  #HeroHeading {
+    color: $white;
+    font-family: inherit;
+    margin: 0;
+
+    #HeroTitle,
+    #HeroSubtitle {
+      display: block;
+      margin: 0;
+      text-align: center;
+    }
+
+    #HeroTitle {
+      font-size: 4.24rem;
+      font-variant: small-caps;
+      line-height: 1.1;
+      text-indent: 0.63rem;
+
+      @include media-breakpoint-up(md) {
+        letter-spacing: 0.63rem;
+      }
+    }
+
+    #HeroSubtitle {
+      font-size: 1.62rem;
+      font-weight: 100;
+      margin-top: 1rem;
+      text-indent: 0.21rem;
+
+      @include media-breakpoint-up(md) {
+        letter-spacing: 0.21rem;
+      }
+    }
+  }
+}
+
+/*********************
+ ***** Page Copy *****
+ ********************/
+
+// #PageCopy {
+//   padding-bottom: $section-padding;
+//   padding-top: $section-padding;
+// }
+
+/*********************
+ ***** Site Menu *****
+ ********************/
+
+#SiteMenu {
+  .offcanvas-header {
+    input.form-control {
+      width: 9rem;
+    }
+
+    .btn-link {
+      color: rgba($white, 0.5);
+      font-size: 1.31rem;
+      // position: fixed;
+      // right: 0;
+      // top: 0;
+
+      &:hover {
+        color: $white;
+      }
+    }
+  }
+
+  .offcanvas-body .nav {
+    font-family: $font-family-sans-serif;
+    font-size: 1.31rem;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+
+    .nav-item {
+      border-top: 1px solid rgba($white, 0.25);
+
+      &:first-child {
+        border-top: none;
+      }
+
+      button {
+        font-size: 1.31rem;
+      }
+    }
+
+    .nav-item button,
+    .nav-link {
+      color: rgba($white, 0.85);
+
+      &:focus,
+      &:hover,
+      &:active {
+        background-color: $primary;
+        color: $white;
+        // text-decoration: none;
+      }
+    }
+
+    .nav .nav-link {
+      font-size: 1rem;
+      padding: 0.75rem 1.25rem;
+    }
+
+    // .Submenu .nav-item {
+    //   border-top: none;
+    // }
+  }
+}
+
+/****************************
+ ***** Site Menu Button *****
+ ***************************/
+
+#SiteMenuButton {
+  box-shadow: 0 0.1rem 0.2rem rgba($black, 0.2) !important;
+  font-size: 1.2rem;
+  opacity: 0.5;
+  position: fixed;
+  right: 1.5rem;
+  top: 1.5rem;
+  transition: all 0.2s ease-in-out;
+  z-index: 1000;
+
+  &:focus,
+  &:hover {
+    box-shadow: 0 0.2rem 0.4rem rgba($black, 0.2) !important;
+    opacity: 0.75;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(1.05);
+  }
+
+  i {
+    padding-top: 0.35rem;
+  }
+}

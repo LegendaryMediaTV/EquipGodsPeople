@@ -1,0 +1,14 @@
+// custom Bootstrap variables
+@import "./variables";
+
+// Bootstrap styling
+@import "node_modules/bootstrap/scss/bootstrap";
+
+// Bootstrap customizations
+@import "./custom";
+
+// component styling
+@import "./components/components";
+
+// page styling
+@import "./pages/pages";

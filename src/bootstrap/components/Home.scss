@@ -1,0 +1,134 @@
+/********************
+ ***** Features *****
+ *******************/
+
+#Features {
+  padding-bottom: 50px;
+  padding-top: 50px;
+  margin-bottom: -50px;
+  margin-top: -50px;
+  overflow-x: hidden;
+
+  .row {
+    padding: 0;
+  }
+
+  .Feature {
+    background-position: center;
+    background-size: cover;
+    color: $white;
+    padding: 0;
+    text-align: center;
+    text-shadow: 1px 1px 2px $black;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      box-shadow: 0 0.4rem 0.8rem rgba($black, 0.4) !important;
+      transform: scale(1.05) translateY(-3px);
+      z-index: 1;
+    }
+
+    &:active {
+      box-shadow: 0 0.2rem 0.4rem rgba($black, 0.4) !important;
+      transform: scale(1.03) translateY(-1px);
+    }
+
+    a {
+      display: block;
+      padding-bottom: $section-padding;
+      padding-top: $section-padding;
+    }
+
+    a,
+    a h2 {
+      color: inherit !important;
+      text-decoration: none;
+    }
+  }
+
+  #FeatureBibleSearch {
+    background-color: $red;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(darken($red, 30%), 0.8),
+        rgba($red, 0.5)
+      ),
+      url("./images/features/bible-search.jpg");
+  }
+
+  #FeatureBibleReadingPlans {
+    background-color: $green;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(darken($green, 20%), 0.8),
+        rgba($green, 0.5)
+      ),
+      url("./images/features/bible-reading-plans.jpg");
+  }
+
+  #FeatureClassicWorks {
+    background-color: $brown;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(darken($brown, 20%), 0.95),
+        rgba($brown, 0.65)
+      ),
+      url("./images/features/classic-works.jpg");
+  }
+
+  #FeatureDiscipleshipTools {
+    background-color: $cyan;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(darken($cyan, 20%), 0.8),
+        rgba($cyan, 0.5)
+      ),
+      url("./images/features/discipleship-tools.jpg");
+  }
+
+  #FeatureEGPBlog {
+    background-color: $purple;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(darken($purple, 45%), 0.8),
+        rgba($purple, 0.6)
+      ),
+      url("./images/features/egp-blog.jpg");
+  }
+
+  #FeatureWordStudy {
+    background-color: $orange;
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(darken($orange, 30%), 0.8),
+        rgba($orange, 0.5)
+      ),
+      url("./images/features/word-study.jpg");
+  }
+}
+
+/*******************************
+ ***** Latest Blog Entries *****
+ ******************************/
+
+#LatestBlogEntries {
+  background-color: $gray-100;
+  //   padding-bottom: $section-padding;
+  //   padding-top: $section-padding;
+
+  //   .jumbotron {
+  //     padding: 0;
+  //     margin: 0 0 6rem;
+  //   }
+}
+
+/*******************
+ ***** Welcome *****
+ ******************/
+
+// #Welcome {
+//   background-color: $gray-300;
+//   color: $gray-700;
+//   font-style: italic;
+//   font-size: 1.62rem;
+// }
