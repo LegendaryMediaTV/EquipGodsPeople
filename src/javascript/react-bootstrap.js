@@ -777,7 +777,7 @@ export class Row extends Division {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/////////// Content
+////////// Content
 ////////////////////////////////////////////////////////////////////////////////
 
 export class Blockquote extends HTML {
@@ -1073,7 +1073,7 @@ export class Select extends HTML {
 
     // convert options property to children
     if (properties.options) {
-      for (const option of properties.options)
+      for (const option of properties.options) {
         properties.children.push(
           React.createElement(SelectOption, {
             item: option,
@@ -1083,6 +1083,7 @@ export class Select extends HTML {
                 : option === properties.selected,
           })
         );
+      }
     }
     delete properties.options;
     delete properties.selected;
@@ -1215,7 +1216,7 @@ export class Button extends ButtonHTML {
     // add Bootstrap classes
     properties.className.push("btn");
     properties.className.push(
-      `btn-${properties.outline ? "-outline" : ""}${
+      `btn-${properties.outline ? "outline-" : ""}${
         properties.variant || "primary"
       }`
     );
@@ -1438,7 +1439,7 @@ export class Nav extends List {
     // merge React and custom properties
     if (!properties) properties = this.mergeProperties();
 
-    // convert link property to nav item children
+    // convert items property to nav item children
     if (Array.isArray(properties.items)) {
       properties.children = properties.children.concat(
         properties.items.map((item) =>
@@ -1460,6 +1461,7 @@ export class Nav extends List {
       );
     }
     delete properties.items;
+    delete properties.activeItem;
 
     // add previous button
     if (properties.previous) {

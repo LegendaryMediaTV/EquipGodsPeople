@@ -6,6 +6,11 @@ Equip God’s People web app built on Node/PHP
 
 ### Pre-launch
 
+- migrate Node admin content
+- finish migrating Node front-end content
+
+**Revisit old backlog:**
+
 - search engine:
   - when building cache, it should update the Searchable field for lexicon entries, definitions
   - when building pages, it should upsert page metadata rows (title, description, excerpt, etc.) with searchable combining those and any dependencies
@@ -85,11 +90,7 @@ Equip God’s People web app built on Node/PHP
 	RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
 	RewriteRule ^(.*)$ https://zenith.equipgodspeople.com/$1 [R=301,L]
 
-  # redirect API requests
-  RewriteRule ^api/index\.php$ - [L]
-  RewriteRule ^api/(.*)$ /api/index.php [L]
-
-  # redirect 404s to index (probably should be router.php instead)
+  # redirect 404s to index
 	RewriteBase /
 	RewriteRule ^index\.php$ - [L]
 	RewriteCond %{REQUEST_FILENAME} !-f
@@ -100,7 +101,7 @@ Equip God’s People web app built on Node/PHP
 
 ### IIS URL Rewrite
 
-- Folder: `/api`
+- Folder: `/`
 - Requested URL: `Matches the Pattern`
 - Using: `Regular Expressions`
 - Pattern: `^(.*)$`
@@ -135,13 +136,13 @@ Equip God’s People web app built on Node/PHP
 ## Major version history
 
 1. ASP
-2. red cross
-3. PHP
+2. PHP
+3. PHP (red cross)
 4. WordPress
-5. Wordpress SiteOrigin
+5. Wordpress (SiteOrigin)
 6. ASP.NET (unreleased)
 7. Bootstrap4 PHP (Zenith 1.0, released to dev)
 8. Bootstrap4 CMS (Zenith 2.0, released to dev)
 9. Gatsby4/Bootstrap5 (unreleased)
-10. Node/PHP/Bootstrap5/React (Zenith 3.0)
-11. PHP
+10. Node/PHP/Bootstrap5/React (Zenith 3.0, released to dev)
+11. PHP/Bootstrap5 (Zenith 4.0)

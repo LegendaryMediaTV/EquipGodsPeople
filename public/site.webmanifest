@@ -1,0 +1,19 @@
+{
+  "name": "Equip God\u2019s People",
+  "short_name": "Equip God\u2019s People",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png?v=202108",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-256x256.png?v=202108",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#2c84bb",
+  "background_color": "#2c84bb",
+  "display": "standalone"
+}
