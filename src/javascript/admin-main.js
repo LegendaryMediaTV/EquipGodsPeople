@@ -207,8 +207,12 @@ import("./react-bootstrap.js").then((BS) => {
      ****************/
 
     componentDidMount = () => {
+      // build out the form data
+      let data = new FormData();
+      data.append("api", "bible-books");
+
       axios
-        .post("/bible-books")
+        .post("/admin", data)
         .then((response) => {
           this.setState({ books: response.data });
         })
@@ -216,8 +220,10 @@ import("./react-bootstrap.js").then((BS) => {
           alert(err.message);
         });
 
+      data = new FormData();
+      data.append("api", "bible-testaments");
       axios
-        .post("/bible-testaments")
+        .post("/admin", data)
         .then((response) => {
           this.setState({ testaments: response.data });
         })
@@ -973,11 +979,17 @@ import("./react-bootstrap.js").then((BS) => {
     };
 
     inflectionApplyHandler = async () => {
+      // build out the form data
+      const data = new FormData();
+      data.append("api", "lexiconConvert");
+      data.append("languageID", this.state.language._id);
+      data.append(
+        "code",
+        this.state.inflection.name.replace(/\[[^\]]+\]/g, "")
+      );
+
       axios
-        .post("/lexiconConvert", {
-          languageID: this.state.language._id,
-          code: this.state.inflection.name.replace(/\[[^\]]+\]/g, ""),
-        })
+        .post("/admin", data)
         .then((response) => {
           const inflection = JSON.parse(JSON.stringify(this.state.inflection));
           const selected = JSON.parse(JSON.stringify(this.state.selected));
@@ -1092,11 +1104,14 @@ import("./react-bootstrap.js").then((BS) => {
 
       this.setState({ processing: true });
 
+      // build out the form data
+      const data = new FormData();
+      data.append("api", "lexicon-entry");
+      data.append("_id", this.state.selectedID);
+      data.append("document", this.state.selected);
+
       axios
-        .post("/lexicon-entry", {
-          _id: this.state.selectedID,
-          document: this.state.selected,
-        })
+        .post("/admin", data)
         .then((response) => {
           this.setState({
             selected: response.data,
@@ -1117,8 +1132,12 @@ import("./react-bootstrap.js").then((BS) => {
     load = () => {
       this.setState({ languages: false });
 
+      // build out the form data
+      const data = new FormData();
+      data.append("api", "lexicon-languages");
+
       axios
-        .post("/lexicon-languages")
+        .post("/admin", data)
         .then((response) => {
           this.setState({ languages: response.data });
 
@@ -1131,8 +1150,13 @@ import("./react-bootstrap.js").then((BS) => {
 
     loadEntry = () => {
       if (this.state.query) {
+        // build out the form data
+        let data = new FormData();
+        data.append("api", "lexicon-entry");
+        data.append("_id", this.state.query);
+
         axios
-          .post("/lexicon-entry", { _id: this.state.query })
+          .post("/admin", data)
           .then((response) => {
             this.setState({
               selected: response.data,
@@ -1422,11 +1446,14 @@ import("./react-bootstrap.js").then((BS) => {
 
       this.setState({ processing: true });
 
+      // build out the form data
+      const data = new FormData();
+      data.append("api", "reading-plan");
+      data.append("_id", this.state.selectedID);
+      data.append("document", this.state.selected);
+
       axios
-        .post("/reading-plan", {
-          _id: this.state.selectedID,
-          document: this.state.selected,
-        })
+        .post("/admin", data)
         .then((response) => {
           this.load();
 
@@ -1449,8 +1476,12 @@ import("./react-bootstrap.js").then((BS) => {
     load = () => {
       this.setState({ readingPlans: false });
 
+      // build out the form data
+      const data = new FormData();
+      data.append("api", "reading-plans");
+
       axios
-        .post("/reading-plans")
+        .post("/admin", data)
         .then((response) => {
           this.setState({ readingPlans: response.data });
         })

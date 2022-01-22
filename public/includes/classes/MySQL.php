@@ -153,7 +153,7 @@ class lmtv_MySQL extends mysqli {
     // return the parsed JSON documents
     return array_map(
       function ($row) {
-        return json_decode($row);
+        return json_decode($row['Document']);
       },
       $rows
     );

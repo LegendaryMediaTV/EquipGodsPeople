@@ -1,4 +1,36 @@
 <?php
+if ($_POST['api']) {
+  switch ($_POST['api']) {
+    case 'bible-books':
+    case 'bible-testaments':
+    case 'lexicon-languages':
+    case 'lexicons':
+    case 'reading-plans':
+      $output = $db->documents($_POST['api']);
+
+      break;
+
+    case 'reading-plan':
+      $output = $db->documentUpsert(
+        'reading-plans',
+        $_POST['_id'],
+        $_POST['document']
+      );
+
+      break;
+
+    default:
+      $output = [ 'error' => 'invalid API task ' . $_POST['api'] ];
+  }
+
+  echo json_encode(
+    $output,
+    JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
+  );
+
+  exit;
+}
+
 // define available tabs
 $tabs = [
   [ '_id' => '', 'title' => 'Home' ],
