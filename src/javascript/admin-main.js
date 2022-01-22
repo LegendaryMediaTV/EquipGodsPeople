@@ -1108,7 +1108,7 @@ import("./react-bootstrap.js").then((BS) => {
       const data = new FormData();
       data.append("api", "lexicon-entry");
       data.append("_id", this.state.selectedID);
-      data.append("document", this.state.selected);
+      data.append("document", JSON.stringify(this.state.selected));
 
       axios
         .post("/admin", data)
@@ -1450,7 +1450,7 @@ import("./react-bootstrap.js").then((BS) => {
       const data = new FormData();
       data.append("api", "reading-plan");
       data.append("_id", this.state.selectedID);
-      data.append("document", this.state.selected);
+      data.append("document", JSON.stringify(this.state.selected));
 
       axios
         .post("/admin", data)

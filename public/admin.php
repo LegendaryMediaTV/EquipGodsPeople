@@ -14,7 +14,7 @@ if ($_POST['api']) {
       $output = $db->documentUpsert(
         'reading-plans',
         $_POST['_id'],
-        $_POST['document']
+        json_decode($_POST['document'])
       );
 
       break;

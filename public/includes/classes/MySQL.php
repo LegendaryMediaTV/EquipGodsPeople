@@ -183,8 +183,8 @@ class lmtv_MySQL extends mysqli {
     if (!$original) {
       // build the SQL query
       $sql =
-        "INSERT INTO Documents" +
-        "\n(Collection, _id, Sequence, Document)" +
+        "INSERT INTO Documents" .
+        "\n(Collection, _id, Sequence, Document)" .
         "\nVALUES(?, ?, ?, ?)";
 
       // query the database
@@ -194,8 +194,8 @@ class lmtv_MySQL extends mysqli {
     elseif ($original !== $encoded) {
       // build the SQL query
       $sql =
-        "UPDATE Documents" +
-        "\nSET Document = ?, _id = ?, Sequence= ?" +
+        "UPDATE Documents" .
+        "\nSET Document = ?, _id = ?, Sequence= ?" .
         "\nWHERE Collection = ? AND _id = ?";
 
       // query the database
