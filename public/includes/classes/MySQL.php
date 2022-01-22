@@ -120,7 +120,98 @@ class lmtv_MySQL extends mysqli {
     die(json_encode($output));
   }
 
-  // retrieve single row from resultset as an associative array
+  // retrieve a single NoSQL document
+  public function document($collection, $_id) {
+    // build the SQL query
+    $sql =
+      "SELECT Document" .
+      "\nFROM Documents" .
+      "\nWHERE Collection = ? AND _id = ?" .
+      "\nLIMIT 1";
+
+    // query the database
+    $row = $this->row($sql, [ $collection, $_id ]);
+
+    // record found, return the parsed document
+    if ($row) return json_decode($row['Document']);
+    // record not found
+    else return null;
+  }
+
+  // retrieve an entire collection of NoSQL documents
+  public function documents($collection) {
+    // build the SQL query
+    $sql =
+      "SELECT Document" .
+      "\nFROM Documents" .
+      "\nWHERE Collection = ?" .
+      "\nORDER BY Sequence";
+
+    // query the database
+    $rows = $this->rows($sql, [ $collection ]);
+
+    // return the parsed JSON documents
+    return array_map(
+      function ($row) {
+        return json_decode($row);
+      },
+      $rows
+    );
+  }
+
+  // insert/update a NoSQL document
+  public function documentUpsert($collection, $_id, $document) {
+    // build the SQL query for obtaining the original document
+    $sql =
+      "SELECT Document" .
+      "\nFROM Documents" .
+      "\nWHERE Collection = ? AND _id = ?" .
+      "\nLIMIT 1";
+
+    // query the database for the original document
+    $original = $this->row($sql, [ $collection, $_id ]);
+    if ($original) $original = $original['Document'];
+    else $original = false;
+
+    // encode the new document
+    $encoded = json_encode(
+      $document,
+      JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
+    );
+
+    // insert new record
+    if (!$original) {
+      // build the SQL query
+      $sql =
+        "INSERT INTO Documents" +
+        "\n(Collection, _id, Sequence, Document)" +
+        "\nVALUES(?, ?, ?, ?)";
+
+      // query the database
+      $this->execute($sql, [ $collection, $document->_id, $document->sequence, $encoded ]);
+    }
+    // update existing record
+    elseif ($original !== $encoded) {
+      // build the SQL query
+      $sql =
+        "UPDATE Documents" +
+        "\nSET Document = ?, _id = ?, Sequence= ?" +
+        "\nWHERE Collection = ? AND _id = ?";
+
+      // query the database
+      $this->execute($sql, [
+        $encoded,
+        $document->_id,
+        $document->sequence,
+        $collection,
+        $_id,
+      ]);
+    }
+
+    return $document;
+  }
+
+  // retrieve a single row from resultset as an associative array
   public function row($query, $parameters = null)
   { return $this->rows($query, $parameters, 1); }
 

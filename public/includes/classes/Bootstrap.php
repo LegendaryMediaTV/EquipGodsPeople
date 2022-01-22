@@ -603,7 +603,7 @@ class BS_HTMLPage {
       '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>' .
 
       // add Axios and React
-      ($this->properties['react']
+      ($this->metadata->react
         ?
           // add Axios JS: https://cdnjs.com/libraries/axios
           '<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.25.0/axios.min.js" integrity="sha512-/Q6t3CASm04EliI1QyIDAA/nDo9R8FQ/BULoUFyN4n/BDdyIxeH7u++Z+eobdmr11gG5D/6nPFyDlnisDwhpYA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>' .
@@ -618,7 +618,9 @@ class BS_HTMLPage {
         : '') .
 
       // add site script
-      '<script src="/dist/main.js" type="module"></script>';
+      ($this->metadata->admin
+        ? '<script src="/dist/admin-main.js" type="module"></script>'
+        : '<script src="/dist/main.js" type="module"></script>');
   }
 }
 

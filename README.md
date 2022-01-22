@@ -105,10 +105,9 @@ Equip God’s People web app built on Node/PHP
 - Requested URL: `Matches the Pattern`
 - Using: `Regular Expressions`
 - Pattern: `^(.*)$`
-- Conditions:
-  - Logical grouping: `Match All`
-  - Conditional input: `{REQUEST_FILENAME}`
-  - Check if input string: `Is Not a File`
+- Conditions – Logical grouping: `Match All`
+  1. Conditional input: `{REQUEST_FILENAME}`; Check if input string: `Is Not a File`
+  2. Conditional input: `{REQUEST_FILENAME}`; Check if input string: `Is Not a Directory`
 - Action type: `Rewrite`
 - Rewrite URL: `index.php`
 - Append query string: `checked`
