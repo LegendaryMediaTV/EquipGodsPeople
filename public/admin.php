@@ -10,6 +10,11 @@ if ($_POST['api']) {
 
       break;
 
+    case 'lexiconConvert':
+      $output = egp_lexiconConvert($_POST['languageID'], $_POST['code']);
+
+      break;
+
     case 'reading-plan':
       $output = $db->documentUpsert(
         'reading-plans',
@@ -62,41 +67,30 @@ $tabs = [
 // add URLs to tabs/subtabs
 $tabCount = count($tabs);
 for ($tabIndex = 0; $tabIndex < $tabCount; $tabIndex++) {
+  $tabs[$tabIndex] = (object) $tabs[$tabIndex];
+
   // add tab URL
-  $tabs[$tabIndex]['url'] =
-    '/admin' . ($tabs[$tabIndex]['_id'] ? '?tab=' . $tabs[$tabIndex]['_id'] : '');
+  $tabs[$tabIndex]->url =
+    '/admin' . ($tabs[$tabIndex]->_id ? '?tab=' . $tabs[$tabIndex]->_id : '');
 
   // add subtab URLs
-  if ($tabs[$tabIndex]['subtabs']) {
-    $subtabCount = count($tabs[$tabIndex]['subtabs']);
+  if ($tabs[$tabIndex]->subtabs) {
+    $subtabCount = count($tabs[$tabIndex]->subtabs);
     for ($subtabIndex = 0; $subtabIndex < $subtabCount; $subtabIndex++) {
-      $tabs[$tabIndex]['subtabs'][$subtabIndex]['url'] =
-        $tabs[$tabIndex]['url'] . '&subtab=' . $tabs[$tabIndex]['subtabs'][$subtabIndex]['_id'];
+      $tabs[$tabIndex]->subtabs[$subtabIndex]->url =
+        $tabs[$tabIndex]->url . '&subtab=' . $tabs[$tabIndex]->subtabs[$subtabIndex]->_id;
     }
   }
 }
 
 // determine the selected tab
-$selectedTab = array_filter(
-  $tabs,
-  function ($item) {
-    return $item['_id'] === ($_GET['tab'] ?: '');
-  }
-);
-if (count($selectedTab) >= 1) $selectedTab = (object) array_values($selectedTab)[0];
-else $selectedTab = (object) $tabs[0];
+$selectedTab = egp_documentViaID($tabs, $_GET['tab'] ?: '');
 
 // determine the selected tab
-$selectedSubtab = null;
-if ($selectedTab->subtabs && $_GET['subtab']) {
-  $selectedSubtab = array_filter(
-    $selectedTab->subtabs,
-    function ($item) {
-      return $item['_id'] === ($_GET['subtab'] ?: '');
-    }
-  );
-  if (count($selectedSubtab) >= 1) $selectedSubtab = (object) array_values($selectedSubtab)[0];
-}
+if ($selectedTab->subtabs && $_GET['subtab'])
+  $selectedSubtab = egp_documentViaID($selectedTab->subtabs, $_GET['subtab']);
+else
+  $selectedSubtab = null;
 
 // define page metadata
 $metadata = (object) [

@@ -5,6 +5,9 @@ for ($languageIndex = 0; $languageIndex < $languageCount; $languageIndex++) {
   if ($languages[$languageIndex]->_id === $metadata->_id) break;
 }
 
+// TODO: retrieve first entry for Prev/Next
+// TODO: retrieve top 100 for Greek as ListGroup
+
 $html->add(new BS_Container(
   [ 'className' => 'py-section' ],
 
@@ -20,7 +23,7 @@ $html->add(new BS_Container(
       new BS_Paragraph(
         null,
       
-        'The Old Testament (a.k.a., “Hebrew Bible” was written primarily in ',
+        'The Old Testament (a.k.a., “The Hebrew Bible”) was written primarily in ',
         new BS_Link(
           [ 'to' => 'https://en.wikipedia.org/wiki/Hebrew_language' ],
           'Hebrew'
@@ -49,7 +52,7 @@ $html->add(new BS_Container(
 
       new BS_Paragraph(
         null,
-        'Hebrew words and phrases are read from right to left. So, [hebrewCode]ab[/hebrewCode], would be read as ',
+        'Hebrew words and phrases are read from right to left. For example, [hebrewCode]ab[/hebrewCode], would be read as ',
         '[hebrewCode]a[/hebrewCode] (a) and then [hebrewCode]b[/hebrewCode] (b), so “ab” ([strongs id="H1" /]).'
       ),
     ]
@@ -102,7 +105,15 @@ $html->add(new BS_Container(
     ]
   ),
 
-  new BS_LexiconLetterSelector([ 'language' => $languages[$languageIndex] ])
+  new BS_LexiconLetterSelector([ 'language' => $languages[$languageIndex] ]),
+
+  new BS_PreviousNext([
+    'previous' => [
+      'url' => '/lexicons-word-study',
+      'title' => 'Lexicons (Word Study)',
+    ],
+    'className' => 'mt-5',
+  ]),
 ));
 
 // $html->add(new BS_Preformatted([ 'item' => $metadata ]));

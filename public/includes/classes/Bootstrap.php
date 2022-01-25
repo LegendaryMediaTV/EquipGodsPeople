@@ -1576,6 +1576,26 @@ class BS_Greek extends BS_Span {
 class BS_Hebrew extends BS_Span {
   function render() {
     $this->properties['className'][] = 'hebrew';
+    $this->properties['direction'] = 'rtl'; // letters go from right to left
+    return parent::render();
+  }
+}
+
+class BS_SmallCaps extends BS_Span {
+  function render() {
+    $this->properties['className'][] = 'text-smallcaps';
+    return parent::render();
+  }
+}
+
+class BS_Verse extends BS_Span {
+  function render() {
+    $this->properties['className'][] = 'text-muted';
+
+    // wrap in brackets
+    array_unshift($this->children, '[');
+    $this->children[] = ']';
+    
     return parent::render();
   }
 }
