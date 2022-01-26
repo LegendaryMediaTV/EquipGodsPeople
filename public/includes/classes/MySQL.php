@@ -56,7 +56,7 @@ class lmtv_MySQL extends mysqli {
     for ($parameterIndex = 0; $parameterIndex < $parameterCount; $parameterIndex++) {
       if (is_null($parameters[$parameterIndex]))
         $replace = 'NULL';
-      elseif ($value == 'NOW()')
+      elseif ($value === 'NOW()')
         $replace = $parameters[$parameterIndex];
       else
         $replace = '\'' . $this->real_escape_string($parameters[$parameterIndex]) . '\'';
@@ -139,16 +139,17 @@ class lmtv_MySQL extends mysqli {
   }
 
   // retrieve an entire collection of NoSQL documents
-  public function documents($collection) {
+  public function documents($collection, $query = null) {
     // build the SQL query
     $sql =
       "SELECT Document" .
       "\nFROM Documents" .
       "\nWHERE Collection = ?" .
+      ($query ? ' AND Searchable LIKE ?' : '') .
       "\nORDER BY Sequence";
 
     // query the database
-    $rows = $this->rows($sql, [ $collection ]);
+    $rows = $this->rows($sql, [ $collection, "%" . $query . "%" ]);
 
     // return the parsed JSON documents
     return array_map(
@@ -160,7 +161,7 @@ class lmtv_MySQL extends mysqli {
   }
 
   // insert/update a NoSQL document
-  public function documentUpsert($collection, $_id, $document) {
+  public function documentFindUpsert($collection, $_id, $document) {
     // build the SQL query for obtaining the original document
     $sql =
       "SELECT Document" .
@@ -173,42 +174,46 @@ class lmtv_MySQL extends mysqli {
     if ($original) $original = $original['Document'];
     else $original = false;
 
-    // encode the new document
-    $encoded = json_encode(
-      $document,
-      JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
-    );
+    if ($document) {
+      // encode the new document
+      $encoded = json_encode(
+        $document,
+        JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
+      );
 
-    // insert new record
-    if (!$original) {
-      // build the SQL query
-      $sql =
-        "INSERT INTO Documents" .
-        "\n(Collection, _id, Sequence, Document)" .
-        "\nVALUES(?, ?, ?, ?)";
+      // insert new record
+      if (!$original) {
+        // build the SQL query
+        $sql =
+          "INSERT INTO Documents" .
+          "\n(Collection, _id, Sequence, Document)" .
+          "\nVALUES(?, ?, ?, ?)";
 
-      // query the database
-      $this->execute($sql, [ $collection, $document->_id, $document->sequence, $encoded ]);
+        // query the database
+        $this->execute($sql, [ $collection, $document->_id, $document->sequence, $encoded ]);
+      }
+      // update existing record
+      elseif ($original !== $encoded) {
+        // build the SQL query
+        $sql =
+          "UPDATE Documents" .
+          "\nSET Document = ?, _id = ?, Sequence= ?" .
+          "\nWHERE Collection = ? AND _id = ?";
+
+        // query the database
+        $this->execute($sql, [
+          $encoded,
+          $document->_id,
+          $document->sequence,
+          $collection,
+          $_id,
+        ]);
+      }
+
+      return $document;
     }
-    // update existing record
-    elseif ($original !== $encoded) {
-      // build the SQL query
-      $sql =
-        "UPDATE Documents" .
-        "\nSET Document = ?, _id = ?, Sequence= ?" .
-        "\nWHERE Collection = ? AND _id = ?";
-
-      // query the database
-      $this->execute($sql, [
-        $encoded,
-        $document->_id,
-        $document->sequence,
-        $collection,
-        $_id,
-      ]);
-    }
-
-    return $document;
+    else
+      return $original ? json_decode($original) : $original;
   }
 
   // retrieve a single row from resultset as an associative array
@@ -249,7 +254,7 @@ class lmtv_MySQL extends mysqli {
         $result->close();
 
         // single row request shouldn't be nested array
-        if ($limit == 1)
+        if ($limit === 1)
           $output = $output[0];
       }
       // query failed

@@ -95,7 +95,7 @@ import("./react-bootstrap.js").then((BS) => {
       // is the first word, last word, or isn't a skipped word
       if (
         !wordIndex ||
-        wordIndex == words.length - 1 ||
+        wordIndex === words.length - 1 ||
         skip.indexOf(words[wordIndex]) === -1
       ) {
         words[wordIndex] =

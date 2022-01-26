@@ -15,8 +15,90 @@ if ($_POST['api']) {
 
       break;
 
+    case "lexicon-entry":
+      // prefix the ID as needed
+      $_id =
+        preg_match('/^[gh]?[0-9]+$/i', $_POST['_id'])
+          ? "strongs-" .
+            (preg_match('/^[0-9]/', $_POST['_id']) ? "g" : "") .
+            mb_strtolower($_POST['_id'])
+          : $_POST['_id'];
+
+      // is a lexicon entry request
+      if (preg_match('/^strongs-/', $_id)) {
+        // decode the JSON document
+        $document = $_POST['document'] ? json_decode($_POST['document']) : null;
+
+        // extract lexicons/definitions before upserting the entry
+        $upserts = $document->lexicons ?: [];
+        unset($document->lexicons);
+
+        // sort the inflections
+        if ($document->inflections) {
+          uasort(
+            $document->inflections,
+            function ($a, $b) {
+              return $a->name > $b->name ? 1 : -1;
+            }
+          );
+          $document->inflections = array_values($document->inflections);
+        }
+
+        // lookup/upsert the entry document
+        $output = $db->documentFindUpsert('lexicon-entries', $_id, $document);
+
+        // retrieve available lexicons, filtering by the entry's language
+        $lexicons = $db->documents('lexicons');
+        $lexicons = array_filter(
+          $lexicons,
+          function ($lexicon) use($output) {
+            return $lexicon->languageID === $output->language;
+          }
+        );
+
+        // upsert definitions and append them to the output
+        $output->lexicons = [];
+        foreach ($lexicons as $lexicon) {
+          // determine the lexicon's definition ID
+          $definitionID =
+            $lexicon->_id .
+            '-' .
+            substr($output->_id, strpos($output->_id, '-') + 1);
+
+          // upsert the definition, if requested
+          $upserted = egp_documentViaID($upserts, $lexicon->_id);
+
+          // find/upsert the definition
+          $definition = $db->documentFindUpsert(
+            'lexicon-definitions',
+            $definitionID,
+            $upserted
+              ? (object) [
+                "_id" => $definitionID,
+                "lexicon" => $lexicon->_id,
+                "entry" => $output->_id,
+                "sequence" =>
+                  $lexicon->_id .
+                  "-" .
+                  str_pad(substr($output->_id, strpos($output->_id, '-') + 2), 4, "0", STR_PAD_LEFT),
+                "definition" => $upserted->definition,
+              ]
+              : null
+          );
+
+          // add the lexicon/definition to the entry object
+          $lexicon->definition = $definition->definition;
+          $output->lexicons[] = $lexicon;
+        }
+      }
+      // is a search request
+      else
+        $output = $db->documents('lexicon-entries', $_id);
+
+      break;
+
     case 'reading-plan':
-      $output = $db->documentUpsert(
+      $output = $db->documentFindUpsert(
         'reading-plans',
         $_POST['_id'],
         json_decode($_POST['document'])
@@ -28,11 +110,12 @@ if ($_POST['api']) {
       $output = [ 'error' => 'invalid API task ' . $_POST['api'] ];
   }
 
+  // send the response as JSON
+  header('Content-Type: application/json');
   echo json_encode(
     $output,
     JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
   );
-
   exit;
 }
 
@@ -77,6 +160,9 @@ for ($tabIndex = 0; $tabIndex < $tabCount; $tabIndex++) {
   if ($tabs[$tabIndex]->subtabs) {
     $subtabCount = count($tabs[$tabIndex]->subtabs);
     for ($subtabIndex = 0; $subtabIndex < $subtabCount; $subtabIndex++) {
+      $tabs[$tabIndex]->subtabs[$subtabIndex] =
+        (object) $tabs[$tabIndex]->subtabs[$subtabIndex];
+
       $tabs[$tabIndex]->subtabs[$subtabIndex]->url =
         $tabs[$tabIndex]->url . '&subtab=' . $tabs[$tabIndex]->subtabs[$subtabIndex]->_id;
     }

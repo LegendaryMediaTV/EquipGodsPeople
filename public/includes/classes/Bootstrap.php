@@ -1259,16 +1259,20 @@ class BS_Nav extends BS_List {
     // convert items property to nav item children
     if (is_array($items)) {
       foreach ($items as $item) {
+        // ensure the item is an object
+        if (gettype($item) !== 'object')
+          $item = json_decode(json_encode($item));
+
         $this->children[] = new BS_NavItem(
           null,
           new BS_NavLink(
             [
-              'to' => $item['url'],
+              'to' => $item->url,
               'active' =>
                 !is_null($activeItem) &&
-                strval($item['_id']) === strval($activeItem)
+                strval($item->_id) === strval($activeItem)
             ],
-            $item['title']
+            $item->title
           )
         );
       }

@@ -12,7 +12,7 @@ $html->add(new BS_Banner(
 ));
 
 // non-annual plans are just a list
-if ($metadata->days != 365) {
+if ($metadata->days !== 365) {
   $planDetails = new BS_List(
     [
       'items' => array_map(

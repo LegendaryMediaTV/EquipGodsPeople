@@ -275,6 +275,9 @@ function egp_lexiconConvert($languageID, $input, $encode = null) {
 		//echo core_dump($allPunctuation, 'Punctuation');
 	}
 
+  // normalize language ID
+  $languageID = strtoupper(substr($languageID, 0, 1));
+
 	// default encoding to true
 	if (is_null($encode))
 		$encode = true;
@@ -291,9 +294,9 @@ function egp_lexiconConvert($languageID, $input, $encode = null) {
 	$decode = false;
 
 	// support changes to Greek modifiers
-	if ($languageID == 'G')
+	if ($languageID === 'G')
 		$input = str_replace(array('\'', '='), array('’', '^'), $input);
-	// elseif ($languageID == 'H' && $encode)
+	// elseif ($languageID === 'H' && $encode)
 	// 	$input = strrev($input);
 
 	// process input, character by character
@@ -311,8 +314,8 @@ function egp_lexiconConvert($languageID, $input, $encode = null) {
 			$punctuationID = array_search($current, $allPunctuation[$languageID]['Code']);
 			if ($punctuationID === false)
 				$punctuationID = array_search($current, $allPunctuation[$languageID]['Unicode']);
-			if (isset($allAlphabets[$languageID][$languageID == 'G' ? strtolower($current) : $current]))
-				$alphabetID = $languageID == 'G' ? strtolower($current) : $current;
+			if (isset($allAlphabets[$languageID][$languageID === 'G' ? strtolower($current) : $current]))
+				$alphabetID = $languageID === 'G' ? strtolower($current) : $current;
 			else
 				$alphabetID = false;
 
@@ -331,10 +334,10 @@ function egp_lexiconConvert($languageID, $input, $encode = null) {
 			// letter of the alphabet
 			elseif ($alphabetID !== false && !$decode) {
 				// determine alphabet key to use
-				$key = $languageID == 'G' ? strtolower($current) : $current;
+				$key = $languageID === 'G' ? strtolower($current) : $current;
 
 				// determine column name to pull
-				if ($languageID == 'G') {
+				if ($languageID === 'G') {
 					$column = ctype_lower($current) ? 'Lower' : 'Upper';
 					if ($modifiers) {
 						if (in_array('+', $modifiers))
@@ -382,7 +385,7 @@ function egp_lexiconConvert($languageID, $input, $encode = null) {
 						if (
 							preg_match('/^(Lower|Upper)/', $alphabetColumn)
 							&& !preg_match('/Code$/', $alphabetColumn)
-							&& $current == $value
+							&& $current === $value
 						) {
 							$type = 'alphabet';
 							$key = $alphabetID;
@@ -396,12 +399,12 @@ function egp_lexiconConvert($languageID, $input, $encode = null) {
 				}
 
 				// is encoded alphabet
-				if ($type == 'alphabet') {
+				if ($type === 'alphabet') {
 					$decode = true;
 
 					$row = array();
 
-					if ($languageID == 'G' && substr($column, 0, 1) == 'U')
+					if ($languageID === 'G' && substr($column, 0, 1) === 'U')
 						$row['Character'] = strtoupper($key);
 					else
 						$row['Character'] = $key;
@@ -474,11 +477,11 @@ function egp_lexiconConvert($languageID, $input, $encode = null) {
 	// process character-by-character
 	$output = '';
 	for ($charID = 0; $charID < $charCount; $charID++) {
-		if ($characters[$charID]['Character'] == '[') {
+		if ($characters[$charID]['Character'] === '[') {
 			// peek at the next 10 characters for a close bracket
 			$closePos = false;
 			for ($peekID = 1; $peekID < 10 && $charID + $peekID < $charCount; $peekID++) {
-				if ($characters[$charID + $peekID]['Character'] == ']') {
+				if ($characters[$charID + $peekID]['Character'] === ']') {
 					$closePos = $peekID;
 					break;
 				}

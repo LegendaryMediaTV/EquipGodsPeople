@@ -13,7 +13,7 @@ $html->add(new BS_Container(
 
   new BS_Nav([
     'tabs' => true,
-    'items' => json_decode(json_encode($languages), true),
+    'items' => $languages,
     'activeItem' => $metadata->_id,
     'className' => 'h4 mb-5',
   ]),

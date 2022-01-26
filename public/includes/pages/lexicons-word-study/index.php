@@ -6,7 +6,7 @@ $html->add(new BS_Container(
 
   new BS_Nav([
     'tabs' => true,
-    'items' => json_decode(json_encode(egp_languages()), true),
+    'items' => egp_languages(),
     'className' => 'h4 mb-5'
   ]),
 
