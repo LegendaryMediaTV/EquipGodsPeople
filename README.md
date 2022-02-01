@@ -6,16 +6,9 @@ Equip God’s People web app built on Node/PHP
 
 ### Pre-launch
 
-- migrate Node admin content:
-  - test Reading Plan updates (including JSON encoding)
-  - add lexicon-entry API endpoint
-  - migrate lexiconConvert() from Node
-  - add lexiconConvert API endpoint
-  - compare non-updates before upserting (including JSON encoding)
 - finish migrating Node front-end content:
-  - finish migrating bb()
   - finish migrating Bootstrap components
-  - finish Lexicon Language template
+  - finish Lexicon Language template (top 100 lexicon entries)
   - Lexicon Letters
   - Lexicon Entries
   - Bible Search
@@ -24,6 +17,7 @@ Equip God’s People web app built on Node/PHP
   - Discipleship Tools
   - Eusebius TOC
   - Eusebius Book 1
+- searchable
 
 **Revisit old backlog:**
 

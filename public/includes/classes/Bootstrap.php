@@ -628,9 +628,55 @@ class BS_HTMLPage {
 ////////// HTML Elements
 ////////////////////////////////////////////////////////////////////////////////
 
+class BS_Abbreviation extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'abbr';
+
+    $popover = $this->properties['popover'];
+    unset($this->properties['popover']);
+
+    if ($popover) {
+      $this->children = [
+        new BS_Link(
+          [
+            'popover' => [
+              'title' => $popover['title'],
+              'content' => $popover['content']
+            ]
+          ],
+          ...$children
+        )
+      ];
+    }
+
+    return parent::render();
+  }
+}
+
+class BS_Article extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'article';
+    return parent::render();
+  }
+}
+
+class BS_Aside extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'aside';
+    return parent::render();
+  }
+}
+
 class BS_Bold extends BS_HTML {
   function render() {
     if (!$this->properties['tag']) $this->properties['tag'] = 'b';
+    return parent::render();
+  }
+}
+
+class BS_Break extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'br';
     return parent::render();
   }
 }
@@ -643,9 +689,23 @@ class BS_ButtonHTML extends BS_HTML {
   }
 }
 
+class BS_Citation extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'cite';
+    return parent::render();
+  }
+}
+
 class BS_Division extends BS_HTML {
   function render() {
     if (!$this->properties['tag']) $this->properties['tag'] = 'div';
+    return parent::render();
+  }
+}
+
+class BS_Emphasis extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'em';
     return parent::render();
   }
 }
@@ -742,9 +802,13 @@ class BS_Icon extends BS_HTML {
   }
 }
 
-class BS_Italics extends BS_HTML {
+class BS_IFrame extends BS_HTML {
   function render() {
-    if (!$this->properties['tag']) $this->properties['tag'] = 'i';
+    if (!$this->properties['tag']) $this->properties['tag'] = 'iframe';
+
+    if ($this->properties['url']) $this->properties['src'] = $this->properties['url'];
+    unset($this->properties['url']);
+
     return parent::render();
   }
 }
@@ -766,6 +830,13 @@ class BS_Image extends BS_HTML {
     if ($fluid) $this->properties['className'][] = 'img-fluid';
     if ($thumbnail) $this->properties['className'][] = 'img-thumbnail';
 
+    return parent::render();
+  }
+}
+
+class BS_Italics extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'i';
     return parent::render();
   }
 }
@@ -1023,9 +1094,121 @@ class BS_Row extends BS_Division {
 ////////// Content
 ////////////////////////////////////////////////////////////////////////////////
 
+class BS_Blockquote extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'blockquote';
+
+    $this->properties['className'][] = 'blockquote';
+
+    return parent::render();
+  }
+}
+
+class BS_BlockquoteFooter extends BS_Footer {
+  function render() {
+    $this->properties['className'][] = 'blockquote-footer';
+
+    return parent::render();
+  }
+}
+
+class BS_DefinitionList extends BS_Row {
+  function render() {
+    $items = $this->properties['items'];
+    unset($this->properties['items']);
+
+    if (!$this->properties['tag']) $this->properties['tag'] = 'dl';
+
+    // convert items property to list item children
+    if (is_array($items)) {
+      foreach ($items as $itemID => $item) {
+        $this->children[] = new BS_DefinitionListTerm(null, $itemID . ':');
+        $this->children[] = new BS_DefinitionListData(null, $item);
+      }
+    }
+
+    return parent::render();
+  }
+}
+
+class BS_DefinitionListData extends BS_Col {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'dd';
+
+    // add Bootstrap classes
+    $this->properties['sm'] = 8;
+    $this->properties['md'] = 9;
+    $this->properties['lg'] = 10;
+
+    return parent::render();
+  }
+}
+
+class BS_DefinitionListTerm extends BS_Col {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'dt';
+
+    // add Bootstrap classes
+    $this->properties['sm'] = 4;
+    $this->properties['md'] = 3;
+    $this->properties['lg'] = 2;
+
+    return parent::render();
+  }
+}
+
+class BS_Display1 extends BS_Heading1 {
+  function render() {
+    $this->properties['className'][] = 'display-1';
+    return parent::render();
+  }
+}
+
+class BS_Display2 extends BS_Heading2 {
+  function render() {
+    $this->properties['className'][] = 'display-2';
+    return parent::render();
+  }
+}
+
+class BS_Display3 extends BS_Heading3 {
+  function render() {
+    $this->properties['className'][] = 'display-3';
+    return parent::render();
+  }
+}
+
+class BS_Display4 extends BS_Heading4 {
+  function render() {
+    $this->properties['className'][] = 'display-4';
+    return parent::render();
+  }
+}
+
+class BS_Display5 extends BS_Heading5 {
+  function render() {
+    $this->properties['className'][] = 'display-5';
+    return parent::render();
+  }
+}
+
+class BS_Display6 extends BS_Heading6 {
+  function render() {
+    $this->properties['className'][] = 'display-6';
+    return parent::render();
+  }
+}
+
 class BS_Lead extends BS_Paragraph {
   function render() {
     $this->properties['className'][] = 'lead';
+    return parent::render();
+  }
+}
+
+class BS_VisuallyHidden extends BS_Span {
+  function render() {
+    $this->properties['className'][] = 'visually-hidden';
     return parent::render();
   }
 }
@@ -1045,6 +1228,9 @@ class BS_Form extends BS_HTML {
     return parent::render();
   }
 }
+
+// TODO: FormFIeld
+// TODO: Label
 
 class BS_Select extends BS_HTML {
   function render() {
@@ -1121,6 +1307,10 @@ class BS_Textbox extends BS_HTML {
 ////////////////////////////////////////////////////////////////////////////////
 ////////// Components
 ////////////////////////////////////////////////////////////////////////////////
+
+// TODO: Alert
+// TODO: AlertHeading
+// TODO: AlertLink
 
 class BS_Button extends BS_ButtonHTML {
   function render() {
@@ -1239,6 +1429,8 @@ class BS_ListGroupItem extends BS_Link {
   }
 }
 
+// TODO: Modal
+
 class BS_Nav extends BS_List {
   function render() {
     $activeItem = $this->properties['activeItem'];
@@ -1280,26 +1472,32 @@ class BS_Nav extends BS_List {
 
     // add previous link
     if ($previous) {
+      if (gettype($previous) !== 'object')
+          $previous = json_decode(json_encode($previous));
+
       array_unshift($this->children, new BS_NavItem(
         null,
         new BS_NavLink(
-          [ 'to' => $previous['url'] ],
+          [ 'to' => $previous->url ],
 
           new BS_Icon([ 'name' => 'fas fa-angle-double-left', 'className' => 'pe-2' ]),
 
-          $previous['title'],
+          $previous->title,
         )
       ));
     }
 
     // add next link
     if ($next) {
+      if (gettype($next) !== 'object')
+          $next = json_decode(json_encode($next));
+
       $this->children[] = new BS_NavItem(
         null,
         new BS_NavLink(
-          [ 'to' => $next['url'] ],
+          [ 'to' => $next->url ],
 
-          $next['title'],
+          $next->title,
 
 
           new BS_Icon([ 'name' => 'fas fa-angle-double-right', 'className' => 'ps-2' ]),
@@ -1345,6 +1543,11 @@ class BS_NavLink extends BS_Link {
   }
 }
 
+// TODO: Pagination
+// TODO: PaginationItem
+// TODO: PaginationLink
+// TODO: Spinner
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////// Custom Bootstrap Components
 ////////////////////////////////////////////////////////////////////////////////
@@ -1370,6 +1573,9 @@ class BS_Banner extends BS_Container {
     return parent::render();
   }
 }
+
+// TODO: Breakpoints
+// TODO: Embed
 
 class BS_PreviousNext extends BS_Nav {
   function render() {
@@ -1468,9 +1674,32 @@ class BS_SectionWithHeader extends BS_Header {
   }
 }
 
+class BS_SmallCaps extends BS_Span {
+  function render() {
+    $this->properties['className'][] = 'text-smallcaps';
+    return parent::render();
+  }
+}
+
+class BS_Verse extends BS_Span {
+  function render() {
+    $this->properties['className'][] = 'text-muted';
+
+    // wrap in brackets
+    array_unshift($this->children, '[');
+    $this->children[] = ']';
+    
+    return parent::render();
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////// Custom Components
 ////////////////////////////////////////////////////////////////////////////////
+
+// TODO: BiblePassage
+// TODO: BibleSearchForm
+// TODO: BibleSearchScriptures
 
 class BS_BlogEntries extends BS_Row {
   function render() {
@@ -1585,24 +1814,9 @@ class BS_Hebrew extends BS_Span {
   }
 }
 
-class BS_SmallCaps extends BS_Span {
-  function render() {
-    $this->properties['className'][] = 'text-smallcaps';
-    return parent::render();
-  }
-}
-
-class BS_Verse extends BS_Span {
-  function render() {
-    $this->properties['className'][] = 'text-muted';
-
-    // wrap in brackets
-    array_unshift($this->children, '[');
-    $this->children[] = ']';
-    
-    return parent::render();
-  }
-}
+// TODO: Inflection
+// TODO: LexiconEntrySelector
+// TODO: LexiconLink
 
 class BS_LexiconLetterSelector extends BS_ListGroup {
   function render() {

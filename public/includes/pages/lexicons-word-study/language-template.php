@@ -5,7 +5,12 @@ for ($languageIndex = 0; $languageIndex < $languageCount; $languageIndex++) {
   if ($languages[$languageIndex]->_id === $metadata->_id) break;
 }
 
-// TODO: retrieve first entry for Prev/Next
+// retrieve first entry for Next
+$firstEntry = $db->document(
+  'lexicon-entries',
+  'strongs-' . substr($metadata->_id, 0, 1) . '1'
+);
+
 // TODO: retrieve top 100 for Greek as ListGroup
 
 $html->add(new BS_Container(
@@ -105,13 +110,16 @@ $html->add(new BS_Container(
     ]
   ),
 
-  new BS_LexiconLetterSelector([ 'language' => $languages[$languageIndex] ]),
+  new BS_LexiconLetterSelector([ 'language' => $languages[$languageIndex], 'languageLink' => false ]),
+
+  // TODO: LexiconEntrySelector for top 100
 
   new BS_PreviousNext([
     'previous' => [
       'url' => '/lexicons-word-study',
       'title' => 'Lexicons (Word Study)',
     ],
+    'next' => $firstEntry,
     'className' => 'mt-5',
   ]),
 ));

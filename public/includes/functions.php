@@ -17,6 +17,9 @@ function egp_bb($text) {
         return new BS_Superscript(null, $match[1]);
       },
 
+      // new line
+      '/\n/' => function () { return new BS_Break(); },
+
       // Bible link
       '/\[bible to="([^"]+)" \/\]/' => function ($match) {
         return new BS_Link([ 'to' => '/bible-search' ], $match[1]);
@@ -37,8 +40,11 @@ function egp_bb($text) {
       },
 
       // lexicon link
-      '/\[strongs id="([^"]+)" \/\]/' => function ($match) {
-        return new BS_Link([ 'to' => '/lexicons-word-study' ], $match[1]);
+      '/\[strongs id="([^"]+)"( tvm="([^"]+)")? \/\]/' => function ($match) {
+        return new BS_Link(
+          [ 'to' => '/lexicons-word-study', 'tvm'=> $match[3] ],
+          $match[1]
+        );
       },
 
       // custom tags
