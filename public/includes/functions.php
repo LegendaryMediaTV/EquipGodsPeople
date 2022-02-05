@@ -1,61 +1,65 @@
 <?php
 /** convert BB shortcodes to HTML */
-function egp_bb($text) {
+function egp_bb($input, $text = false) {
   return preg_replace_callback_array(
     [
       // HTML
-      '/\[b\](.+?)\[\/b\]/' => function ($match) {
-        return new BS_Bold(null, $match[1]);
+      '/\[b\](.+?)\[\/b\]/' => function ($match) use ($text) {
+        return $text ? ('**' . $match[1] . '**') : new BS_Bold(null, $match[1]);
       },
-      '/\[i\](.+?)\[\/i\]/' => function ($match) {
-        return new BS_Italics(null, $match[1]);
+      '/\[i\](.+?)\[\/i\]/' => function ($match) use ($text) {
+        return $text ? ('*' . $match[1] . '*') : new BS_Italics(null, $match[1]);
       },
-      '/\[sub\](.+?)\[\/sub\]/' => function ($match) {
-        return new BS_Subscript(null, $match[1]);
+      '/\[sub\](.+?)\[\/sub\]/' => function ($match) use ($text) {
+        return $text ? $match[1] : new BS_Subscript(null, $match[1]);
       },
-      '/\[sup\](.+?)\[\/sup\]/' => function ($match) {
-        return new BS_Superscript(null, $match[1]);
+      '/\[sup\](.+?)\[\/sup\]/' => function ($match) use ($text) {
+        return $text ? $match[1] : new BS_Superscript(null, $match[1]);
       },
 
       // new line
-      '/\n/' => function () { return new BS_Break(); },
+      '/\n/' => function () use ($text) { return $text ? "\n" : new BS_Break(); },
 
       // Bible link
-      '/\[bible to="([^"]+)" \/\]/' => function ($match) {
-        return new BS_Link([ 'to' => '/bible-search' ], $match[1]);
+      '/\[bible to="([^"]+)" \/\]/' => function ($match) use ($text) {
+        return $text ? $match[1] : new BS_Link([ 'to' => '/bible-search' ], $match[1]);
       },
 
       // languages
-      '/\[greek\](.+?)\[\/greek\]/' => function ($match) {
-        return new BS_Greek(null, $match[1]);
+      '/\[greek\](.+?)\[\/greek\]/' => function ($match) use ($text) {
+        return $text ? $match[1] : new BS_Greek(null, $match[1]);
       },
-      '/\[hebrew\](.+?)\[\/hebrew\]/' => function ($match) {
-        return new BS_Hebrew(null, $match[1]);
+      '/\[hebrew\](.+?)\[\/hebrew\]/' => function ($match) use ($text) {
+        return $text ? $match[1] : new BS_Hebrew(null, $match[1]);
       },
-      '/\[greekCode\](.+?)\[\/greekCode\]/' => function ($match) {
-        return new BS_Greek(null, egp_lexiconConvert('G', $match[1]));
+      '/\[greekCode\](.+?)\[\/greekCode\]/' => function ($match) use ($text) {
+        $output = egp_lexiconConvert('G', $match[1]);
+        return $text ? $output : new BS_Greek(null, $output);
       },
-      '/\[hebrewCode\](.+?)\[\/hebrewCode\]/' => function ($match) {
-        return new BS_Hebrew(null, egp_lexiconConvert('H', $match[1]));
+      '/\[hebrewCode\](.+?)\[\/hebrewCode\]/' => function ($match) use ($text) {
+        $output = egp_lexiconConvert('H', $match[1]);
+        return $text ? $output : new BS_Hebrew(null, $output);
       },
 
       // lexicon link
-      '/\[strongs id="([^"]+)"( tvm="([^"]+)")? \/\]/' => function ($match) {
-        return new BS_Link(
-          [ 'to' => '/lexicons-word-study', 'tvm'=> $match[3] ],
-          $match[1]
+      '/\[strongs id="([^"]+)"( tvm="([^"]+)")? \/\]/' => function ($match) use ($text) {
+        return $text
+          ? strtoupper($match[1])
+          : new BS_Link(
+            [ 'to' => '/lexicons-word-study', 'tvm'=> $match[3] ],
+            strtoupper($match[1])
         );
       },
 
       // custom tags
       '/\[sc\](.+?)\[\/sc\]/' => function ($match) {
-        return new BS_SmallCaps(null, $match[1]);
+        return $text ? strtoupper($match[1]) : new BS_SmallCaps(null, $match[1]);
       },
       '/\[verse\](.+?)\[\/verse\]/' => function ($match) {
-        return new BS_Verse(null, $match[1]);
+        return $text ? $match[1] : new BS_Verse(null, $match[1]);
       },
     ],
-    $text
+    $input
   );
 }
 

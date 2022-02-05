@@ -161,59 +161,69 @@ class lmtv_MySQL extends mysqli {
   }
 
   // insert/update a NoSQL document
-  public function documentFindUpsert($collection, $_id, $document) {
+  public function documentFindUpsert($collection, $_id, $newDocument, $newSearchable = null) {
     // build the SQL query for obtaining the original document
     $sql =
-      "SELECT Document" .
+      "SELECT Document, Searchable" .
       "\nFROM Documents" .
       "\nWHERE Collection = ? AND _id = ?" .
       "\nLIMIT 1";
 
     // query the database for the original document
-    $original = $this->row($sql, [ $collection, $_id ]);
-    if ($original) $original = $original['Document'];
-    else $original = false;
+    $oldDocument = $this->row($sql, [ $collection, $_id ]);
+    if ($oldDocument) {
+      $oldSearchable = $oldDocument['Searchable'];
+      $oldDocument = $oldDocument['Document'];
+    }
+    else {
+      $oldDocument = false;
+      $oldSearchable = false;
+    }
 
-    if ($document) {
+    if ($newDocument) {
       // encode the new document
       $encoded = json_encode(
-        $document,
+        $newDocument,
         JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
       );
 
       // insert new record
-      if (!$original) {
+      if (!$oldDocument) {
         // build the SQL query
         $sql =
           "INSERT INTO Documents" .
-          "\n(Collection, _id, Sequence, Document)" .
-          "\nVALUES(?, ?, ?, ?)";
+          "\n(Collection, _id, Sequence, Document, Searchable)" .
+          "\nVALUES(?, ?, ?, ?, ?)";
 
         // query the database
-        $this->execute($sql, [ $collection, $document->_id, $document->sequence, $encoded ]);
+        $this->execute(
+          $sql,
+          [ $collection, $newDocument->_id, $newDocument->sequence, $encoded, $newSearchable ]
+        );
       }
       // update existing record
-      elseif ($original !== $encoded) {
+      elseif ($oldDocument !== $encoded || $oldSearchable !== $newSearchable) {
         // build the SQL query
         $sql =
           "UPDATE Documents" .
-          "\nSET Document = ?, _id = ?, Sequence= ?" .
+          "\nSET Document = ?, Searchable = ?, _id = ?, Sequence= ?" .
           "\nWHERE Collection = ? AND _id = ?";
 
         // query the database
         $this->execute($sql, [
           $encoded,
-          $document->_id,
-          $document->sequence,
+          $newSearchable,
+          $newDocument->_id,
+          $newDocument->sequence,
           $collection,
           $_id,
         ]);
       }
 
-      return $document;
+      return $newDocument;
     }
     else
-      return $original ? json_decode($original) : $original;
+      return $oldDocument ? json_decode($oldDocument) : $oldDocument;
   }
 
   // retrieve a single row from resultset as an associative array

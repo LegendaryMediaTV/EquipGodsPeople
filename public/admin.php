@@ -44,8 +44,50 @@ if ($_POST['api']) {
           $document->inflections = array_values($document->inflections);
         }
 
+        // determine searchable string when updating
+        if ($document) {
+          // add basic entry information
+          $searchable = [
+            $document->_id,
+            $document->strongs->_id,
+            $document->word,
+            $document->strongs->word !== $document->word ? $document->strongs->word : '',
+            $document->shortDefinition,
+          ];
+
+          // add name/inflections
+          $searchable[] = $document->name;
+          if ($document->inflections) {
+            foreach ($document->inflections as $inflection)
+              $searchable[] = $inflection->name;
+          }
+
+          // convert searchable array to a string
+          $searchable = preg_replace_callback_array(
+            [
+              // remove bold/italics text markers
+              '/\*/' => function ($match) {
+                return '';
+              },
+
+              // consolidate spaces
+              '/\s+/' => function ($match) {
+                return ' ';
+              },
+
+              // remove lexicon definition numbering
+              '/ [0-9]+[a-z]*\) /' => function ($match) {
+                return ' ';
+              },
+            ],
+
+            egp_bb(implode(' ', $searchable), true)
+          );
+        }
+        else $searchable = null;
+
         // lookup/upsert the entry document
-        $output = $db->documentFindUpsert('lexicon-entries', $_id, $document);
+        $output = $db->documentFindUpsert('lexicon-entries', $_id, $document, $searchable);
 
         // retrieve available lexicons, filtering by the entry's language
         $lexicons = $db->documents('lexicons');
@@ -89,6 +131,22 @@ if ($_POST['api']) {
           // add the lexicon/definition to the entry object
           $lexicon->definition = $definition->definition;
           $output->lexicons[] = $lexicon;
+        }
+
+        // get the old site's lexicon definition
+        $sql =
+          "SELECT Number AS _id, ShortDefinition AS shortDefinition" .
+          "\nFROM equipgod_old.StrongsNumbers" .
+          "\nWHERE Number = ?";
+        $original = $db->row($sql, substr($_id, 8, 1) . str_pad(substr($_id, 9), 4, '0', STR_PAD_LEFT));
+
+        // update the old site's short definition when different
+        if ($original['shortDefinition'] !== $output->shortDefinition) {
+          $db->update(
+            'equipgod_old`.`StrongsNumbers',
+            [ 'ShortDefinition' => $output->shortDefinition ],
+            [ 'Number' => $original['_id'] ]
+          );
         }
       }
       // is a search request

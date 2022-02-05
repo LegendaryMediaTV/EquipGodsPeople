@@ -17,7 +17,6 @@ Equip God’s People web app built on Node/PHP
   - Discipleship Tools
   - Eusebius TOC
   - Eusebius Book 1
-- searchable
 
 **Revisit old backlog:**
 
