@@ -1,12 +1,12 @@
 {
   "name": "@legendarymediatv/equipgodspeople",
-  "version": "11.0.7",
+  "version": "11.0.8",
   "description": "Equip God’s People web app",
   "type": "module",
   "scripts": {
     "bootstrap": "node clean-bootstrap && npm run javascript-build && parcel watch ./src/bootstrap/main.* --no-source-maps --dist-dir public/dist",
     "bootstrap-build": "node clean-bootstrap && npm run javascript-build && parcel build ./src/bootstrap/main.* --no-source-maps --dist-dir public/dist",
-    "build-upload": "node searchable && npm run javascript-build && npm run upload",
+    "build-upload": "npm run javascript-build && npm run upload",
     "javascript-build": "npm run javascript-main-build && npm run javascript-rbs-build",
     "javascript-main-build": "npx terser -c -m -o ./public/dist/main.js -- ./src/javascript/main.js",
     "javascript-rbs-build": "npx terser -c -m -o ./public/dist/react-bootstrap.js -- ./src/javascript/react-bootstrap.js",

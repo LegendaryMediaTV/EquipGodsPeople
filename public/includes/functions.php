@@ -633,6 +633,19 @@ function page_metadataViaToken($token) {
         $output = json_decode($row['Document'], true);
 
         switch ($row['Collection']) {
+          case 'language-letters':
+            $output['title'] =
+              $output['language'] === 'hebrew'
+              ? str_replace(']/[', ']&lrm;/&lrm;[', $output['title'])
+              : $output['title'];
+            $output['testament'] = ($output['language'] === 'hebrew' ? 'Old' : 'New') . ' Testament';
+            $output['parent'] = $output['testament'] . ' ' . ucfirst($output['language']);
+            $output['subtitle'] = $output['parent'] . ' words that start with ' . $output['name'];
+            $output['variant'] = 'WordStudy';
+            $output['source'] = '/lexicons-word-study/alphabet-template.php';
+
+            break;
+
           case 'lexicon-languages':
             $output['testament'] = ($output['_id'] === 'hebrew' ? 'Old' : 'New') . ' Testament';
             $output['subtitle'] = 'explore the original languages of the ' . $output['testament'];

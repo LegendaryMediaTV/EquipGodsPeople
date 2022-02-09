@@ -8,8 +8,7 @@ Equip God’s People web app built on Node/PHP
 
 - finish migrating Node front-end content:
   - finish migrating Bootstrap components
-  - finish Lexicon Language template (top 100 lexicon entries)
-  - Lexicon Letters
+  - Lexicon Letters (letter pagination)
   - Lexicon Entries
   - Bible Search
   - EGP Blog

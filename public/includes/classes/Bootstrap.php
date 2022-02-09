@@ -378,12 +378,12 @@ class BS_HTMLPage {
       '<head>' .
 
       '<title>' .
-        ($this->metadata->title
+        egp_bb($this->metadata->title
           ? $this->metadata->title .
             ($this->metadata->parent ? ' – ' . $this->metadata->parent : '') .
             ' | ' .
             $GLOBALS['siteTitle']
-          : $GLOBALS['siteTitle']) .
+          : $GLOBALS['siteTitle'], true) .
       '</title>' .
 
       '<meta charset="utf-8">' .
@@ -1815,7 +1815,89 @@ class BS_Hebrew extends BS_Span {
 }
 
 // TODO: Inflection
-// TODO: LexiconEntrySelector
+
+class BS_LexiconEntrySelector extends BS_ListGroup {
+  function render() {
+    global $db;
+
+    $language = $this->properties['language'];
+    unset($this->properties['language']);
+    $letter = $this->properties['letter'];
+    unset($this->properties['letter']);
+    // $query = $this->properties['query'];
+    // unset($this->properties['query']);
+    $top = $this->properties['top'];
+    unset($this->properties['top']);
+
+    $this->properties['title'] = $language->title . ' Words';
+
+    // filter for top occurrences
+    if ($top) {
+      $this->properties['title'] = 'Top ' . $top . ' '. $this->properties['title'];
+
+      $sql =
+        "SELECT Document" .
+        "\nFROM Documents" .
+        "\nWHERE" .
+        "\n  Collection = 'lexicon-entries'" .
+        "\n  AND Document LIKE '%\"language\":\"" . $language->_id . "\"%'" .
+        "\nORDER BY" .
+        "\n  CASE" .
+        "\n    WHEN LOCATE('\"occurrences\":', Document) <> 0" .
+        "\n    THEN CAST(SUBSTRING(" .
+        "\n      Document," .
+        "\n      LOCATE('\"occurrences\":', Document) + 14," .
+        "\n      LOCATE(',', Document, LOCATE('\"occurrences\":', Document)) - LOCATE('\"occurrences\":', Document) - 14" .
+        "\n    ) AS UNSIGNED)" .
+        "\n    ELSE 0" .
+        "\n  END DESC," .
+        "\n  Sequence" .
+        "\nLIMIT " . $top;
+      $items = $db->rows($sql);
+    }
+    // filter by letter
+    else if ($letter) {
+      $this->properties['title'] = $language->title . ' words that begin with ' . $letter->title;
+
+      $sql =
+        "SELECT Document" .
+        "\nFROM Documents" .
+        "\nWHERE" .
+        "\n  Collection = 'lexicon-entries'" .
+        "\n  AND Document LIKE '%\"language\":\"" . $language->_id . "\"%'" .
+        "\n  AND Document LIKE '%\"letterCode\":\"" . $letter->code . "\"%'";
+        "\nORDER BY sequence";
+      $items = $db->rows($sql);
+    }
+    else $items = [];
+
+    // convert document to ListGroup item
+    $this->properties['items'] = array_map(
+      function ($item) {
+        $item = json_decode($item['Document']);
+
+        return [
+          '_id' => $item->_id,
+          'title' => $item->title,
+          'subtitle' =>
+            $item->shortDefinition
+            ? $item->shortDefinition . (
+              $item->occurrences
+              ? ' [' . $item->occurrences . ' occurrence' . ($item->occurrences !== 1 ? 's' : '') . ']'
+              : ''
+            ) : null,
+          'url' => $item->url,
+        ];
+      },
+
+      $items
+    );
+
+    return count($items) ? parent::render() : '';
+  }
+}
+
+
 // TODO: LexiconLink
 
 class BS_LexiconLetterSelector extends BS_ListGroup {

@@ -11,8 +11,6 @@ $firstEntry = $db->document(
   'strongs-' . substr($metadata->_id, 0, 1) . '1'
 );
 
-// TODO: retrieve top 100 for Greek as ListGroup
-
 $html->add(new BS_Container(
   [ 'className' => 'py-section' ],
 
@@ -112,7 +110,11 @@ $html->add(new BS_Container(
 
   new BS_LexiconLetterSelector([ 'language' => $languages[$languageIndex], 'languageLink' => false ]),
 
-  // TODO: LexiconEntrySelector for top 100
+  new BS_LexiconEntrySelector([
+    'language' => $languages[$languageIndex],
+    'top' => 100,
+    'className' => 'mt-5'
+  ]),
 
   new BS_PreviousNext([
     'previous' => [
@@ -125,4 +127,4 @@ $html->add(new BS_Container(
 ));
 
 // $html->add(new BS_Preformatted([ 'item' => $metadata ]));
-$html->add(new BS_Preformatted([ 'item' => $languages[$languageIndex] ]));
+// $html->add(new BS_Preformatted([ 'item' => $languages[$languageIndex] ]));
