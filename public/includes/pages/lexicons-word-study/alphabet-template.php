@@ -83,7 +83,10 @@ $html->add(new BS_Container(
     'className' => 'mt-5'
   ]),
 
-  // TODO: add letter pagination
+  new BS_Pagination([
+    'items' => $languages[$languageIndex]->letters,
+    'className' => 'mt-5',
+  ]),
 ));
 
 // $html->add(new BS_Preformatted([ 'item' => $metadata ]));

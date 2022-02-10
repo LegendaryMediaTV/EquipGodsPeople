@@ -225,22 +225,22 @@ class BS_HTMLPage {
     $socialItems = [
       [
         'url' => 'https://instagram.com/equipgodspeople',
-        'icon' => 'fab fa-instagram',
+        'icon' => 'fa-brands fa-instagram',
         'title' => 'Instagram',
       ],
       [
         'url' => 'https://twitter.com/equipgodspeople',
-        'icon' => 'fab fa-twitter',
+        'icon' => 'fa-brands fa-twitter',
         'title' => 'Twitter',
       ],
       [
         'url' => 'https://www.facebook.com/EquipGodsPeople',
-        'icon' => 'fab fa-facebook-f',
+        'icon' => 'fa-brands fa-facebook-f',
         'title' => 'Facebook',
       ],
       [
         'url' => 'mailto:webmaster@equipgodspeople.com',
-        'icon' => 'fas fa-envelope',
+        'icon' => 'fa-solid fa-envelope',
         'title' => 'Email',
       ],
     ];
@@ -397,8 +397,8 @@ class BS_HTMLPage {
       '<meta name="theme-color" content="' . $appColor . '">' .
       '<meta name="robots" content="noindex,nofollow">' .
 
-      // add FontAwesome icons: https://cdnjs.com/libraries/font-awesome
-      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />' .
+      // add Font Awesome icons: https://cdnjs.com/libraries/font-awesome
+      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />' .
 
       // add Google Fonts
       '<link href="https://fonts.googleapis.com" rel="preconnect">' .
@@ -498,7 +498,7 @@ class BS_HTMLPage {
             'bsDataToggle' => 'offcanvas',
             'bsDataTarget' => 'SiteMenu',
           ],
-          new BS_Icon([ 'name' => 'fas fa-bars', 'alt' => 'menu' ])
+          new BS_Icon([ 'name' => 'fa-solid fa-bars', 'alt' => 'menu' ])
         ) .
 
         new BS_Division(
@@ -537,7 +537,7 @@ class BS_HTMLPage {
 
                 new BS_Button(
                   [ 'type' => 'submit', 'variant' => 'secondary' ],
-                  new BS_Icon([ 'name' => 'fas fa-search', 'ariaLabel' => 'search' ])
+                  new BS_Icon([ 'name' => 'fa-solid fa-magnifying-glass', 'alt' => 'search' ])
                 )
               )
             ),
@@ -549,7 +549,7 @@ class BS_HTMLPage {
                 'variant' => 'link',
                 'className' => 'p-0',
               ],
-              new BS_Icon([ 'name' => 'fas fa-times', 'alt' => 'close' ])
+              new BS_Icon([ 'name' => 'fa-solid fa-xmark', 'alt' => 'close' ])
             ),
           ),
 
@@ -577,7 +577,7 @@ class BS_HTMLPage {
                               'variant' => 'link',
                               'className' => 'SiteSubmenuToggle align-self-stretch px-2 rounded-0',
                             ],
-                            new BS_Icon([ 'name' => 'fas fa-angle-down', 'alt' => 'collapsed'])
+                            new BS_Icon([ 'name' => 'fa-solid fa-angle-down', 'alt' => 'collapsed'])
                           )
                         : null
                     ) .
@@ -790,7 +790,7 @@ class BS_Icon extends BS_HTML {
         $this->properties['ariaLabel'] =
           str_replace('-', ' ',
             preg_replace('/-fill$/', '',
-              preg_replace('/^[a-z]+ [a-z]{2}-/', '',
+              preg_replace('/^[a-z-]+ [a-z]{2}-/', '',
                 str_replace('-alt', '', $name)
               )
             )
@@ -895,7 +895,8 @@ class BS_Link extends BS_HTML {
     // add external icon child
     if ($external) {
       $this->children[] = new BS_Icon([
-        'name' => 'fas fa-external-link-alt',
+        'name' => 'fa-solid fa-up-right-from-square',
+        'alt' => 'external link',
         'variant' => 'muted',
         'className' => 'small ps-1 align-text-top',
       ]);
@@ -1480,7 +1481,7 @@ class BS_Nav extends BS_List {
         new BS_NavLink(
           [ 'to' => $previous->url ],
 
-          new BS_Icon([ 'name' => 'fas fa-angle-double-left', 'className' => 'pe-2' ]),
+          new BS_Icon([ 'name' => 'fa-solid fa-angles-left', 'alt' => 'previous', 'className' => 'pe-2' ]),
 
           $previous->title,
         )
@@ -1500,7 +1501,7 @@ class BS_Nav extends BS_List {
           $next->title,
 
 
-          new BS_Icon([ 'name' => 'fas fa-angle-double-right', 'className' => 'ps-2' ]),
+          new BS_Icon([ 'name' => 'fa-solid fa-angles-right', 'alt' => 'next', 'className' => 'ps-2' ]),
         )
       );
     }
@@ -1543,9 +1544,129 @@ class BS_NavLink extends BS_Link {
   }
 }
 
-// TODO: Pagination
-// TODO: PaginationItem
-// TODO: PaginationLink
+class BS_Pagination extends BS_List {
+  function render() {
+    $activeItem = $this->properties['activeItem'];
+    unset($this->properties['activeItem']);
+    $items = $this->properties['items'];
+    unset($this->properties['items']);
+    $next = $this->properties['next'];
+    unset($this->properties['next']);
+    $previous = $this->properties['previous'];
+    unset($this->properties['previous']);
+    $size = $this->properties['size'];
+    unset($this->properties['size']);
+    $wrapperClassName = $this->properties['wrapperClassName'];
+    unset($this->properties['wrapperClassName']);
+
+    // convert link property to nav item children
+    if (is_array($items)) {
+      foreach ($items as $item) {
+        // ensure the item is an object
+        $item = json_decode(json_encode($item));
+
+        $this->children[] =
+          new BS_PaginationItem(
+            null,
+
+            new BS_PaginationLink(
+              [
+                'to' => $item->url,
+                'active' =>
+                  !is_null($activeItem) &&
+                  (string) $item->_id === (string) $activeItem
+              ],
+
+              $item->title
+            )
+          );
+      }
+    }
+
+    // add previous button
+    if ($previous) {
+      // ensure the previous item is an object
+      $previous = json_decode(json_encode($previous));
+
+      array_unshift(
+        $this->children,
+
+        new BS_PaginationItem(
+          null,
+
+          new BS_PaginationLink(
+            [ 'to' => $previous->url ],
+
+            new BS_Icon([
+              'name' => 'fa-solid fa-chevron-left',
+              'alt' => 'previous',
+              'className' => 'pe-2'
+            ]),
+
+            $previous->title
+          )
+        )
+      );
+    }
+
+    // add next button
+    if ($next) {
+      // ensure the next item is an object
+      $next = json_decode(json_encode($next));
+
+      $this->children[] =
+        new BS_PaginationItem(
+          null,
+
+          new BS_PaginationLink(
+            [ 'to' => $next->url ],
+
+            $next->title,
+
+            new BS_Icon([
+              'name' => 'fa-solid fa-chevron-right',
+              'alt' => 'next',
+              'className' => 'ps-2'
+            ])
+          )
+        );
+    }
+
+    // add Bootstrap classes
+    $this->properties['className'][] = 'pagination';
+    if ($size)
+      $this->properties['className'][] = 'pagination-' . $size;
+
+    return (string) new BS_NavHTML([ 'className' => $wrapperClassName ], parent::render());
+  }
+}
+
+class BS_PaginationItem extends BS_ListItem {
+  function render() {
+    $active = $this->properties['active'];
+    unset($this->properties['active']);
+
+    $this->properties['className'][] = 'page-item';
+
+    if ($active) {
+      $this->properties['className'][] = 'active';
+      $this->properties['ariaCurrent'] = 'page';
+    }
+    if ($this->properties['disabled'])
+      $this->properties['className'][] = 'disabled';
+
+    return parent::render();
+  }
+}
+
+class BS_PaginationLink extends BS_Link {
+  function render() {
+    $this->properties['className'][] = 'page-link';
+
+    return parent::render();
+  }
+}
+
 // TODO: Spinner
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1755,7 +1876,7 @@ class BS_BlogEntries extends BS_Row {
 
             'READ MORE',
 
-            new BS_Icon([ 'name' => 'fas fa-caret-right', 'alt' => '' ])
+            new BS_Icon([ 'name' => 'fa-solid fa-caret-right', 'alt' => '' ])
           )
         ),
 
@@ -1857,7 +1978,14 @@ class BS_LexiconEntrySelector extends BS_ListGroup {
     }
     // filter by letter
     else if ($letter) {
-      $this->properties['title'] = $language->title . ' words that begin with ' . $letter->title;
+      $this->properties['title'] =
+        $language->title .
+        ' words that start with ' .
+        ucfirst($letter->name) .
+        ' (' .
+        ($letter->upperLetter ? $letter->upperLetter . '/' : '') .
+        $letter->letter .
+        ')';
 
       $sql =
         "SELECT Document" .

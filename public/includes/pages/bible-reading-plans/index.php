@@ -40,7 +40,7 @@ $html->add(new BS_Container(
 
             'VIEW READING PLAN',
             
-            new BS_Icon([ 'name' => 'fas fa-caret-right', 'alt' => '' ]),
+            new BS_Icon([ 'name' => 'fa-solid fa-caret-right', 'alt' => '' ]),
           ),
         );
       },

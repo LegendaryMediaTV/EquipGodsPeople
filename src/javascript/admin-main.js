@@ -286,7 +286,10 @@ import("./react-bootstrap.js").then((BS) => {
               re(
                 BS.Button,
                 { type: "submit", variant: "primary" },
-                re(BS.Icon, { name: "fas fa-search" })
+                re(BS.Icon, {
+                  name: "fa-solid fa-magnifying-glass",
+                  alt: "search",
+                })
               )
             ),
 
@@ -606,7 +609,7 @@ import("./react-bootstrap.js").then((BS) => {
                                     },
 
                                     re(BS.Icon, {
-                                      name: "fas fa-pencil-alt",
+                                      name: "fa-solid fa-pencil",
                                       alt: "edit",
                                     })
                                   ),
@@ -623,7 +626,7 @@ import("./react-bootstrap.js").then((BS) => {
                                     },
 
                                     re(BS.Icon, {
-                                      name: "fas fa-trash-alt",
+                                      name: "fa-solid fa-trash-can",
                                       alt: "delete",
                                     })
                                   )
@@ -649,7 +652,7 @@ import("./react-bootstrap.js").then((BS) => {
                           },
 
                           re(BS.Icon, {
-                            name: "fas fa-plus-circle",
+                            name: "fa-solid fa-circle-plus",
                             alt: "add",
                           })
                         )
@@ -717,7 +720,8 @@ import("./react-bootstrap.js").then((BS) => {
                             },
 
                             re(BS.Icon, {
-                              name: "fas fa-chevron-left",
+                              name: "fa-solid fa-chevron-left",
+                              alt: "previous",
                               className: "me-2",
                             }),
                             this.state.selected.previous
@@ -741,7 +745,8 @@ import("./react-bootstrap.js").then((BS) => {
                               .replace("strongs-", "")
                               .toUpperCase(),
                             re(BS.Icon, {
-                              name: "fas fa-chevron-right",
+                              name: "fa-solid fa-chevron-right",
+                              alt: "next",
                               className: "ms-2",
                             })
                           )

@@ -356,7 +356,7 @@ export class Icon extends HTML {
       else {
         properties.ariaLabel = properties.name
           .replace("-alt", "")
-          .replace(/^[a-z]+ [a-z]{2}-/, "")
+          .replace(/^[a-z-]+ [a-z]{2}-/, "")
           .replace(/-fill$/, "")
           .replace(/-/g, " ");
       }
@@ -485,7 +485,8 @@ export class Link extends HTML {
     if (properties.external)
       properties.children.push(
         React.createElement(Icon, {
-          name: "fas fa-external-link-alt",
+          name: "fa-solid fa-up-right-from-square",
+          alt: "external link",
           variant: "muted",
           className: "small ps-1 align-text-top",
         })
@@ -1473,7 +1474,8 @@ export class Nav extends List {
             NavLink,
             { to: properties.previous.url },
             React.createElement(Icon, {
-              name: "fas fa-angle-double-left",
+              name: "fa-solid fa-angles-left",
+              alt: "previous",
               className: "pe-2",
             }),
             properties.previous.title
@@ -1494,7 +1496,8 @@ export class Nav extends List {
             { to: properties.next.url },
             properties.next.title,
             React.createElement(Icon, {
-              name: "fas fa-angle-double-right",
+              name: "fa-solid fa-angles-right",
+              alt: "next",
               className: "ps-2",
             })
           )
@@ -1594,7 +1597,8 @@ export class Pagination extends List {
             PaginationLink,
             { to: properties.previous.url },
             React.createElement(Icon, {
-              name: "fas fa-chevron-left",
+              name: "fa-solid fa-chevron-left",
+              alt: "previous",
               className: "pe-2",
             }),
             properties.previous.title
@@ -1615,7 +1619,8 @@ export class Pagination extends List {
             { to: properties.next.url },
             properties.next.title,
             React.createElement(Icon, {
-              name: "fas fa-chevron-right",
+              name: "fa-solid fa-chevron-right",
+              alt: "next",
               className: "ps-2",
             })
           )
