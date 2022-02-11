@@ -22,7 +22,7 @@ function egp_bb($input, $text = false) {
 
       // Bible link
       '/\[bible to="([^"]+)" \/\]/' => function ($match) use ($text) {
-        return $text ? $match[1] : new BS_Link([ 'to' => '/bible-search' ], $match[1]);
+        return $text ? $match[1] : new BS_BibleLink([ 'to' => $match[1] ]);
       },
 
       // languages
@@ -45,10 +45,7 @@ function egp_bb($input, $text = false) {
       '/\[strongs id="([^"]+)"( tvm="([^"]+)")? \/\]/' => function ($match) use ($text) {
         return $text
           ? strtoupper($match[1])
-          : new BS_Link(
-            [ 'to' => '/lexicons-word-study', 'tvm'=> $match[3] ],
-            strtoupper($match[1])
-        );
+          : new BS_LexiconLink([ 'to' => $match[1], 'tvm'=> $match[3] ]);
       },
 
       // custom tags
@@ -723,6 +720,19 @@ function page_metadataViaToken($token) {
         'url' => '/classic-works',
         'sequence' => 'Classic Works',
         'source' => '/classic-works/index.php',
+      ];
+
+      break;
+
+    case 'discipleship-tools':
+      $output = [
+        '_id' => 'discipleship-tools',
+        'title' => 'Discipleship Tools',
+        'subtitle' => 'building a foundation for your walk with God',
+        'variant' => 'DiscipleshipTools',
+        'url' => '/discipleship-tools',
+        'sequence' => 'Discipleship Tools',
+        'source' => '/discipleship-tools/index.php',
       ];
 
       break;

@@ -408,7 +408,7 @@ class BS_HTMLPage {
       '<link href="https://fonts.googleapis.com/css2?family=Signika:wght@300;400&display=swap" rel="stylesheet">' .
 
       // add site CSS
-      '<link href="/dist/main.css?v=202201" rel="stylesheet">' .
+      '<link href="/dist/main.css?v=2022-02-11" rel="stylesheet">' .
 
       // add PWA content
       '<link sizes="180x180" href="/apple-touch-icon.png" rel="apple-touch-icon">' .
@@ -620,7 +620,7 @@ class BS_HTMLPage {
       // add site script
       ($this->metadata->admin
         ? '<script src="/dist/admin-main.js" type="module"></script>'
-        : '<script src="/dist/main.js" type="module"></script>');
+        : '<script src="/dist/main.js?v=2022-01-15" type="module"></script>');
   }
 }
 
@@ -1822,6 +1822,19 @@ class BS_Verse extends BS_Span {
 ////////// Custom Components
 ////////////////////////////////////////////////////////////////////////////////
 
+// TODO: finish adding BibleLink
+class BS_BibleLink extends BS_Link {
+  function render() {
+    $to = $this->properties['to'];
+    unset($this->properties['to']);
+
+    $this->properties['to'] = '/bible-search';
+    $this->children[] = $to;
+
+    return parent::render();
+  }
+}
+
 // TODO: BiblePassage
 // TODO: BibleSearchForm
 // TODO: BibleSearchScriptures
@@ -2029,8 +2042,25 @@ class BS_LexiconEntrySelector extends BS_ListGroup {
   }
 }
 
+// TODO: finish LexiconLink
+class BS_LexiconLink extends BS_Link {
+  function render() {
+    $to = strtolower($this->properties['to']);
+    unset($this->properties['to']);
 
-// TODO: LexiconLink
+    $this->properties['to'] =
+      '/lexicons-word-study' .
+      (
+        $to
+        ? '/' . (substr($to, 0, 1) === 'h' ? 'old-testament-hebrew' : 'new-testament-greek') .
+          '/strongs-' . $to
+        : ''
+      );
+    $this->children[] = $to ? strtoupper($to) : 'Lexicons (Word Study)';
+
+    return parent::render();
+  }
+}
 
 class BS_LexiconLetterSelector extends BS_ListGroup {
   function render() {
