@@ -720,7 +720,7 @@ import("./react-bootstrap.js").then((BS) => {
                             },
 
                             re(BS.Icon, {
-                              name: "fa-solid fa-chevron-left",
+                              name: "fa-solid fa-angle-left",
                               alt: "previous",
                               className: "me-2",
                             }),
@@ -745,7 +745,7 @@ import("./react-bootstrap.js").then((BS) => {
                               .replace("strongs-", "")
                               .toUpperCase(),
                             re(BS.Icon, {
-                              name: "fa-solid fa-chevron-right",
+                              name: "fa-solid fa-angle-right",
                               alt: "next",
                               className: "ms-2",
                             })

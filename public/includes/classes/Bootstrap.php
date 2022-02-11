@@ -379,8 +379,8 @@ class BS_HTMLPage {
 
       '<title>' .
         egp_bb($this->metadata->title
-          ? $this->metadata->title .
-            ($this->metadata->parent ? ' – ' . $this->metadata->parent : '') .
+          ? str_replace('–', '/', $this->metadata->title) .
+            ($this->metadata->parent ? ' – ' . str_replace('–', '/', $this->metadata->parent) : '') .
             ' | ' .
             $GLOBALS['siteTitle']
           : $GLOBALS['siteTitle'], true) .
@@ -1481,7 +1481,7 @@ class BS_Nav extends BS_List {
         new BS_NavLink(
           [ 'to' => $previous->url ],
 
-          new BS_Icon([ 'name' => 'fa-solid fa-angles-left', 'alt' => 'previous', 'className' => 'pe-2' ]),
+          new BS_Icon([ 'name' => 'fa-solid fa-angle-left', 'alt' => 'previous', 'className' => 'pe-2' ]),
 
           $previous->title,
         )
@@ -1501,7 +1501,7 @@ class BS_Nav extends BS_List {
           $next->title,
 
 
-          new BS_Icon([ 'name' => 'fa-solid fa-angles-right', 'alt' => 'next', 'className' => 'ps-2' ]),
+          new BS_Icon([ 'name' => 'fa-solid fa-angle-right', 'alt' => 'next', 'className' => 'ps-2' ]),
         )
       );
     }
@@ -1598,7 +1598,7 @@ class BS_Pagination extends BS_List {
             [ 'to' => $previous->url ],
 
             new BS_Icon([
-              'name' => 'fa-solid fa-chevron-left',
+              'name' => 'fa-solid fa-angle-left',
               'alt' => 'previous',
               'className' => 'pe-2'
             ]),
@@ -1624,7 +1624,7 @@ class BS_Pagination extends BS_List {
             $next->title,
 
             new BS_Icon([
-              'name' => 'fa-solid fa-chevron-right',
+              'name' => 'fa-solid fa-angle-right',
               'alt' => 'next',
               'className' => 'ps-2'
             ])
@@ -1754,6 +1754,10 @@ class BS_SectionHeader extends BS_Header {
     $this->children[] = new BS_Line(
       [ 'className' => 'bg-primary pb-1 position-relative start-50 translate-middle' ]
     );
+
+    // add subtitle
+    if ($subtitle)
+      $this->children[] = new BS_Lead(null, $subtitle);
 
     return parent::render();
   }
@@ -1993,7 +1997,7 @@ class BS_LexiconEntrySelector extends BS_ListGroup {
         "\nWHERE" .
         "\n  Collection = 'lexicon-entries'" .
         "\n  AND Document LIKE '%\"language\":\"" . $language->_id . "\"%'" .
-        "\n  AND Document LIKE '%\"letterCode\":\"" . $letter->code . "\"%'";
+        "\n  AND Document LIKE '%\"letterCode\":\"" . $letter->code . "\"%'" .
         "\nORDER BY sequence";
       $items = $db->rows($sql);
     }

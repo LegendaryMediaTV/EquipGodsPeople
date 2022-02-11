@@ -149,7 +149,138 @@ function egp_languages($languageID = null) {
     return $languages;
 }
 
-// encode/decode language code and unicode
+/** determine the inflection name using the given flags */
+function egp_inflectionName($flags) {
+  $output = [];
+
+  // retrieve inflection types
+  $inflectionTypes = egp_inflectionTypes();
+
+  foreach ($inflectionTypes as $inflectionType) {
+    foreach ($inflectionType->flags as $inflectionFlag) {
+      if (in_array($inflectionFlag->_id, $flags))
+        $output[] = $inflectionFlag->_id;
+    }
+  }
+
+  return implode('', $output);
+}
+
+/** retrieve all inflection types */
+function egp_inflectionTypes() {
+  static $types;
+  
+  if (!$types) {
+    $types = [
+      (object)[
+        '_id' => 'type',
+        'title' => 'Type',
+        'flags' => [
+          (object)[ '_id' => 'Adj', 'title' => 'Adjective' ],
+          (object)[ '_id' => 'Adv', 'title' => 'Adverb' ],
+          // (object)[ '_id' => 'Art', 'title' => 'Definite Article' ],
+          (object)[ '_id' => 'Conj', 'title' => 'Conjunction' ],
+          // (object)[ '_id' => 'Interj', 'title' => 'Interjection' ],
+          (object)[ '_id' => 'Noun', 'title' => 'Noun' ],
+          (object)[ '_id' => 'Ptc', 'title' => 'Participle' ],
+          (object)[ '_id' => 'Prep', 'title' => 'Preposition' ],
+          (object)[ '_id' => 'Pron', 'title' => 'Pronoun' ],
+          (object)[ '_id' => 'Vb', 'title' => 'Verb' ],
+          (object)[ '_id' => 'Vbl', 'title' => 'Verbal' ],
+        ],
+      ],
+      (object)[
+        '_id' => 'subtype',
+        'title' => 'Sub-Type',
+        'flags' => [
+          (object)[ '_id' => 'Pers', 'title' => 'Personal' ],
+          (object)[ '_id' => 'Dem', 'title' => 'Demonstrative' ],
+          (object)[ '_id' => 'Rel', 'title' => 'Relative' ],
+          (object)[ '_id' => 'Correl', 'title' => 'Correlative' ],
+          (object)[ '_id' => 'Indef', 'title' => 'Indefinite' ],
+          (object)[ '_id' => 'Interrog', 'title' => 'Interrogative' ],
+          (object)[ '_id' => 'Refl', 'title' => 'Reflexive' ],
+          (object)[ '_id' => 'Recip', 'title' => 'Reciprocal' ],
+        ],
+      ],
+      (object)[
+        '_id' => 'tense',
+        'title' => 'Tense',
+        'flags' => [
+          (object)[ '_id' => 'Pres', 'title' => 'Present' ],
+          (object)[ '_id' => 'Impf', 'title' => 'Imperfect' ],
+          (object)[ '_id' => 'Fut', 'title' => 'Future' ],
+          (object)[ '_id' => 'Aor', 'title' => 'Aorist' ],
+          (object)[ '_id' => 'Perf', 'title' => 'Perfect' ],
+          (object)[ '_id' => 'Plup', 'title' => 'Pluperfect' ],
+          (object)[ '_id' => 'Futpf', 'title' => 'Future Perfect' ],
+        ],
+      ],
+      (object)[
+        '_id' => 'voice',
+        'title' => 'Voice',
+        'flags' => [
+          (object)[ '_id' => 'Act', 'title' => 'Active' ],
+          (object)[ '_id' => 'Middle', 'title' => 'Middle' ],
+          (object)[ '_id' => 'Pass', 'title' => 'Passive' ],
+          (object)[ '_id' => 'Depon', 'title' => 'Deponent' ],
+        ],
+      ],
+      (object)[
+        '_id' => 'mood',
+        'title' => 'Mood',
+        'flags' => [
+          (object)[ '_id' => 'Indic', 'title' => 'Indicative' ],
+          (object)[ '_id' => 'Subjunc', 'title' => 'Subjunctive' ],
+          (object)[ '_id' => 'Opt', 'title' => 'Optative' ],
+          (object)[ '_id' => 'Impv', 'title' => 'Imperative' ],
+        ],
+      ],
+      (object)[
+        '_id' => 'person',
+        'title' => 'Person',
+        'flags' => [
+          (object)[ '_id' => '1', 'title' => '1st Person' ],
+          (object)[ '_id' => '2', 'title' => '2nd Person' ],
+          (object)[ '_id' => '3', 'title' => '3rd Person' ],
+        ],
+      ],
+      (object)[
+        '_id' => 'case',
+        'title' => 'Case',
+        'flags' => [
+          (object)[ '_id' => 'Nom', 'title' => 'Nominative' ],
+          (object)[ '_id' => 'Acc', 'title' => 'Accusative' ],
+          (object)[ '_id' => 'Gen', 'title' => 'Genitive' ],
+          (object)[ '_id' => 'Dat', 'title' => 'Dative' ],
+          (object)[ '_id' => 'Voc', 'title' => 'Vocative' ],
+        ],
+      ],
+      (object)[
+        '_id' => 'number',
+        'title' => 'Number',
+        'flags' => [
+          (object)[ '_id' => 'Sg', 'title' => 'Singular' ],
+          // (object)[ '_id' => 'Dl', 'title' => 'Dual' ],
+          (object)[ '_id' => 'Pl', 'title' => 'Plural' ],
+        ],
+      ],
+      (object)[
+        '_id' => 'gender',
+        'title' => 'Gender',
+        'flags' => [
+          (object)[ '_id' => 'Masc', 'title' => 'Masculine' ],
+          (object)[ '_id' => 'Fem', 'title' => 'Feminine' ],
+          (object)[ '_id' => 'Neut', 'title' => 'Neuter' ],
+        ],
+      ],
+    ];
+  }
+
+  return $types;
+}
+
+/** encode/decode language code and unicode */
 // TODO: update to utilize the new database
 function egp_lexiconConvert($languageID, $input, $encode = null) {
 	global $db;
@@ -639,10 +770,23 @@ function page_metadataViaToken($token) {
               ? str_replace(']/[', ']&lrm;/&lrm;[', $output['title'])
               : $output['title'];
             $output['testament'] = ($output['language'] === 'hebrew' ? 'Old' : 'New') . ' Testament';
-            $output['parent'] = $output['testament'] . ' ' . ucfirst($output['language']);
             $output['subtitle'] = $output['parent'] . ' words that start with ' . $output['name'];
             $output['variant'] = 'WordStudy';
+            $output['parent'] = $output['testament'] . ' ' . ucfirst($output['language']);
             $output['source'] = '/lexicons-word-study/alphabet-template.php';
+
+            break;
+
+          case 'lexicon-entries':
+            $output['title'] =
+              $output['language'] === 'hebrew'
+              ? str_replace(']/[', ']&lrm;/&lrm;[', $output['title'])
+              : $output['title'];
+            $output['testament'] = ($output['language'] === 'hebrew' ? 'Old' : 'New') . ' Testament';
+            $output['subtitle'] = $output['shortDefinition'];
+            $output['variant'] = 'WordStudy';
+            $output['parent'] = 'Lexicons (Word Study)';
+            $output['source'] = '/lexicons-word-study/entry-template.php';
 
             break;
 

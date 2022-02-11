@@ -1474,7 +1474,7 @@ export class Nav extends List {
             NavLink,
             { to: properties.previous.url },
             React.createElement(Icon, {
-              name: "fa-solid fa-angles-left",
+              name: "fa-solid fa-angle-left",
               alt: "previous",
               className: "pe-2",
             }),
@@ -1496,7 +1496,7 @@ export class Nav extends List {
             { to: properties.next.url },
             properties.next.title,
             React.createElement(Icon, {
-              name: "fa-solid fa-angles-right",
+              name: "fa-solid fa-angle-right",
               alt: "next",
               className: "ps-2",
             })
@@ -1597,7 +1597,7 @@ export class Pagination extends List {
             PaginationLink,
             { to: properties.previous.url },
             React.createElement(Icon, {
-              name: "fa-solid fa-chevron-left",
+              name: "fa-solid fa-angle-left",
               alt: "previous",
               className: "pe-2",
             }),
@@ -1619,7 +1619,7 @@ export class Pagination extends List {
             { to: properties.next.url },
             properties.next.title,
             React.createElement(Icon, {
-              name: "fa-solid fa-chevron-right",
+              name: "fa-solid fa-angle-right",
               alt: "next",
               className: "ps-2",
             })
