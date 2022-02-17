@@ -606,7 +606,7 @@ class BS_HTMLPage {
       ($this->metadata->react
         ?
           // add Axios JS: https://cdnjs.com/libraries/axios
-          '<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.25.0/axios.min.js" integrity="sha512-/Q6t3CASm04EliI1QyIDAA/nDo9R8FQ/BULoUFyN4n/BDdyIxeH7u++Z+eobdmr11gG5D/6nPFyDlnisDwhpYA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>' .
+          '<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>' .
 
           // add React 17 JS: https://reactjs.org/docs/add-react-to-a-website.html
           '<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>' .
@@ -1370,11 +1370,13 @@ class BS_ListGroup extends BS_Division {
     // convert items property to list item children
     if (is_array($items)) {
       foreach ($items as $item) {
+        $item = json_decode(json_encode($item));
+
         $this->children[] = new BS_ListGroupItem([
-          'to' => $item['url'],
-          'title' => $item['title'],
-          'subtitle' => $item['subtitle'],
-          'item' => $item['item'],
+          'to' => $item->url,
+          'title' => $item->title,
+          'subtitle' => $item->subtitle,
+          'item' => $item->item,
         ]);
       }
     }
@@ -1806,7 +1808,7 @@ class BS_SmallCaps extends BS_Span {
   }
 }
 
-class BS_Verse extends BS_Span {
+class BS_Verse extends BS_Superscript {
   function render() {
     $this->properties['className'][] = 'text-muted';
 

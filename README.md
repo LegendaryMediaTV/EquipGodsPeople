@@ -8,9 +8,6 @@ Equip God’s People web app built on Node/PHP
 
 - finish migrating Node front-end content:
   - finish migrating Bootstrap components
-  - Discipleship Tools
-  - Eusebius TOC
-  - Eusebius Book 1
   - EGP Blog
   - EGP Blog entries
   - Bible Search
