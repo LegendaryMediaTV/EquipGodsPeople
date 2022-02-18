@@ -2199,13 +2199,13 @@ function page_metadataViaToken($token) {
 
     case 'bible-reading-plans':
       $output = [
-        '_id' => 'bible-reading-plans',
+        '_id' => $token,
         'title' => 'Bible Reading Plans',
         'subtitle' => 'time-based plans for reading the Bible',
         'variant' => 'BibleReadingPlans',
-        'url' => '/bible-reading-plans',
+        'url' => '/' . $token,
         'sequence' => 'Bible Reading Plans',
-        'source' => '/bible-reading-plans/index.php',
+        'source' => '/' . $token . '/index.php',
       ];
 
       break;
@@ -2247,53 +2247,66 @@ function page_metadataViaToken($token) {
 
     case 'classic-works':
       $output = [
-        '_id' => 'classic-works',
+        '_id' => $token,
         'title' => 'Classic Works',
         'subtitle' => 'books by various Christian authors',
         'variant' => 'ClassicWorks',
-        'url' => '/classic-works',
+        'url' => '/' . $token,
         'sequence' => 'Classic Works',
-        'source' => '/classic-works/index.php',
+        'source' => '/' . $token . '/index.php',
       ];
 
       break;
 
     case 'discipleship-tools':
       $output = [
-        '_id' => 'discipleship-tools',
+        '_id' => $token,
         'title' => 'Discipleship Tools',
         'subtitle' => 'building a foundation for your walk with God',
         'variant' => 'DiscipleshipTools',
-        'url' => '/discipleship-tools',
+        'url' => '/' . $token,
         'sequence' => 'Discipleship Tools',
-        'source' => '/discipleship-tools/index.php',
+        'source' => '/' . $token . '/index.php',
+      ];
+
+      break;
+
+    case 'egp-blog':
+      $output = [
+        '_id' => $token,
+        'title' => 'EGP Blog',
+        'subtitle' => 'Christian quotes, mini-articles, music, and more',
+        'variant' => 'EGPBlog',
+        'url' => '/' . $token,
+        'sequence' => 'EGP Blog',
+        'source' => '/' . $token . '/index.php',
       ];
 
       break;
 
     case 'lexicons-word-study':
       $output = [
-        '_id' => 'lexicons-word-study',
+        '_id' => $token,
         'title' => 'Lexicons (Word Study)',
         'subtitle' => 'explore the original languages of the Bible',
         'variant' => 'WordStudy',
-        'url' => '/lexicons-word-study',
+        'url' => '/' . $token,
         'sequence' => 'Lexicons Word Study',
-        'source' => '/lexicons-word-study/index.php',
+        'source' => '/' . $token . '/index.php',
       ];
 
       break;
 
     case 'pamphili-eusebius-ecclesiastical-history':
       $output = [
-        '_id' => 'pamphili-eusebius-ecclesiastical-history',
+        '_id' => $token,
         'title' => 'Eusebius – Ecclesiastical History',
         'subtitle' => 'a.k.a., “Church History” by Pamphili Eusebius',
         'parent' => 'Classic Works',
         'variant' => 'ClassicWorks',
-        'url' => '/classic-works/pamphili-eusebius-ecclesiastical-history',
+        'url' => '/classic-works/' . $token,
         'sequence' => 'Eusebius Ecclesiastical History',
-        'source' => '/classic-works/pamphili-eusebius-ecclesiastical-history/index.php',
+        'source' => '/classic-works/' . $token . '/index.php',
       ];
 
       break;
@@ -2315,13 +2328,23 @@ function page_metadataViaToken($token) {
         "\n  END = ?";
       $row = $db->row($sql, [ $token ]);
 
-      // TODO: compute the metadata via collection, possibly retrieving more fields above
-      // TODO: make template files for each collection
       if ($row) {
         // parse the JSON document
         $output = json_decode($row['Document'], true);
 
         switch ($row['Collection']) {
+          case 'blog':
+            $output['variant'] = 'EGPBlog';
+            $output['parent'] = 'EGP Blog';
+            $output['parentURL'] = '/egp-blog';
+            $output['subtitle'] =
+              new BS_Link([ 'to' => $output['parentURL'] ], 'EGP Blog') .
+              ' post from ' .
+              date('F j, Y', strtotime($output['published']));
+            $output['source'] = $output['parentURL'] . '/' . $token . '.php';
+
+            break;
+
           case 'language-letters':
             $output['title'] =
               $output['language'] === 'hebrew'
