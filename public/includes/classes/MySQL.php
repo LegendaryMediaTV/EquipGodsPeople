@@ -3,19 +3,18 @@
 class lmtv_MySQL extends mysqli {
   // https://www.php.net/manual/en/class.mysqli.php
 
-
-  /*********************
-  ***** Properties *****
-  *********************/
+  /**********************
+   ***** Properties *****
+   *********************/
 
   public $server;
   public $database;
   public $username;
 
 
-  /************************
-  ***** Magic Methods *****
-  ************************/
+  /*************************
+   ***** Magic Methods *****
+   ************************/
 
   // constructor
   function __construct($server, $username, $password, $database, $fatal = true) {
@@ -36,9 +35,9 @@ class lmtv_MySQL extends mysqli {
   }
 
 
-  /******************
-  ***** Methods *****
-  ******************/
+  /*******************
+   ***** Methods *****
+   ******************/
 
   // combine parameters into query, preventing SQL injection
   public function combineParameters($query, $parameters) {
@@ -152,12 +151,7 @@ class lmtv_MySQL extends mysqli {
     $rows = $this->rows($sql, [ $collection, "%" . $query . "%" ]);
 
     // return the parsed JSON documents
-    return array_map(
-      function ($row) {
-        return json_decode($row['Document']);
-      },
-      $rows
-    );
+    return $this->parse($rows);
   }
 
   // insert/update a NoSQL document
@@ -226,9 +220,25 @@ class lmtv_MySQL extends mysqli {
       return $oldDocument ? json_decode($oldDocument) : $oldDocument;
   }
 
+  // execute SQL query and parse each row's NoSQL document
+  public function noSQL($query, $parameters = null, $limit = null) {
+    return $this->parse($this->rows($query, $parameters, $limit));
+  }
+
+  // return the parsed JSON documents
+  function parse($rows) {
+    return array_map(
+      function ($row) {
+        return json_decode($row['Document']);
+      },
+      $rows
+    );
+  }
+
   // retrieve a single row from resultset as an associative array
-  public function row($query, $parameters = null)
-  { return $this->rows($query, $parameters, 1); }
+  public function row($query, $parameters = null) {
+    return $this->rows($query, $parameters, 1);
+  }
 
   // retrieve resultset as an array of associative arrays
   public function rows($query, $parameters = null, $limit = null) {

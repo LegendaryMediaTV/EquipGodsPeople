@@ -60,6 +60,153 @@ function egp_bb($input, $text = false) {
   );
 }
 
+/** retrieve all Bible chapters */
+function egp_bibleChapters($query = false) {
+  global $db;
+
+  return $db->documents('bible-chapters', $query);
+}
+
+/** look up a Bible chapter */
+function egp_bibleChapter($query) {
+  $chapters = egp_bibleChapters('|' . $query . '|');
+
+  return count($chapters) ? $chapters[0] : false;
+}
+
+/** parse the requested Bible passage into chapter, selected verses, and title */
+function egp_biblePassage($query) {
+  global $db;
+
+  if ($query) {
+    // split the passage into chapter and verses
+    [$passageChapter, $passageVerses] = explode(':', $query, 2);
+
+    // look up as Bible chapter
+    $chapter = egp_bibleChapter($passageChapter);
+
+    // chapter found, continue parsing
+    if ($chapter) {
+      $verses = [];
+
+      // no verses selected, use all of them for the chapter
+      if (!$passageVerses) {
+        for ($verseIndex = 1; $verseIndex <= $chapter->verseCount; $verseIndex++)
+          array_push($verses, $verseIndex);
+      }
+      // verses selected, parse the request
+      else {
+        $verseChunks = explode(',', $passageVerses);
+        foreach ($verseChunks as $verseChunk) {
+          // parse verse range
+          [$verseMin, $verseMax] = mb_split('[—–-]', mb_ereg_replace('[^0-9—–-]', '', $verseChunk));
+
+          // cast/constrain verse range
+          if ($verseMin) $verseMin = intval($verseMin);
+          else $verseMin = 1;
+          if (!$verseMax) $verseMax = $verseMin;
+          else $verseMax = intval($verseMax);
+          if ($verseMax > $chapter->verseCount)
+            $verseMax = $chapter->verseCount;
+
+          // add verses to the range
+          for ($verseIndex = $verseMin; $verseIndex <= $verseMax; $verseIndex++)
+            array_push($verses, $verseIndex);
+        }
+      }
+
+      // force unique verse numbers and sort
+      $verses = array_unique($verses, SORT_NUMERIC);
+      sort($verses);
+      $verseCount = count($verses);
+
+      // create a preferred title
+      $title = $chapter->title;
+      if ($verseCount !== $chapter->verseCount) {
+        for ($verseIndex = 0; $verseIndex < $verseCount; $verseIndex++) {
+          // is the first verse overall or is the first verse in a set
+          if (
+            !$verseIndex ||
+            $verses[$verseIndex - 1] !== $verses[$verseIndex] - 1
+          )
+            $title .= (!$verseIndex ? ":" : ", ") . $verses[$verseIndex];
+          // is the last verse overall or is the last verse in a set
+          else if (
+            $verseIndex === $verseCount - 1 ||
+            $verses[$verseIndex + 1] !== $verses[$verseIndex] + 1
+          )
+            $title .= "–" . $verses[$verseIndex];
+        }
+      }
+
+      // return results
+      return (object) [
+        'title' => $title,
+        'chapter' => $chapter,
+        'verses' => $verses
+      ];
+    }
+  }
+
+  return false;
+}
+
+// retrieve Bible scriptures for each selected version
+function egp_bibleVerses($chapter, $selectedVersions) {
+  global $db;
+
+  // retrieve versions
+  $bibleVersions = egp_bibleVersions();
+
+  // retrieve scripture for versions
+  $versions = [];
+  foreach ($selectedVersions as $selectedVersion) {
+    // look up Bible version
+    $bibleVersionIndex = array_search($selectedVersion, array_column($bibleVersions, '_id'));
+
+    // Bible version found, continue retrieving scripture
+    if ($bibleVersionIndex !== false) {
+      $bibleVersion = $bibleVersions[$bibleVersionIndex];
+
+      // retrieve scriptures
+      $sql =
+        "SELECT *" .
+        "\nFROM Documents" .
+        "\nWHERE" .
+        "\n  Collection = 'bible-verses'" .
+        "\n  AND _id LIKE '"  . $bibleVersion->_id . "-" . $chapter->sequence . "%'" .
+        "\nORDER BY Sequence";
+      $rows = $db->noSQL($sql);
+      $rowCount = count($rows);
+
+      // add scriptures
+      $bibleVersion->verses = [];
+      for ($rowIndex = 0; $rowIndex < $rowCount; $rowIndex++)
+        array_push($bibleVersion->verses, $rows[$rowIndex]);
+
+      // add version/scriptures to versions
+      unset($bibleVersion->goodies);
+      array_push($versions, $bibleVersion);
+    }
+  }
+
+  return $versions;
+}
+
+/** retrieve a specific Bible version */
+function egp_bibleVersion($_id) {
+  global $db;
+
+  return $db->document('bible-versions', $_id ?: 'asv');
+}
+
+/** retrieve all Bible versions */
+function egp_bibleVersions() {
+  global $db;
+
+  return $db->documents('bible-versions');
+}
+
 /** retrieve a document via ID */
 function egp_documentViaCallback($documents, $callback) {
   $output = null;
@@ -1587,64 +1734,6 @@ function egp_ecclesiasticalHistoryTOC() {
   ]));
 }
 
-/** retrieve all language objects */
-function egp_languages($languageID = null) {
-  static $languages;
-
-  if (!$languages) {
-    global $db;
-
-    $sql =
-      "SELECT Document" .
-      "\nFROM Documents" .
-      "\nWHERE Collection = 'lexicon-languages'" .
-      "\nORDER BY Sequence";
-    $languages = $db->rows($sql);
-
-    $languages = array_map(
-      function ($row) {
-        global $db;
-
-        $language = json_decode($row['Document']);
-
-        $sql =
-          "SELECT Document" .
-          "\nFROM Documents" .
-          "\nWHERE Collection = 'language-letters' AND _id LIKE '{$language->_id}-%'" .
-          "\nORDER BY Sequence";
-        $letters = $db->rows($sql);
-
-        $language->letters = [];
-        foreach ($letters as $letter)
-          $language->letters[] = json_decode($letter['Document']);
-
-        return $language;
-      },
-      $languages
-    );
-  }
-
-  // specific language
-  if ($languageID) {
-    switch(substr(strtolower($languageID), 0, 1)) {
-      case 'g':
-        $languageID = 'greek';
-
-        break;
-
-      case 'h':
-        $languageID = 'hebrew';
-
-        break;
-    }
-
-    return egp_documentViaID($languages, $languageID);
-  }
-  // all languages
-  else
-    return $languages;
-}
-
 /** determine the inflection name using the given flags */
 function egp_inflectionName($flags) {
   $output = [];
@@ -1774,6 +1863,64 @@ function egp_inflectionTypes() {
   }
 
   return $types;
+}
+
+/** retrieve all language objects */
+function egp_languages($languageID = null) {
+  static $languages;
+
+  if (!$languages) {
+    global $db;
+
+    $sql =
+      "SELECT Document" .
+      "\nFROM Documents" .
+      "\nWHERE Collection = 'lexicon-languages'" .
+      "\nORDER BY Sequence";
+    $languages = $db->rows($sql);
+
+    $languages = array_map(
+      function ($row) {
+        global $db;
+
+        $language = json_decode($row['Document']);
+
+        $sql =
+          "SELECT Document" .
+          "\nFROM Documents" .
+          "\nWHERE Collection = 'language-letters' AND _id LIKE '{$language->_id}-%'" .
+          "\nORDER BY Sequence";
+        $letters = $db->rows($sql);
+
+        $language->letters = [];
+        foreach ($letters as $letter)
+          $language->letters[] = json_decode($letter['Document']);
+
+        return $language;
+      },
+      $languages
+    );
+  }
+
+  // specific language
+  if ($languageID) {
+    switch(substr(strtolower($languageID), 0, 1)) {
+      case 'g':
+        $languageID = 'greek';
+
+        break;
+
+      case 'h':
+        $languageID = 'hebrew';
+
+        break;
+    }
+
+    return egp_documentViaID($languages, $languageID);
+  }
+  // all languages
+  else
+    return $languages;
 }
 
 /** encode/decode language code and unicode */
@@ -2162,6 +2309,37 @@ function egp_lexiconConvert($languageID, $input, $encode = null) {
 	}
 
 	return $output;
+}
+
+/** retrieve a lexicon entry */
+function egp_lexiconEntry($query) {
+  global $db;
+
+  // lower-case the query
+  $query = mb_strtolower($query);
+
+  if (preg_match('/^(strongs-)?[gh][0-9]{1,4}$/', $query)) {
+    // prefix query as needed
+    if (mb_substr($query, 0, 1) !== 's')
+      $query = 'strongs-' . $query;
+
+    // remove leading zeroes
+    $query = preg_replace('/^(strongs-[g-h])0+/', '$1', $query);
+
+    // query the database
+    return $db->document('lexicon-entries', $query);
+  }
+
+  return false;
+}
+
+// ensure there are selected versions
+function egp_selectedVersions($selectedVersions = null) {
+  return $selectedVersions ? $selectedVersions : ['asv', 'kjvs', 'ylt'];
+}
+
+function page_crash($item) {
+  die(new BS_Preformatted([ 'item' => $item ]));
 }
 
 /** retrieve page metadata for the given URL */

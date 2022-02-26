@@ -644,7 +644,7 @@ class BS_Abbreviation extends BS_HTML {
               'content' => $popover['content']
             ]
           ],
-          ...$children
+          ...$this->children
         )
       ];
     }
@@ -871,8 +871,8 @@ class BS_Link extends BS_HTML {
       $this->properties['bsDataTrigger'] = "focus";
       $this->properties['bsDataPlacement'] = "bottom";
       $this->properties['bsDataHTML'] = true;
-      $this->properties['title'] = $popover['title'];
-      $this->properties['bsDataContent'] = $popover['content'];
+      $this->properties['title'] = egp_bb($popover['title']);
+      $this->properties['bsDataContent'] = egp_bb($popover['content']);
       if (!$this->properties['href'] && !$variant) $variant = 'muted';
     }
     // standard link
@@ -1309,9 +1309,39 @@ class BS_Textbox extends BS_HTML {
 ////////// Components
 ////////////////////////////////////////////////////////////////////////////////
 
-// TODO: Alert
-// TODO: AlertHeading
-// TODO: AlertLink
+class BS_Alert extends BS_Division {
+  function render() {
+    $variant = $this->properties['variant'];
+    unset($this->properties['variant']);
+    $title = $this->properties['title'];
+    unset($this->properties['title']);
+
+    $this->properties['className'][] = 'alert';
+    $this->properties['className'][] = 'alert-' . ($variant ?: 'info');
+    $this->properties['ariaRole'] = 'alert';
+
+    if ($title)
+      array_unshift($this->children, new BS_AlertHeading(null, $title));
+
+    return parent::render();
+  }
+}
+
+class BS_AlertHeading extends BS_Division {
+  function render() {
+    $this->properties['className'][] = 'alert-heading';
+    $this->properties['className'][] = 'h3';
+
+    return parent::render();
+  }
+}
+
+class BS_AlertLink extends BS_Link {
+  function render() {
+    $this->properties['className'][] = 'alert-link';
+    return parent::render();
+  }
+}
 
 class BS_Button extends BS_ButtonHTML {
   function render() {
@@ -1845,20 +1875,346 @@ class BS_Verse extends BS_Superscript {
 ////////// Custom Components
 ////////////////////////////////////////////////////////////////////////////////
 
-// TODO: finish adding BibleLink
 class BS_BibleLink extends BS_Link {
   function render() {
+    $passage = $this->properties['passage'];
+    unset($this->properties['passage']);
+    $popover = $this->properties['popover'];
+    unset($this->properties['popover']);
     $to = $this->properties['to'];
-    unset($this->properties['to']);
+    unset($this->properties['to']);    
+    $version = $this->properties['version'];
+    unset($this->properties['version']);    
 
-    $this->properties['to'] = '/bible-search';
-    $this->children[] = $to;
+    // parse the requested Bible passage into a passage object
+    if (!$passage && $to) $passage = egp_biblePassage($to);
+
+    // no passage provided, use a default link
+    if (!$passage) {
+      $this->properties['to'] = '/bible-search';
+
+      if (!count($this->children))
+        $this->children[] = 'Bible Search';
+    }
+    else {
+      // customize the link and add default child
+      $this->properties['to'] = $passage->url ?: $passage->chapter->url ?: '/bible-search';
+      if (!count($this->children))
+        $this->children[] = $passage->title;
+
+      // add popover information if it isn't disabled and it has a chapter with a verse colon
+      if ($popover !== false && $passage->chapter && mb_strpos($passage->title, ':') !== false) {
+        // select the Bible version
+        $version = egp_bibleVersion($version);
+
+        $this->properties['popover'] = [
+          'title' => $passage->title . ' (' . $version->abbreviation . ')',
+          'content' => implode('', [
+            new BS_BiblePassage([ 'passage' => $passage, 'variant' => 'popover' ]),
+
+            new BS_Paragraph(
+              [ 'className' => 'mt-2 mb-0' ],
+              new BS_Link([ 'to' => $passage->chapter->url ], 'view the full chapter')
+            ),
+          ]),
+        ];
+      }
+    }
 
     return parent::render();
   }
 }
 
-// TODO: BiblePassage
+class BS_BiblePassage extends BS_HTML {
+  function render() {
+    $passage = $this->properties['passage'];
+    unset($this->properties['passage']);
+    $variant = $this->properties['variant'];
+    unset($this->properties['variant']);
+    $version = $this->properties['version'];
+    unset($this->properties['version']);
+    $verses = $this->properties['verses'];
+    unset($this->properties['verses']);
+
+    // parse the requested Bible passage into a passage object
+    if (gettype($passage) === 'string')
+      $passage = egp_biblePassage($passage);
+
+    // don't render the component for invalid passages
+    if (!$passage) {
+      $output = new BS_Alert(
+        [ 'title' => 'Invalid Bible Passage', 'variant' => 'danger' ],
+        $passage ?: 'none provided'
+      );
+    }
+    else {
+      // retrieve the Bible version and verses
+      $version = egp_bibleVerses($passage->chapter, egp_bibleVersion($version));
+      $version = $version[0];
+
+      // grab verses for the Bible passage/version combo
+      if (!$verses) {
+        $verses = array_values(array_filter(
+          $version->verses,
+          function ($verse) use($passage) {
+            return
+              substr($verse->sequence, 0, 6) === $passage->chapter->sequence &&
+              array_search($verse->number, $passage->verses) !== false;
+          }
+        ));
+      }
+      // page_crash([ 'passage' => $passage, 'version' => $version, 'verses' => $verses ]);
+
+      switch ($variant) {
+        case 'paragraph':
+          $output = new BS_Paragraph(
+            null,
+
+            new BS_BibleLink(
+              [ 'passage' => $passage, 'popover' => false ],
+              $passage->title
+            ),
+
+            ' (' .
+            ($version->title
+              ? new BS_Abbreviation(
+                  [ 'popover' => [ 'title' => $version->title, 'content' => $version->copyright ] ],
+                  $version->abbreviation
+                )
+              : $version->abbreviation) .
+            ') ',
+
+            mb_substr($verses[0]->text, 0, 1) !== '“' ? '“' : null,
+            implode(' ', array_map(
+              function ($verse) use($passage) {
+                return $this->embedFootnotes($passage->chapter->title, $verse, true);
+              },
+              $verses
+            )),
+            mb_substr(
+              $verses[count($verses) - 1]->text,
+              mb_strlen($verses[count($verses) - 1]->text) - 1,
+              1
+            ) !== '”'
+            ? '”'
+            : null
+          );
+
+          break;
+
+        case 'popover':
+          $output = $this->passageFormatted((object) [
+            'passage' => $passage,
+            'version' => $version,
+            'verses' => $verses,
+            'popovers' => false,
+          ]);
+
+          break;
+
+        case 'scripture':
+          $output = implode(
+            '',
+
+            [
+              new BS_Heading2(null, $version->title),
+
+              new BS_Heading3(
+                null,
+
+                $passage->chapter->title,
+                ' (',
+                $version->abbreviation,
+                ')',
+              ),
+
+              $this->passageFormatted((object) [
+                'passage' => $passage,
+                'version' => $version,
+                'verses' => $verses,
+                'breaks' => true,
+              ])
+            ]
+          );
+
+          break;
+
+        default:
+          $output = new BS_Blockquote(
+            $this->properties,
+
+            new BS_Heading3(
+              null,
+
+              new BS_BibleLink(
+                [ 'passage' => $passage, 'popover' => false ],
+                $passage->title
+              ),
+
+              ' (' .
+              ($version->title
+                ? new BS_Abbreviation(
+                    [ 'popover' => [ 'title' => $version->title, 'content' => $version->copyright ] ],
+                    $version->abbreviation
+                  )
+                : $version->abbreviation) .
+              ')',
+            ),
+
+            $this->passageFormatted((object) [
+              'passage' => $passage,
+              'version' => $version,
+              'verses' => $verses,
+              'copyright' => false,
+            ])
+          );
+
+          break;
+      }
+    }
+
+    return (string) $output;
+  }
+
+  function embedFootnotes($chapterTitle, $verse, $asPopover = null) {
+    $marker = '°';
+    $entity = '&deg;';
+
+    $text = str_replace($marker, $entity, $verse->text);
+
+    if (is_array($verse->footnotes)) {
+      $footnoteCount = count($verse->footnotes);
+
+      for ($footNoteIndex = 0; $footNoteIndex < $footnoteCount; $footNoteIndex++) {
+        $pos = mb_strpos($text, $entity);
+
+        if ($pos !== false) {
+          $text =
+            mb_substr($text, 0, $pos) .
+            new BS_Link(
+              [
+                'title' => $asPopover
+                  ? null
+                  : egp_bb($verse->footnotes[$footNoteIndex], true),
+                'popover' => $asPopover
+                  ? [
+                      'title' =>
+                        'Footnote for ' .
+                        $chapterTitle .
+                        ':' .
+                        $verse->number .
+                        ($footNoteIndex > 1 ? chr($footNoteIndex + 97) : ''),
+                      'content' => $verse->footnotes[$footNoteIndex],
+                    ]
+                  : null,
+                'className' => 'footnote-marker',
+              ],
+              $marker
+            ) .
+            mb_substr($text, $pos + mb_strlen($entity));
+        }
+      }
+    }
+
+    return str_replace($entity, $marker, $text);
+  }
+
+  function passageFormatted($properties) {
+    // extract verses with text
+    $verses = array_values(array_filter(
+      $properties->verses,
+      function ($verse) {
+        return !!$verse->text;
+      }
+    ));
+    $verseCount = count($verses);
+
+    // compile footnotes
+    $footnotes = [];
+    for ($verseIndex = 0; $verseIndex < $verseCount; $verseIndex++) {
+      if ($verses[$verseIndex]->footnotes) {
+        $footnoteCount = count($verses[$verseIndex]->footnotes);
+        for ($footNoteIndex = 0; $footNoteIndex < $footnoteCount; $footNoteIndex++) {
+          $footnotes[] = implode(
+            ' ',
+
+            [
+              new BS_Bold(
+                null,
+
+                $properties->passage->chapter->title,
+                ':',
+                $verses[$verseIndex]->number,
+                $footnoteCount > 1
+                  ? chr($footNoteIndex + 97)
+                  : null,
+              ),
+
+              $verses[$verseIndex]->footnotes[$footNoteIndex],
+            ]
+          );
+        }
+      }
+    }
+    $footnoteCount = count($footnotes);
+
+    return implode(
+      '',
+      
+      [
+        $verseCount
+          ? new BS_Paragraph(
+              null,
+
+              $verseCount === 1
+                ? $this->embedFootnotes(
+                    $properties->passage->chapter->title,
+                    $verses[0],
+                    $properties->popovers !== false
+                  )
+                : implode(
+                    $properties->breaks ? new BS_Break() : ' ',
+
+                    array_map(
+                      function ($verse) use($properties) {
+                        return implode(
+                          ' ',
+
+                          [
+                            new BS_Verse(null, $verse->number),
+                            $this->embedFootnotes(
+                              $properties->passage->chapter->title,
+                              $verse,
+                              $properties->popovers !== false
+                            )
+                          ]
+                        );
+                      },
+
+                      $verses
+                    )
+                  )
+            )
+          : null,
+
+        $footnoteCount
+          ? new BS_Paragraph(
+            [ 'className' => 'text-muted small' ],
+            implode(new BS_Break(), $footnotes)
+          )
+          : null,
+
+        $properties->copyright !== false && $properties->version->copyright
+          ? new BS_Paragraph(
+              [ 'className' => 'text-muted small' ],
+              $properties->version->copyright
+            )
+          : null,
+      ]
+    );
+  }
+}
+
 // TODO: BibleSearchForm
 // TODO: BibleSearchScriptures
 
@@ -2148,21 +2504,93 @@ class BS_LexiconEntrySelector extends BS_ListGroup {
   }
 }
 
-// TODO: finish LexiconLink
 class BS_LexiconLink extends BS_Link {
   function render() {
-    $to = strtolower($this->properties['to']);
+    global $db;
+
+    $to = $this->properties['to'];
     unset($this->properties['to']);
 
-    $this->properties['to'] =
-      '/lexicons-word-study' .
-      (
-        $to
-        ? '/' . (substr($to, 0, 1) === 'h' ? 'old-testament-hebrew' : 'new-testament-greek') .
-          '/strongs-' . $to
-        : ''
-      );
-    $this->children[] = $to ? strtoupper($to) : 'Lexicons (Word Study)';
+    if (!$to) {
+      $this->properties['to'] = '/lexicons-word-study';
+
+      if (!count($this->children))
+        $this->children[] = 'Lexicons (Word Study)';
+    }
+    else {
+      $entry = egp_lexiconEntry($to);
+
+      // don't render the component for invalid passages
+      if (!$entry) {
+        return (string) new BS_Alert(
+          [ 'title' => 'Missing Lexicon Entry', 'variant' => 'danger' ],
+          $to
+        );
+      }
+
+      // set the URL
+      $this->properties['to'] = $entry->url;
+
+      // add popover information
+      $this->properties['popover'] = [
+        'title' => $entry->title,
+        'content' => implode('', [
+          new BS_Paragraph(
+            null,
+
+            new BS_Bold(null, 'Strong’s ID:'),
+            ' ',
+            $entry->strongs->_id,
+            new BS_Break(),
+
+            new BS_Bold(null, 'Word:'),
+            ' ',
+            $entry->name,
+            new BS_Break(),
+
+            new BS_Bold(null, 'Transliteration:'),
+            ' ',
+            $entry->word,
+            new BS_Break(),
+
+            new BS_Bold(null, 'Pronunciation:'),
+            ' ',
+            $entry->pronunciation,
+
+            $entry->partOfSpeech
+              ? implode('', [
+                new BS_Break(),
+                new BS_Bold(null, 'Part of Speech:'),
+                ' ',
+                $entry->partOfSpeech,
+              ])
+              : null,
+
+            $entry->occurrences
+              ? implode('', [
+                  new BS_Break(),
+                  new BS_Bold(null, 'Occurrences:'),
+                  ' ',
+                  $entry->occurrences,
+                ])
+              : null,
+
+            $entry->shortDefinition
+              ? new BS_Paragraph(null, egp_bb($entry->shortDefinition, true))
+              : null,
+
+            new BS_Paragraph(
+              [ 'className' => 'mt-2 mb-0' ],
+              new BS_Link([ 'to' => $entry->url ], 'view the full lexicon entry')
+            ),
+          )
+        ]),
+      ];
+
+      // add default child
+      if (!count($this->children))
+        $this->children[] = $entry->strongs->_id;
+    }
 
     return parent::render();
   }
