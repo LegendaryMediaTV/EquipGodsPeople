@@ -8,7 +8,6 @@ Equip God’s People web app built on Node/PHP
 
 - finish migrating Node front-end content:
   - finish migrating Bootstrap components
-  - EGP Blog entries
   - allow linking to Bible books and ranges:
     - http://localhost:8000/egp-blog/2018-03-18-seek-gods-heart-follow-his-voice
   - Bible Search
