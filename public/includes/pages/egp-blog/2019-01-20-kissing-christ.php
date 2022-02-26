@@ -28,7 +28,7 @@ $html->add(new BS_BlogEntryPage(
 
     new BS_Paragraph(
       null,
-      'Did you take that to HEART? Because we’re very good in our gatherings to go, ‘Oh, that was VERY CONVICTING. Oh yeah, touched my HEART.’ Well, what’s actually gonna CHANGE? … I think that most of us, when we hear sermons, let’s just be honest, we listen and we think, … ‘Can I still KEEP things the way they are, or would this INTERRUPT things?’ … Something HAS to change. Some of you will hear this message and go, ‘ABSOLUTELY!!!’ … There’s people that AGREE with it, [but] the question is: Will you SUFFER to obey these things? Will you actually SACRIFICE?”'
+      'Did you take that to HEART? Because we’re very good in our gatherings to go, ‘Oh, that was VERY CONVICTING. Oh yeah, touched my HEART.’ Well, what’s actually gonna CHANGE? … I think that most of us, when we hear sermons, let’s just be honest, we listen and we think, … ‘Can I still KEEP things the way they are, or would this INTERRUPT things?’ … Something HAS to change. Some of you will hear this message and go, ‘ABSOLUTELY!’ … There’s people that AGREE with it, [but] the question is: Will you SUFFER to obey these things? Will you actually SACRIFICE?”'
     ),
 
     new BS_BlockquoteFooter(

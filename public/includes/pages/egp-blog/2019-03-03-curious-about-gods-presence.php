@@ -38,10 +38,7 @@ $html->add(new BS_BlogEntryPage(
         [ 'to' => 'http://podcasts.ibethel.org/en/podcasts/hello-future-his-promise-or-his-presence' ],
 
         'Eric Johnson, Bethel Church, ',
-        new BS_Citation(
-          null,
-          'Hello Future: His Promise or His Presence'
-        ),
+        new BS_Citation(null, 'Hello Future: His Promise or His Presence'),
       ),
     ),
   )

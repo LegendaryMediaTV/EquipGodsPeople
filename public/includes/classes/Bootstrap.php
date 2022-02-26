@@ -1949,8 +1949,10 @@ class BS_BiblePassage extends BS_HTML {
     }
     else {
       // retrieve the Bible version and verses
-      $version = egp_bibleVerses($passage->chapter, egp_bibleVersion($version));
-      $version = $version[0];
+      if (!$verses) {
+        $version = egp_bibleVerses($passage->chapter, egp_bibleVersion($version));
+        $version = $version[0];
+      }
 
       // grab verses for the Bible passage/version combo
       if (!$verses) {
@@ -2578,12 +2580,12 @@ class BS_LexiconLink extends BS_Link {
             $entry->shortDefinition
               ? new BS_Paragraph(null, egp_bb($entry->shortDefinition, true))
               : null,
+          ),
 
-            new BS_Paragraph(
-              [ 'className' => 'mt-2 mb-0' ],
-              new BS_Link([ 'to' => $entry->url ], 'view the full lexicon entry')
-            ),
-          )
+          new BS_Paragraph(
+            [ 'className' => 'mt-2 mb-0' ],
+            new BS_Link([ 'to' => $entry->url ], 'view the full lexicon entry')
+          ),
         ]),
       ];
 

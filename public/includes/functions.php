@@ -195,9 +195,13 @@ function egp_bibleVerses($chapter, $selectedVersions) {
 
 /** retrieve a specific Bible version */
 function egp_bibleVersion($_id) {
-  global $db;
+  if ($_id && gettype($_id) !== 'string')
+    return $_id;
+  else {
+    global $db;
 
-  return $db->document('bible-versions', $_id ?: 'asv');
+    return $db->document('bible-versions', $_id ?: 'asv');
+  }
 }
 
 /** retrieve all Bible versions */
