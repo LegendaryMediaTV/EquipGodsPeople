@@ -24,8 +24,7 @@ class lmtv_MySQL extends mysqli {
       $this->server = $server;
       $this->database = $database;
       $this->username = $username;
-    }
-    else
+    } else
       $this->errors('Database connection failed', null, $fatal);
   }
 
@@ -47,15 +46,14 @@ class lmtv_MySQL extends mysqli {
         $parameters = [$parameters];
 
       $parameterCount = count($parameters);
-    }
-    else $parameterCount = 0;
+    } else $parameterCount = 0;
 
     // combine parameters
     $sql = str_replace('?', '``PARAMETER``', $query);
     for ($parameterIndex = 0; $parameterIndex < $parameterCount; $parameterIndex++) {
       if (is_null($parameters[$parameterIndex]))
         $replace = 'NULL';
-      elseif ($value === 'NOW()')
+      elseif ($parameters[$parameterIndex] === 'NOW()')
         $replace = $parameters[$parameterIndex];
       else
         $replace = '\'' . $this->real_escape_string($parameters[$parameterIndex]) . '\'';
@@ -73,7 +71,7 @@ class lmtv_MySQL extends mysqli {
   // convert key/value pair to SQL parts and parameters
   protected function keyValue($data, &$parts, &$parameters, $insert = false) {
     // prepare data
-    foreach($data as $key => $value) {
+    foreach ($data as $key => $value) {
       // column
       if (!$insert)
         $part = '`' . $key . '` = ';
@@ -106,8 +104,7 @@ class lmtv_MySQL extends mysqli {
         'errno' => $this->connect_errno,
         'error' => $this->connect_error,
       ]];
-    }
-    else {
+    } else {
       $errors = $this->error_list;
       if ($errors)
         $output['errors'] = $errors;
@@ -129,7 +126,7 @@ class lmtv_MySQL extends mysqli {
       "\nLIMIT 1";
 
     // query the database
-    $row = $this->row($sql, [ $collection, $_id ]);
+    $row = $this->row($sql, [$collection, $_id]);
 
     // record found, return the parsed document
     if ($row) return json_decode($row['Document']);
@@ -148,7 +145,7 @@ class lmtv_MySQL extends mysqli {
       "\nORDER BY Sequence";
 
     // query the database
-    $rows = $this->rows($sql, [ $collection, "%" . $query . "%" ]);
+    $rows = $this->rows($sql, [$collection, "%" . $query . "%"]);
 
     // return the parsed JSON documents
     return $this->parse($rows);
@@ -164,12 +161,11 @@ class lmtv_MySQL extends mysqli {
       "\nLIMIT 1";
 
     // query the database for the original document
-    $oldDocument = $this->row($sql, [ $collection, $_id ]);
+    $oldDocument = $this->row($sql, [$collection, $_id]);
     if ($oldDocument) {
       $oldSearchable = $oldDocument['Searchable'];
       $oldDocument = $oldDocument['Document'];
-    }
-    else {
+    } else {
       $oldDocument = false;
       $oldSearchable = false;
     }
@@ -192,7 +188,7 @@ class lmtv_MySQL extends mysqli {
         // query the database
         $this->execute(
           $sql,
-          [ $collection, $newDocument->_id, $newDocument->sequence, $encoded, $newSearchable ]
+          [$collection, $newDocument->_id, $newDocument->sequence, $encoded, $newSearchable]
         );
       }
       // update existing record
@@ -215,8 +211,7 @@ class lmtv_MySQL extends mysqli {
       }
 
       return $newDocument;
-    }
-    else
+    } else
       return $oldDocument ? json_decode($oldDocument) : $oldDocument;
   }
 
@@ -317,8 +312,7 @@ class lmtv_MySQL extends mysqli {
       . '(`' . implode('`, `', array_keys($data)) . '`)' . PHP_EOL
       . 'VALUES (' . PHP_EOL
       . implode(',' . PHP_EOL, $columnData) . PHP_EOL
-      . ');'
-    ;
+      . ');';
     //echo core_dump($query, 'SQL insert query');
 
     // execute query
@@ -326,7 +320,7 @@ class lmtv_MySQL extends mysqli {
 
     // get AUTO_INCREMENT ID, if one exists
     if ($output !== false) {
-      if($this->insert_id)
+      if ($this->insert_id)
         $output = $this->insert_id;
     }
 
@@ -345,17 +339,14 @@ class lmtv_MySQL extends mysqli {
     $query =
       'UPDATE `' . $table . '`' . PHP_EOL
       . 'SET' . PHP_EOL
-      . implode(',' . PHP_EOL, $columnData)
-    ;
+      . implode(',' . PHP_EOL, $columnData);
     if ($filter) {
       if (is_array($filter)) {
         $this->keyValue($filter, $filterData, $parameters);
         $query .=
           PHP_EOL . 'WHERE' . PHP_EOL
-          . implode(PHP_EOL . 'AND ', $filterData)
-        ;
-      }
-      else
+          . implode(PHP_EOL . 'AND ', $filterData);
+      } else
         $query .= PHP_EOL . $filter;
     }
     $query .= ';';
@@ -383,10 +374,8 @@ class lmtv_MySQL extends mysqli {
         $this->keyValue($filter, $filterData, $parameters);
         $query .=
           PHP_EOL . 'WHERE' . PHP_EOL
-          . implode(PHP_EOL . 'AND ', $filterData)
-        ;
-      }
-      else
+          . implode(PHP_EOL . 'AND ', $filterData);
+      } else
         $query .= PHP_EOL . $filter;
     }
     $query .= ';';

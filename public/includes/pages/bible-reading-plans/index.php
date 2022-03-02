@@ -3,7 +3,7 @@ $html->add(new BS_Banner(
   null,
 
   'This section provides various time-based plans for reading the Bible, displaying the daily passages.' .
-  ' These plans are based on the time it would take to read the passages aloud at an average reading speed.'
+    ' These plans are based on the time it would take to read the passages aloud at an average reading speed.'
 ));
 
 $sql =
@@ -14,7 +14,7 @@ $sql =
 $rows = $db->rows($sql);
 
 $html->add(new BS_Container(
-  [ 'className' => 'py-section' ],
+  ['className' => 'py-section'],
 
   new BS_Row(
     null,
@@ -23,24 +23,24 @@ $html->add(new BS_Container(
         $readingPlan = json_decode($readingPlan['Document']);
 
         return new BS_Col(
-          [ 'lg' => 6, 'className' => 'border-lg-top border-5 border-light py-5' ],
+          ['lg' => 6, 'className' => 'border-lg-top border-5 border-light py-5'],
 
-          new BS_Heading2([ 'className' => 'h3' ], htmlspecialchars($readingPlan->title)),
+          new BS_Heading2(['className' => 'h3'], htmlspecialchars($readingPlan->title)),
 
           new BS_Paragraph(
-            [ 'className' => 'text-muted' ],
+            ['className' => 'text-muted'],
             new BS_Italics(
               null,
               'approximately ' . $readingPlan->minutes . ' minutes of reading per day'
             )
           ),
-          
+
           new BS_Link(
-            [ 'to' => $readingPlan->url, 'className' => 'small' ],
+            ['to' => $readingPlan->url, 'className' => 'small'],
 
             'VIEW READING PLAN',
-            
-            new BS_Icon([ 'name' => 'fa-solid fa-caret-right', 'alt' => '' ]),
+
+            new BS_Icon(['name' => 'fa-solid fa-caret-right', 'alt' => '']),
           ),
         );
       },

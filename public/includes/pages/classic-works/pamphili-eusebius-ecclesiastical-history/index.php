@@ -13,7 +13,7 @@ $html->add(new BS_Banner(
 ));
 
 $html->add(new BS_Container(
-  [ 'className' => 'py-section' ],
+  ['className' => 'py-section'],
 
   new BS_ListGroup([
     'title' => 'Books in the Series',
@@ -26,7 +26,7 @@ $html->add(new BS_Container(
       return new BS_SectionWithHeader(
         [
           '_id' => $book->_id,
-          'title' => new BS_Link([ 'to' => $book->url ], $book->title),
+          'title' => new BS_Link(['to' => $book->url], $book->title),
           'subtitle' => $book->subtitle,
         ],
 

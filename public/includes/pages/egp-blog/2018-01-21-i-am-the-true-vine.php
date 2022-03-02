@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -14,7 +14,7 @@ $html->add(new BS_BlogEntryPage(
       null,
 
       'And I heard these words from the [sc]Lord[/sc] from ',
-      new BS_BibleLink([ 'to' => 'Revelation 3' ]),
+      new BS_BibleLink(['to' => 'Revelation 3']),
       ': ‘Strengthen what REMAINS and is about to DIE.’ … You have this great REPUTATION, but you’re DEAD, but there’s SOMETHING that remains. Strengthen what REMAINS and is ABOUT to die. … That was not a word of CONDEMNATION … it was this word of ENCOURAGEMENT from my LORD, the SHEPHERD. … It was just God saying, ‘You know what, Francis? It’s STILL in there. I KNOW you love Me. I KNOW you’re My prophet. I KNOW you’ll say whatever I tell you to say. THAT’S still in you. It REMAINS, just BUILD it back up again.’ …',
     ),
 

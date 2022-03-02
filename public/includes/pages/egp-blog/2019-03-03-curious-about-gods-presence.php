@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -32,10 +32,10 @@ $html->add(new BS_BlogEntryPage(
 
     new BS_BlockquoteFooter(
       null,
-      
+
       '—',
       new BS_Link(
-        [ 'to' => 'http://podcasts.ibethel.org/en/podcasts/hello-future-his-promise-or-his-presence' ],
+        ['to' => 'http://podcasts.ibethel.org/en/podcasts/hello-future-his-promise-or-his-presence'],
 
         'Eric Johnson, Bethel Church, ',
         new BS_Citation(null, 'Hello Future: His Promise or His Presence'),

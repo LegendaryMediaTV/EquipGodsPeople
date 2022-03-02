@@ -1,12 +1,12 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Paragraph(
     null,
 
     'Growing up, Moses didn’t seem to have much of a father figure. The only mention of his real father was that he was a Levite, that he “took as his wife a Levite woman” (which may or may not imply he simply slept with her), and he’s never mentioned again. [',
-    new BS_BibleLink([ 'to' => 'Exodus 2:1' ]),
+    new BS_BibleLink(['to' => 'Exodus 2:1']),
     '] His mother nursed him, but Pharaoh’s daughter raised him. Then the only thing we hear about Pharaoh during the first part of his life is that he wanted to kill Moses.',
   ),
 
@@ -19,7 +19,7 @@ $html->add(new BS_BlogEntryPage(
     null,
 
     'After God freed and saved the Israelites multiple times, they constantly criticized Moses, despite them SEEING God’s power firsthand. However, Jethro–a Midianite priest, not a Hebrew one–after only HEARING about what happened, said, “Now I know that the [sc]Lord[/sc] is greater than all gods” (i.e., affirmation). [',
-    new BS_BibleLink([ 'to' => 'Exodus 18:11' ]),
+    new BS_BibleLink(['to' => 'Exodus 18:11']),
     '] On top of that, he instantly brought a burnt offering and sacrifices to God, then gathered Moses, Aaron, and the Israelite elders to feast in God’s presence (i.e., establishment).',
   ),
 

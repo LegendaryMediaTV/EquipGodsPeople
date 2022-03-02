@@ -1,10 +1,10 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
-    
+
     new BS_BiblePassage([
       'passage' => 'Matthew 10:37',
       'version' => 'NASB',
@@ -15,9 +15,9 @@ $html->add(new BS_BlogEntryPage(
       null,
 
       '“That word for ‘love’ there is not ‘',
-      new BS_LexiconLink([ 'to' => 'G25' ], 'agape'),
+      new BS_LexiconLink(['to' => 'G25'], 'agape'),
       ',’ the word there is ‘',
-      new BS_LexiconLink([ 'to' => 'G5368' ], 'phileo'),
+      new BS_LexiconLink(['to' => 'G5368'], 'phileo'),
       '.’ It’s this AFFECTION. It’s this PASSION. … That word is translated ‘KISS’ in some places. [So] ‘If you KISS your KID more than you KISS ME, you’re NOT WORTHY of Me. … You don’t get who [sc]I Am[/sc].’ Really?!?',
     ),
 
@@ -33,7 +33,7 @@ $html->add(new BS_BlogEntryPage(
 
     new BS_BlockquoteFooter(
       null,
-      
+
       '—Francis Chan, ',
       new BS_Citation(null, 'Rethinking Church'),
     ),

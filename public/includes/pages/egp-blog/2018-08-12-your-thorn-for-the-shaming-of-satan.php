@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -30,7 +30,7 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'https://www.desiringgod.org/messages/your-thorn-for-the-shaming-of-satan' ],
+        ['to' => 'https://www.desiringgod.org/messages/your-thorn-for-the-shaming-of-satan'],
 
         'John Piper, ',
         new BS_Citation(null, 'Your Thorn for the Shaming of Satan'),

@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -25,7 +25,7 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'https://www.amazon.com/Jesus-Today-Experience-Presence-Calling®/dp/1400320097/' ],
+        ['to' => 'https://www.amazon.com/Jesus-Today-Experience-Presence-Calling®/dp/1400320097/'],
 
         'Sarah Young, ',
         new BS_Citation(null, 'Jesus Today'),

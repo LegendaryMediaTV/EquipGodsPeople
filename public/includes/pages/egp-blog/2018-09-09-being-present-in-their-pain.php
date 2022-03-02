@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -17,10 +17,10 @@ $html->add(new BS_BlogEntryPage(
 
     new BS_BlockquoteFooter(
       null,
-      
+
       '—',
       new BS_Link(
-        [ 'to' => 'http://podcasts.ibethel.org/en/podcasts/born-for-times-of-crisis' ],
+        ['to' => 'http://podcasts.ibethel.org/en/podcasts/born-for-times-of-crisis'],
 
         'Kris Vallotton, Bethel Church, ',
         new BS_Citation(null, 'Born for Times of Crisis'),

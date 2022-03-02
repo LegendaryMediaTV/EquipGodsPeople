@@ -23,15 +23,13 @@ class BS_HTML {
     if ($this->properties['className']) {
       if (!is_array($this->properties['className']))
         $this->properties['className'] = explode(' ', $this->properties['className']);
-    }
-    else $this->properties['className'] = [];
+    } else $this->properties['className'] = [];
 
     // ensure style property is an array
     if ($this->properties['style']) {
       if (!is_array($this->properties['style']))
         $this->properties['style'] = explode(' ', $this->properties['style']);
-    }
-    else $this->properties['style'] = [];    
+    } else $this->properties['style'] = [];
   }
 
   function __toString() {
@@ -45,7 +43,7 @@ class BS_HTML {
   function renderAttributes() {
     $output = [];
 
-    static $blankable = [ 'alt', 'value' ];
+    static $blankable = ['alt', 'value'];
 
     // couples
     if ($this->properties['disabled']) {
@@ -95,7 +93,7 @@ class BS_HTML {
       // TODO: title and bsDataContent BB code translation
 
       switch ($key) {
-        // only true
+          // only true
         case 'aria-current':
         case 'aria-disabled':
         case 'data-bs-html':
@@ -112,20 +110,20 @@ class BS_HTML {
 
           break;
 
-        // ID hashtag prefix
+          // ID hashtag prefix
         case 'data-bs-target':
           $output[] = $key . '="' . (strpos($value, '#') !== 0 ? '#' : '') . $value . '"';
 
           break;
 
-        // class names
+          // class names
         case 'class':
           if (count($value))
             $output[] = $key . '="' . implode(' ', $value) . '"';
 
           break;
 
-        // ignore
+          // ignore
         case 'style':
         case 'tag':
           break;
@@ -156,7 +154,7 @@ class BS_HTML {
       '<' . ($this->properties['tag'] ?: 'div') . $this->renderAttributes() . '>' .
       (!in_array($this->properties['tag'], $selfClosing)
         ? implode('', $this->children) .
-          '</' . ($this->properties['tag'] ?: 'div') . '>'
+        '</' . ($this->properties['tag'] ?: 'div') . '>'
         : '');
   }
 }
@@ -172,7 +170,7 @@ class BS_HTMLPage {
   /*************************
    ***** Magic Methods *****
    ************************/
-  
+
   function __construct($metadata = null) {
     $this->metadata = $metadata;
     $this->body = '';
@@ -201,7 +199,7 @@ class BS_HTMLPage {
     return
       '<body>' .
       new BS_Main(
-        [ 'ariaLabelledBy' => 'HeroHeading' ],
+        ['ariaLabelledBy' => 'HeroHeading'],
 
         $this->renderHero(),
         $this->body,
@@ -214,12 +212,12 @@ class BS_HTMLPage {
 
   function renderFooter() {
     $navItems = [
-      [ 'url' => '/bible-search', 'title' => 'Bible Search' ],
-      [ 'url' => '/egp-blog', 'title' => 'EGP Blog' ],
-      [ 'url' => '/lexicons-word-study', 'title' => 'Lexicons (Word Study)' ],
-      [ 'url' => '/bible-reading-plans', 'title' => 'Bible Reading Plans' ],
-      [ 'url' => '/discipleship-tools', 'title' => 'Discipleship Tools' ],
-      [ 'url' => '/classic-works', 'title' => 'Classic Works' ],
+      ['url' => '/bible-search', 'title' => 'Bible Search'],
+      ['url' => '/egp-blog', 'title' => 'EGP Blog'],
+      ['url' => '/lexicons-word-study', 'title' => 'Lexicons (Word Study)'],
+      ['url' => '/bible-reading-plans', 'title' => 'Bible Reading Plans'],
+      ['url' => '/discipleship-tools', 'title' => 'Discipleship Tools'],
+      ['url' => '/classic-works', 'title' => 'Classic Works'],
     ];
 
     $socialItems = [
@@ -269,12 +267,12 @@ class BS_HTMLPage {
               ],
 
               new BS_Heading3(
-                [ 'id' => 'FooterTermsOfUseHeading', 'className' => 'mb-3' ],
+                ['id' => 'FooterTermsOfUseHeading', 'className' => 'mb-3'],
                 'Terms of Use'
               ),
 
               new BS_Paragraph(
-                [ 'className' => 'text-light' ],
+                ['className' => 'text-light'],
 
                 'You may freely reproduce articles from this site for church or small study group use. However, copies may ',
                 new BS_Strong(null, 'not'),
@@ -293,7 +291,7 @@ class BS_HTMLPage {
 
 
               new BS_Heading3(
-                [ 'id' => 'FooterQuickLinksHeading', 'className' => 'mb-3' ],
+                ['id' => 'FooterQuickLinksHeading', 'className' => 'mb-3'],
                 'Quick Links'
               ),
 
@@ -315,11 +313,11 @@ class BS_HTMLPage {
 
 
               new BS_Heading3(
-                [ 'id' => 'FooterLatestBlogEntriesHeading', 'className' => 'mb-3' ],
+                ['id' => 'FooterLatestBlogEntriesHeading', 'className' => 'mb-3'],
                 'Latest Blog Entries'
               ),
 
-              new BS_BlogEntriesNav([ 'vertical' => true, 'className' => 'text-light' ]),
+              new BS_BlogEntriesNav(['vertical' => true, 'className' => 'text-light']),
             ),
           )
         ),
@@ -332,7 +330,7 @@ class BS_HTMLPage {
             'className' => 'pt-element',
           ],
           new BS_Nav(
-            [ 'className' => 'justify-content-center' ],
+            ['className' => 'justify-content-center'],
             ...array_map(
               function ($item) {
                 return new BS_NavItem(
@@ -368,7 +366,7 @@ class BS_HTMLPage {
           $GLOBALS['siteTitle'] . ' © 2003–' . (new DateTime())->format('Y') . '. All rights reserved.'
         )
       )
-    : null;
+      : null;
   }
 
   function renderHead() {
@@ -378,19 +376,19 @@ class BS_HTMLPage {
       '<head>' .
 
       '<title>' .
-        egp_bb($this->metadata->title
-          ? str_replace('–', '/', $this->metadata->title) .
-            ($this->metadata->parent ? ' – ' . str_replace('–', '/', $this->metadata->parent) : '') .
-            ' | ' .
-            $GLOBALS['siteTitle']
-          : $GLOBALS['siteTitle'], true) .
+      egp_bb($this->metadata->title
+        ? str_replace('–', '/', $this->metadata->title) .
+        ($this->metadata->parent ? ' – ' . str_replace('–', '/', $this->metadata->parent) : '') .
+        ' | ' .
+        $GLOBALS['siteTitle']
+        : $GLOBALS['siteTitle'], true) .
       '</title>' .
 
       '<meta charset="utf-8">' .
       '<meta name="viewport" content="width=device-width, initial-scale=1">' .
       '<meta name="description" content="' .
-        ($this->metadata->description ?: $GLOBALS['siteDescription']) .
-        '">' .
+      ($this->metadata->description ?: $GLOBALS['siteDescription']) .
+      '">' .
       '<meta name="apple-mobile-web-app-title" content="' . $GLOBALS['siteTitle'] . '">' .
       '<meta name="application-name" content="' . $GLOBALS['siteTitle'] . '">' .
       '<meta name="msapplication-TileColor" content="' . $appColor . '">' .
@@ -423,42 +421,42 @@ class BS_HTMLPage {
   function renderHero() {
     return !$this->metadata->admin
       ? new BS_Header(
-        [ 'id' => 'Hero', 'className' => $this->metadata->variant ?: "Home" ],
+        ['id' => 'Hero', 'className' => $this->metadata->variant ?: "Home"],
         new BS_Division(
-          [ 'id' => 'HeroContent' ],
+          ['id' => 'HeroContent'],
           new BS_Heading1(
-            [ 'id' => 'HeroHeading' ],
+            ['id' => 'HeroHeading'],
 
             new BS_Span(
-              [ 'className' => 'h1 animate__animated animate__fadeInLeft', 'id' => 'HeroTitle' ],
+              ['className' => 'h1 animate__animated animate__fadeInLeft', 'id' => 'HeroTitle'],
               $this->metadata->title ?: $GLOBALS['siteTitle']
             ),
 
             new BS_Span(
-              [ 'className' => 'animate__animated animate__fadeInRight', 'id' => 'HeroSubtitle' ],
+              ['className' => 'animate__animated animate__fadeInRight', 'id' => 'HeroSubtitle'],
               $this->metadata->subtitle ?: $GLOBALS['siteSubtitle']
             )
           )
         )
       )
-      : new BS_Heading1([ 'id' => 'HeroHeading' ], $this->metadata->title);
+      : new BS_Heading1(['id' => 'HeroHeading'], $this->metadata->title);
   }
 
   function renderMenu() {
     $areas = [
-      [ '_id' => 'all', 'title' => 'All' ],
-      [ '_id' => 'bible', 'title' => 'Bible' ],
-      [ '_id' => 'blog', 'title' => 'EGP Blog' ],
-      [ '_id' => 'classics', 'title' => 'Classic Works' ],
-      [ '_id' => 'lexicons', 'title' => 'All Lexicons' ],
-      [ '_id' => 'hebrew', 'title' => 'Hebrew Lexicons' ],
-      [ '_id' => 'greek', 'title' => 'Greek Lexicons' ],
+      ['_id' => 'all', 'title' => 'All'],
+      ['_id' => 'bible', 'title' => 'Bible'],
+      ['_id' => 'blog', 'title' => 'EGP Blog'],
+      ['_id' => 'classics', 'title' => 'Classic Works'],
+      ['_id' => 'lexicons', 'title' => 'All Lexicons'],
+      ['_id' => 'hebrew', 'title' => 'Hebrew Lexicons'],
+      ['_id' => 'greek', 'title' => 'Greek Lexicons'],
     ];
 
     $navItems = [
-      [ 'title' => 'Home', 'url' => '/' ],
-      [ 'title' => 'Bible Search', 'url' => '/bible-search' ],
-      [ 'title' => 'EGP Blog', 'url' => '/egp-blog' ],
+      ['title' => 'Home', 'url' => '/'],
+      ['title' => 'Bible Search', 'url' => '/bible-search'],
+      ['title' => 'EGP Blog', 'url' => '/egp-blog'],
       [
         '_id' => 'lexicons-word-study',
         'title' => 'Lexicons (Word Study)',
@@ -474,8 +472,8 @@ class BS_HTMLPage {
           ],
         ],
       ],
-      [ 'title' => 'Bible Reading Plans', 'url' => '/bible-reading-plans' ],
-      [ 'title' => 'Discipleship Tools', 'url' => '/discipleship-tools' ],
+      ['title' => 'Bible Reading Plans', 'url' => '/bible-reading-plans'],
+      ['title' => 'Discipleship Tools', 'url' => '/discipleship-tools'],
       [
         '_id' => 'classic-works',
         'title' => 'Classic Works',
@@ -491,109 +489,109 @@ class BS_HTMLPage {
 
     return !$this->metadata->admin
       ? new BS_Button(
-          [
-            'id' => 'SiteMenuButton',
-            'tabIndex' => 1,
-            'className' => 'rounded-circle',
-            'bsDataToggle' => 'offcanvas',
-            'bsDataTarget' => 'SiteMenu',
-          ],
-          new BS_Icon([ 'name' => 'fa-solid fa-bars', 'alt' => 'menu' ])
-        ) .
+        [
+          'id' => 'SiteMenuButton',
+          'tabIndex' => 1,
+          'className' => 'rounded-circle',
+          'bsDataToggle' => 'offcanvas',
+          'bsDataTarget' => 'SiteMenu',
+        ],
+        new BS_Icon(['name' => 'fa-solid fa-bars', 'alt' => 'menu'])
+      ) .
+
+      new BS_Division(
+        [
+          'id' => 'SiteMenu',
+          'tabIndex' => -1,
+          'ariaLabelledBy' => 'SiteMenuHeading',
+          'className' => 'offcanvas offcanvas-end',
+        ],
 
         new BS_Division(
-          [
-            'id' => 'SiteMenu',
-            'tabIndex' => -1,
-            'ariaLabelledBy' => 'SiteMenuHeading',
-            'className' => 'offcanvas offcanvas-end',
-          ],
+          ['className' => 'offcanvas-header bg-primary'],
 
-          new BS_Division(
-            [ 'className' => 'offcanvas-header bg-primary' ],
+          new BS_Form(
+            ['url' => '/search', 'role' => 'search'],
+            new BS_Division(
+              ['className' => 'input-group'],
 
-            new BS_Form(
-              [ 'url' => '/search', 'role' => 'search' ],
-              new BS_Division(
-                [ 'className' => 'input-group' ],
+              new BS_Select(
+                ['name' => 'area', 'className' => 'input-group-text'],
 
-                new BS_Select(
-                  [ 'name' => 'area', 'className' => 'input-group-text' ],
-
-                  ...array_map(
-                    function ($area) {
-                      return new BS_SelectOption([ 'value' => $area['_id'] ], $area['title']);
-                    },
-                    $areas
-                  )
-                ),
-
-                new BS_Textbox([
-                  "name" => 'search',
-                  "placeholder" => 'search',
-                  "ariaLabel" => 'search',
-                  "type" => 'search',
-                ]),
-
-                new BS_Button(
-                  [ 'type' => 'submit', 'variant' => 'secondary' ],
-                  new BS_Icon([ 'name' => 'fa-solid fa-magnifying-glass', 'alt' => 'search' ])
+                ...array_map(
+                  function ($area) {
+                    return new BS_SelectOption(['value' => $area['_id']], $area['title']);
+                  },
+                  $areas
                 )
-              )
-            ),
+              ),
 
-            new BS_Button(
-              [
-                'bsDataDismiss' => 'offcanvas',
-                'ariaLabel' => 'close menu',
-                'variant' => 'link',
-                'className' => 'p-0',
-              ],
-              new BS_Icon([ 'name' => 'fa-solid fa-xmark', 'alt' => 'close' ])
-            ),
-          ),
+              new BS_Textbox([
+                "name" => 'search',
+                "placeholder" => 'search',
+                "ariaLabel" => 'search',
+                "type" => 'search',
+              ]),
 
-          new BS_NavHTML(
-            [ 'className' => 'offcanvas-body bg-secondary' ],
-            new BS_Nav(
-              [ 'vertical' => true ],
-              ...array_map(
-                function ($navItem) {
-                  return
-                    new BS_NavItem(
-                      [ 'className' => 'd-flex' ],
-
-                      new BS_NavLink(
-                        [ 'to' => $navItem['url'], 'className' => 'px-1 py-3 flex-grow-1' ],
-                        $navItem['title']
-                      ),
-
-                      $navItem['children']
-                        ? new BS_Button(
-                            [
-                              'bsDataToggle' => 'collapse',
-                              'bsDataTarget' => 'SiteMenu-' . $navItem['_id'],
-                              'ariaExpanded' => false,
-                              'variant' => 'link',
-                              'className' => 'SiteSubmenuToggle align-self-stretch px-2 rounded-0',
-                            ],
-                            new BS_Icon([ 'name' => 'fa-solid fa-angle-down', 'alt' => 'collapsed'])
-                          )
-                        : null
-                    ) .
-                    
-                    ($navItem['children']
-                      ? new BS_Collapse(
-                          [ 'id' => 'SiteMenu-' . $navItem['_id'] ],
-                          new BS_Nav([ 'vertical' => true, 'items' => $navItem['children'] ])
-                        )
-                      : null);
-                },
-                $navItems
+              new BS_Button(
+                ['type' => 'submit', 'variant' => 'secondary'],
+                new BS_Icon(['name' => 'fa-solid fa-magnifying-glass', 'alt' => 'search'])
               )
             )
           ),
-        )
+
+          new BS_Button(
+            [
+              'bsDataDismiss' => 'offcanvas',
+              'ariaLabel' => 'close menu',
+              'variant' => 'link',
+              'className' => 'p-0',
+            ],
+            new BS_Icon(['name' => 'fa-solid fa-xmark', 'alt' => 'close'])
+          ),
+        ),
+
+        new BS_NavHTML(
+          ['className' => 'offcanvas-body bg-secondary'],
+          new BS_Nav(
+            ['vertical' => true],
+            ...array_map(
+              function ($navItem) {
+                return
+                  new BS_NavItem(
+                    ['className' => 'd-flex'],
+
+                    new BS_NavLink(
+                      ['to' => $navItem['url'], 'className' => 'px-1 py-3 flex-grow-1'],
+                      $navItem['title']
+                    ),
+
+                    $navItem['children']
+                      ? new BS_Button(
+                        [
+                          'bsDataToggle' => 'collapse',
+                          'bsDataTarget' => 'SiteMenu-' . $navItem['_id'],
+                          'ariaExpanded' => false,
+                          'variant' => 'link',
+                          'className' => 'SiteSubmenuToggle align-self-stretch px-2 rounded-0',
+                        ],
+                        new BS_Icon(['name' => 'fa-solid fa-angle-down', 'alt' => 'collapsed'])
+                      )
+                      : null
+                  ) .
+
+                  ($navItem['children']
+                    ? new BS_Collapse(
+                      ['id' => 'SiteMenu-' . $navItem['_id']],
+                      new BS_Nav(['vertical' => true, 'items' => $navItem['children']])
+                    )
+                    : null);
+              },
+              $navItems
+            )
+          )
+        ),
+      )
       : null;
   }
 
@@ -605,15 +603,15 @@ class BS_HTMLPage {
       // add Axios and React
       ($this->metadata->react
         ?
-          // add Axios JS: https://cdnjs.com/libraries/axios
-          '<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>' .
+        // add Axios JS: https://cdnjs.com/libraries/axios
+        '<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>' .
 
-          // add React 17 JS: https://reactjs.org/docs/add-react-to-a-website.html
-          '<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>' .
-          '<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>' .
+        // add React 17 JS: https://reactjs.org/docs/add-react-to-a-website.html
+        '<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>' .
+        '<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>' .
 
-          // add React Beautiful DnD: https://github.com/atlassian/react-beautiful-dnd/blob/master/docs/about/installation.md
-          '<script src="https://unpkg.com/react-beautiful-dnd@13.1.0/dist/react-beautiful-dnd.min.js"></script>'
+        // add React Beautiful DnD: https://github.com/atlassian/react-beautiful-dnd/blob/master/docs/about/installation.md
+        '<script src="https://unpkg.com/react-beautiful-dnd@13.1.0/dist/react-beautiful-dnd.min.js"></script>'
 
         : '') .
 
@@ -785,12 +783,17 @@ class BS_Icon extends BS_HTML {
     if (is_null($this->properties['ariaLabel'])) {
       if (!is_null($alt)) {
         if ($alt) $this->properties['ariaLabel'] = $alt;
-      }
-      else {
+      } else {
         $this->properties['ariaLabel'] =
-          str_replace('-', ' ',
-            preg_replace('/-fill$/', '',
-              preg_replace('/^[a-z-]+ [a-z]{2}-/', '',
+          str_replace(
+            '-',
+            ' ',
+            preg_replace(
+              '/-fill$/',
+              '',
+              preg_replace(
+                '/^[a-z-]+ [a-z]{2}-/',
+                '',
                 str_replace('-alt', '', $name)
               )
             )
@@ -907,9 +910,9 @@ class BS_Link extends BS_HTML {
       $this->properties['className'][] = 'disabled';
     if ($this->properties['bsDataToggle'] === 'popover')
       $this->properties['className'][] = 'cursor-help';
-   if ($variant)
+    if ($variant)
       $this->properties['className'][] = 'link-' . $variant;
-      
+
 
     return parent::render();
   }
@@ -965,8 +968,8 @@ class BS_Paragraph extends BS_HTML {
 
 class BS_Preformatted extends BS_HTML {
   function render() {
-    static $exported = [ 'array', 'object', 'resource' ];
-    
+    static $exported = ['array', 'object', 'resource'];
+
     if (!$this->properties['tag']) $this->properties['tag'] = 'pre';
 
     $item = $this->properties['item'];
@@ -979,8 +982,8 @@ class BS_Preformatted extends BS_HTML {
       if ($title) $this->children[] = $title . ': ';
       $this->children[] =
         in_array(gettype($item), $exported)
-          ? var_export($item, true)
-          : $item;
+        ? var_export($item, true)
+        : $item;
     }
 
     return parent::render();
@@ -1271,8 +1274,7 @@ class BS_SelectOption extends BS_HTML {
       if (is_array($item)) {
         $this->properties['value'] = $item['_id'] ?: '';
         $this->children[] = $item['title'] ?? $item['name'] ?? $item['_id'];
-      }
-      else {
+      } else {
         $this->properties['value'] = $item;
         $this->children[] = $item;
       }
@@ -1419,8 +1421,8 @@ class BS_ListGroup extends BS_Division {
         $this->children,
 
         $size === 'lg'
-          ? new BS_Heading2([ 'className' => $titleClassName ], $title)
-          : new BS_Heading3([ 'className' => $titleClassName ], $title)
+          ? new BS_Heading2(['className' => $titleClassName], $title)
+          : new BS_Heading3(['className' => $titleClassName], $title)
       );
     }
 
@@ -1446,7 +1448,7 @@ class BS_ListGroupItem extends BS_Link {
       $this->children[] = $title;
       if ($subtitle) {
         $this->children[] = new BS_Division(
-          [ 'className' => 'fst-italic small text-muted' ],
+          ['className' => 'fst-italic small text-muted'],
           $subtitle
         );
       }
@@ -1494,7 +1496,7 @@ class BS_Nav extends BS_List {
             [
               'to' => $item->url,
               'active' =>
-                !is_null($activeItem) &&
+              !is_null($activeItem) &&
                 strval($item->_id) === strval($activeItem)
             ],
             $item->title
@@ -1506,14 +1508,14 @@ class BS_Nav extends BS_List {
     // add previous link
     if ($previous) {
       if (gettype($previous) !== 'object')
-          $previous = json_decode(json_encode($previous));
+        $previous = json_decode(json_encode($previous));
 
       array_unshift($this->children, new BS_NavItem(
         null,
         new BS_NavLink(
-          [ 'to' => $previous->url ],
+          ['to' => $previous->url],
 
-          new BS_Icon([ 'name' => 'fa-solid fa-angle-left', 'alt' => 'previous', 'className' => 'pe-2' ]),
+          new BS_Icon(['name' => 'fa-solid fa-angle-left', 'alt' => 'previous', 'className' => 'pe-2']),
 
           $previous->title,
         )
@@ -1523,17 +1525,17 @@ class BS_Nav extends BS_List {
     // add next link
     if ($next) {
       if (gettype($next) !== 'object')
-          $next = json_decode(json_encode($next));
+        $next = json_decode(json_encode($next));
 
       $this->children[] = new BS_NavItem(
         null,
         new BS_NavLink(
-          [ 'to' => $next->url ],
+          ['to' => $next->url],
 
           $next->title,
 
 
-          new BS_Icon([ 'name' => 'fa-solid fa-angle-right', 'alt' => 'next', 'className' => 'ps-2' ]),
+          new BS_Icon(['name' => 'fa-solid fa-angle-right', 'alt' => 'next', 'className' => 'ps-2']),
         )
       );
     }
@@ -1605,7 +1607,7 @@ class BS_Pagination extends BS_List {
               [
                 'to' => $item->url,
                 'active' =>
-                  !is_null($activeItem) &&
+                !is_null($activeItem) &&
                   (string) $item->_id === (string) $activeItem
               ],
 
@@ -1627,7 +1629,7 @@ class BS_Pagination extends BS_List {
           null,
 
           new BS_PaginationLink(
-            [ 'to' => $previous->url ],
+            ['to' => $previous->url],
 
             new BS_Icon([
               'name' => 'fa-solid fa-angle-left',
@@ -1651,7 +1653,7 @@ class BS_Pagination extends BS_List {
           null,
 
           new BS_PaginationLink(
-            [ 'to' => $next->url ],
+            ['to' => $next->url],
 
             $next->title,
 
@@ -1669,7 +1671,7 @@ class BS_Pagination extends BS_List {
     if ($size)
       $this->properties['className'][] = 'pagination-' . $size;
 
-    return (string) new BS_NavHTML([ 'className' => $wrapperClassName ], parent::render());
+    return (string) new BS_NavHTML(['className' => $wrapperClassName], parent::render());
   }
 }
 
@@ -1712,9 +1714,9 @@ class BS_Banner extends BS_Container {
 
     $this->children = [
       new BS_Row(
-        [ 'className' => 'justify-content-center' ],
+        ['className' => 'justify-content-center'],
         new BS_Col(
-          [ 'xs' => 11, 'lg' => 8, 'xl' => 6 ],
+          ['xs' => 11, 'lg' => 8, 'xl' => 6],
           new BS_Paragraph(
             null,
             ...$this->children
@@ -1764,8 +1766,8 @@ class BS_PreviousNext extends BS_Nav {
     $this->properties['vertical'] = 'md';
     $this->properties['justify'] =
       $this->properties['next'] && !$this->properties['previous']
-        ? 'end'
-        : true;
+      ? 'end'
+      : true;
 
     return parent::render();
   }
@@ -1799,13 +1801,13 @@ class BS_SectionHeader extends BS_Header {
 
     // add title
     $this->children[] = new BS_Heading2(
-      $titleID ? [ 'id' => $titleID ] : null,
+      $titleID ? ['id' => $titleID] : null,
       $title
     );
 
     // add line
     $this->children[] = new BS_Line(
-      [ 'className' => 'bg-primary pb-1 position-relative start-50 translate-middle' ]
+      ['className' => 'bg-primary pb-1 position-relative start-50 translate-middle']
     );
 
     // add subtitle
@@ -1866,7 +1868,7 @@ class BS_Verse extends BS_Superscript {
     // wrap in brackets
     array_unshift($this->children, '[');
     $this->children[] = ']';
-    
+
     return parent::render();
   }
 }
@@ -1882,9 +1884,9 @@ class BS_BibleLink extends BS_Link {
     $popover = $this->properties['popover'];
     unset($this->properties['popover']);
     $to = $this->properties['to'];
-    unset($this->properties['to']);    
+    unset($this->properties['to']);
     $version = $this->properties['version'];
-    unset($this->properties['version']);    
+    unset($this->properties['version']);
 
     // parse the requested Bible passage into a passage object
     if (!$passage && $to) $passage = egp_biblePassage($to);
@@ -1895,8 +1897,7 @@ class BS_BibleLink extends BS_Link {
 
       if (!count($this->children))
         $this->children[] = 'Bible Search';
-    }
-    else {
+    } else {
       // customize the link and add default child
       $this->properties['to'] = $passage->url ?: $passage->chapter->url ?: '/bible-search';
       if (!count($this->children))
@@ -1910,11 +1911,11 @@ class BS_BibleLink extends BS_Link {
         $this->properties['popover'] = [
           'title' => $passage->title . ' (' . $version->abbreviation . ')',
           'content' => implode('', [
-            new BS_BiblePassage([ 'passage' => $passage, 'variant' => 'popover' ]),
+            new BS_BiblePassage(['passage' => $passage, 'variant' => 'popover']),
 
             new BS_Paragraph(
-              [ 'className' => 'mt-2 mb-0' ],
-              new BS_Link([ 'to' => $passage->chapter->url ], 'view the full chapter')
+              ['className' => 'mt-2 mb-0'],
+              new BS_Link(['to' => $passage->chapter->url], 'view the full chapter')
             ),
           ]),
         ];
@@ -1943,11 +1944,10 @@ class BS_BiblePassage extends BS_HTML {
     // don't render the component for invalid passages
     if (!$passage) {
       $output = new BS_Alert(
-        [ 'title' => 'Invalid Bible Passage', 'variant' => 'danger' ],
+        ['title' => 'Invalid Bible Passage', 'variant' => 'danger'],
         $passage ?: 'none provided'
       );
-    }
-    else {
+    } else {
       // retrieve the Bible version and verses
       if (!$verses) {
         $version = egp_bibleVerses($passage->chapter, egp_bibleVersion($version));
@@ -1958,7 +1958,7 @@ class BS_BiblePassage extends BS_HTML {
       if (!$verses) {
         $verses = array_values(array_filter(
           $version->verses,
-          function ($verse) use($passage) {
+          function ($verse) use ($passage) {
             return
               substr($verse->sequence, 0, 6) === $passage->chapter->sequence &&
               array_search($verse->number, $passage->verses) !== false;
@@ -1973,22 +1973,22 @@ class BS_BiblePassage extends BS_HTML {
             null,
 
             new BS_BibleLink(
-              [ 'passage' => $passage, 'popover' => false ],
+              ['passage' => $passage, 'popover' => false],
               $passage->title
             ),
 
             ' (' .
-            ($version->title
-              ? new BS_Abbreviation(
-                  [ 'popover' => [ 'title' => $version->title, 'content' => $version->copyright ] ],
+              ($version->title
+                ? new BS_Abbreviation(
+                  ['popover' => ['title' => $version->title, 'content' => $version->copyright]],
                   $version->abbreviation
                 )
-              : $version->abbreviation) .
-            ') ',
+                : $version->abbreviation) .
+              ') ',
 
             mb_substr($verses[0]->text, 0, 1) !== '“' ? '“' : null,
             implode(' ', array_map(
-              function ($verse) use($passage) {
+              function ($verse) use ($passage) {
                 return $this->embedFootnotes($passage->chapter->title, $verse, true);
               },
               $verses
@@ -1998,8 +1998,8 @@ class BS_BiblePassage extends BS_HTML {
               mb_strlen($verses[count($verses) - 1]->text) - 1,
               1
             ) !== '”'
-            ? '”'
-            : null
+              ? '”'
+              : null
           );
 
           break;
@@ -2049,18 +2049,18 @@ class BS_BiblePassage extends BS_HTML {
               null,
 
               new BS_BibleLink(
-                [ 'passage' => $passage, 'popover' => false ],
+                ['passage' => $passage, 'popover' => false],
                 $passage->title
               ),
 
               ' (' .
-              ($version->title
-                ? new BS_Abbreviation(
-                    [ 'popover' => [ 'title' => $version->title, 'content' => $version->copyright ] ],
+                ($version->title
+                  ? new BS_Abbreviation(
+                    ['popover' => ['title' => $version->title, 'content' => $version->copyright]],
                     $version->abbreviation
                   )
-                : $version->abbreviation) .
-              ')',
+                  : $version->abbreviation) .
+                ')',
             ),
 
             $this->passageFormatted((object) [
@@ -2100,14 +2100,14 @@ class BS_BiblePassage extends BS_HTML {
                   : egp_bb($verse->footnotes[$footNoteIndex], true),
                 'popover' => $asPopover
                   ? [
-                      'title' =>
-                        'Footnote for ' .
-                        $chapterTitle .
-                        ':' .
-                        $verse->number .
-                        ($footNoteIndex > 1 ? chr($footNoteIndex + 97) : ''),
-                      'content' => $verse->footnotes[$footNoteIndex],
-                    ]
+                    'title' =>
+                    'Footnote for ' .
+                      $chapterTitle .
+                      ':' .
+                      $verse->number .
+                      ($footNoteIndex > 1 ? chr($footNoteIndex + 97) : ''),
+                    'content' => $verse->footnotes[$footNoteIndex],
+                  ]
                   : null,
                 'className' => 'footnote-marker',
               ],
@@ -2162,55 +2162,55 @@ class BS_BiblePassage extends BS_HTML {
 
     return implode(
       '',
-      
+
       [
         $verseCount
           ? new BS_Paragraph(
-              null,
+            null,
 
-              $verseCount === 1
-                ? $this->embedFootnotes(
-                    $properties->passage->chapter->title,
-                    $verses[0],
-                    $properties->popovers !== false
-                  )
-                : implode(
-                    $properties->breaks ? new BS_Break() : ' ',
+            $verseCount === 1
+              ? $this->embedFootnotes(
+                $properties->passage->chapter->title,
+                $verses[0],
+                $properties->popovers !== false
+              )
+              : implode(
+                $properties->breaks ? new BS_Break() : ' ',
 
-                    array_map(
-                      function ($verse) use($properties) {
-                        return implode(
-                          ' ',
+                array_map(
+                  function ($verse) use ($properties) {
+                    return implode(
+                      ' ',
 
-                          [
-                            new BS_Verse(null, $verse->number),
-                            $this->embedFootnotes(
-                              $properties->passage->chapter->title,
-                              $verse,
-                              $properties->popovers !== false
-                            )
-                          ]
-                        );
-                      },
+                      [
+                        new BS_Verse(null, $verse->number),
+                        $this->embedFootnotes(
+                          $properties->passage->chapter->title,
+                          $verse,
+                          $properties->popovers !== false
+                        )
+                      ]
+                    );
+                  },
 
-                      $verses
-                    )
-                  )
-            )
+                  $verses
+                )
+              )
+          )
           : null,
 
         $footnoteCount
           ? new BS_Paragraph(
-            [ 'className' => 'text-muted small' ],
+            ['className' => 'text-muted small'],
             implode(new BS_Break(), $footnotes)
           )
           : null,
 
         $properties->copyright !== false && $properties->version->copyright
           ? new BS_Paragraph(
-              [ 'className' => 'text-muted small' ],
-              $properties->version->copyright
-            )
+            ['className' => 'text-muted small'],
+            $properties->version->copyright
+          )
           : null,
       ]
     );
@@ -2252,7 +2252,7 @@ class BS_BlogEntries extends BS_Row {
         ],
 
         $row->image ? new BS_Link(
-          [ 'to' => $row->url ],
+          ['to' => $row->url],
           new BS_Image([
             'url' => $row->image,
             'alt' => htmlspecialchars($row->imageAlt),
@@ -2261,20 +2261,20 @@ class BS_BlogEntries extends BS_Row {
         ) : null,
 
         new BS_Heading3(
-          [ 'id' => 'BlogEntry-' . $row->_id, 'className' => 'mt-3' ],
-          new BS_Link([ 'to' => $row->url ], htmlspecialchars($row->title))
+          ['id' => 'BlogEntry-' . $row->_id, 'className' => 'mt-3'],
+          new BS_Link(['to' => $row->url], htmlspecialchars($row->title))
         ),
 
         new BS_Paragraph(null, htmlspecialchars($row->excerpt)),
 
         new BS_Link(
-          [ 'to' => $row->url ],
+          ['to' => $row->url],
           new BS_Small(
             null,
 
             'READ MORE',
 
-            new BS_Icon([ 'name' => 'fa-solid fa-caret-right', 'alt' => '' ])
+            new BS_Icon(['name' => 'fa-solid fa-caret-right', 'alt' => ''])
           )
         ),
 
@@ -2337,7 +2337,7 @@ class BS_BlogEntryPage extends BS_Container {
 
     $this->children = [
       new BS_Section(
-        [ 'className' => 'clearfix' ],
+        ['className' => 'clearfix'],
 
         $metadata->image
           ? new BS_Image([
@@ -2352,19 +2352,19 @@ class BS_BlogEntryPage extends BS_Container {
 
         $metadata->verses
           ? new BS_Section(
-            [ 'className' => 'mt-element' ],
+            ['className' => 'mt-element'],
 
             new BS_Heading2(null, 'Key verses'),
 
             new BS_Paragraph(
-              [ 'id' => 'BlogEntryVerses' ],
+              ['id' => 'BlogEntryVerses'],
 
               implode(
                 '; ',
 
                 array_map(
                   function ($verse) {
-                    return new BS_BibleLink([ 'to' => $verse ]);
+                    return new BS_BibleLink(['to' => $verse]);
                   },
 
                   $metadata->verses
@@ -2377,7 +2377,7 @@ class BS_BlogEntryPage extends BS_Container {
 
       $metadata->vimeo || $metadata->youtube
         ? new BS_Section(
-          [ 'className' => 'mt-element' ],
+          ['className' => 'mt-element'],
 
           new BS_Heading2(null, 'Related video'),
 
@@ -2435,7 +2435,7 @@ class BS_LexiconEntrySelector extends BS_ListGroup {
 
     // filter for top occurrences
     if ($top) {
-      $this->properties['title'] = 'Top ' . $top . ' '. $this->properties['title'];
+      $this->properties['title'] = 'Top ' . $top . ' ' . $this->properties['title'];
 
       $sql =
         "SELECT Document" .
@@ -2477,8 +2477,7 @@ class BS_LexiconEntrySelector extends BS_ListGroup {
         "\n  AND Document LIKE '%\"letterCode\":\"" . $letter->code . "\"%'" .
         "\nORDER BY sequence";
       $items = $db->rows($sql);
-    }
-    else $items = [];
+    } else $items = [];
 
     // convert document to ListGroup item
     $this->properties['items'] = array_map(
@@ -2489,9 +2488,8 @@ class BS_LexiconEntrySelector extends BS_ListGroup {
           '_id' => $item->_id,
           'title' => $item->title,
           'subtitle' =>
-            $item->shortDefinition
-            ? $item->shortDefinition . (
-              $item->occurrences
+          $item->shortDefinition
+            ? $item->shortDefinition . ($item->occurrences
               ? ' [' . $item->occurrences . ' occurrence' . ($item->occurrences !== 1 ? 's' : '') . ']'
               : ''
             ) : null,
@@ -2518,14 +2516,13 @@ class BS_LexiconLink extends BS_Link {
 
       if (!count($this->children))
         $this->children[] = 'Lexicons (Word Study)';
-    }
-    else {
+    } else {
       $entry = egp_lexiconEntry($to);
 
       // don't render the component for invalid passages
       if (!$entry) {
         return (string) new BS_Alert(
-          [ 'title' => 'Missing Lexicon Entry', 'variant' => 'danger' ],
+          ['title' => 'Missing Lexicon Entry', 'variant' => 'danger'],
           $to
         );
       }
@@ -2570,11 +2567,11 @@ class BS_LexiconLink extends BS_Link {
 
             $entry->occurrences
               ? implode('', [
-                  new BS_Break(),
-                  new BS_Bold(null, 'Occurrences:'),
-                  ' ',
-                  $entry->occurrences,
-                ])
+                new BS_Break(),
+                new BS_Bold(null, 'Occurrences:'),
+                ' ',
+                $entry->occurrences,
+              ])
               : null,
 
             $entry->shortDefinition
@@ -2583,8 +2580,8 @@ class BS_LexiconLink extends BS_Link {
           ),
 
           new BS_Paragraph(
-            [ 'className' => 'mt-2 mb-0' ],
-            new BS_Link([ 'to' => $entry->url ], 'view the full lexicon entry')
+            ['className' => 'mt-2 mb-0'],
+            new BS_Link(['to' => $entry->url], 'view the full lexicon entry')
           ),
         ]),
       ];

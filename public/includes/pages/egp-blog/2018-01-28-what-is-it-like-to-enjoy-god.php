@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -25,7 +25,7 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'https://www.desiringgod.org/messages/what-is-it-like-to-enjoy-god' ],
+        ['to' => 'https://www.desiringgod.org/messages/what-is-it-like-to-enjoy-god'],
 
         'John Piper, ',
         new BS_Citation(null, 'What Is It Like to Enjoy God?'),

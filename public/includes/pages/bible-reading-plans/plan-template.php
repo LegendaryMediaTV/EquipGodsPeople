@@ -4,11 +4,11 @@ $html->add(new BS_Banner(
 
   $metadata->description
     ?: 'This is a time-based Bible reading plan, displaying the passages to read for the day. ' .
-      'It should take approximately ' .
-      $metadata->minutes .
-      ' minutes to read the passages aloud at an average reading speed across ' .
-      $metadata->days .
-      ' days.'
+    'It should take approximately ' .
+    $metadata->minutes .
+    ' minutes to read the passages aloud at an average reading speed across ' .
+    $metadata->days .
+    ' days.'
 ));
 
 // non-annual plans are just a list
@@ -61,7 +61,7 @@ else {
             'className' => 'border-lg-top border-5 border-light py-5',
           ],
 
-          new BS_Heading2([ 'className' => 'h3' ], $month),
+          new BS_Heading2(['className' => 'h3'], $month),
 
           new BS_List(
             [
@@ -86,11 +86,11 @@ else {
 }
 
 $html->add(new BS_Container(
-  [ 'className' => 'py-section' ],
+  ['className' => 'py-section'],
 
   $planDetails,
 
   new BS_PreviousNext([
-    'previous' => [ 'url' => '/bible-reading-plans', 'title' => 'Time-Based Bible Reading Plans' ]
+    'previous' => ['url' => '/bible-reading-plans', 'title' => 'Time-Based Bible Reading Plans']
   ]),
 ));

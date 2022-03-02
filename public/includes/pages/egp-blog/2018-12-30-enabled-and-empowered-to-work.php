@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -25,7 +25,7 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'https://podcasts.apple.com/us/podcast/week-14/id1007053996?i=1000384271616' ],
+        ['to' => 'https://podcasts.apple.com/us/podcast/week-14/id1007053996?i=1000384271616'],
 
         'Francis Chan, ',
         new BS_Citation(

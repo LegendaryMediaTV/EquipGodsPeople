@@ -20,8 +20,7 @@ if ($metadata->pronunciation)
 if ($metadata->upperLetter) {
   $summary['Upper-case Letter'] = $metadata->upperLetter;
   $summary['Lower-case Letter'] = $metadata->letter;
-}
-else
+} else
   $summary['Letter'] = $metadata->letter;
 $summary['Speech Sound'] =
   $metadata->vowel
@@ -56,7 +55,7 @@ if ($metadata->final) {
 }
 
 $html->add(new BS_Container(
-  [ 'className' => 'py-section' ],
+  ['className' => 'py-section'],
 
   new BS_Nav([
     'tabs' => true,
@@ -65,14 +64,14 @@ $html->add(new BS_Container(
     'className' => 'h4 mb-5',
   ]),
 
-  new BS_DefinitionList([ 'items' => $summary ]),
+  new BS_DefinitionList(['items' => $summary]),
 
   $metadata->final
     ? new BS_Paragraph(
-      [ 'className' => 'text-muted small' ],
+      ['className' => 'text-muted small'],
 
       '° this value is associated with the ',
-      new BS_Link([ 'to' => 'https://en.wikipedia.org/wiki/Final_form' ], 'final form'),
+      new BS_Link(['to' => 'https://en.wikipedia.org/wiki/Final_form'], 'final form'),
       ' of the letter, which is when it is the last letter of the word'
     )
     : null,

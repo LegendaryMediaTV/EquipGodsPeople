@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
-  new BS_BiblePassage([ 'passage' => 'Isaiah 35:1–4', 'version' => 'NLT' ])
+  new BS_BiblePassage(['passage' => 'Isaiah 35:1–4', 'version' => 'NLT'])
 ));

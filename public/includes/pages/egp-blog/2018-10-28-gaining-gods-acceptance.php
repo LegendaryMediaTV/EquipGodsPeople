@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -17,10 +17,10 @@ $html->add(new BS_BlogEntryPage(
 
     new BS_BlockquoteFooter(
       null,
-      
+
       '—',
       new BS_Link(
-        [ 'to' => 'https://www.amazon.com/There-Trees-Garden-Divine-Destiny/dp/1929371551/' ],
+        ['to' => 'https://www.amazon.com/There-Trees-Garden-Divine-Destiny/dp/1929371551/'],
 
         'Rick Joyner, ',
         new BS_Citation(null, 'There Were Two Trees in the Garden'),

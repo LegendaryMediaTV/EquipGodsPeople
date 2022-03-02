@@ -1,10 +1,10 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
-    
+
     new BS_Paragraph(
       null,
       '“PROMISES are the invitation of God into a RELATIONAL journey where TOGETHER we labor to see things happen in the earth that reveal His NATURE. … His DESIRE is to work through sons and daughters. Why? Because … it takes a CHILD to reveal the nature of a FATHER. … He’s revealed for WHO HE IS through your answers to PRAYER. …'
@@ -30,7 +30,7 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'http://podcasts.ibethel.org/en/podcasts/promises-fulfilled' ],
+        ['to' => 'http://podcasts.ibethel.org/en/podcasts/promises-fulfilled'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Promises Fulfilled'),

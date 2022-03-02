@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -29,7 +29,7 @@ $html->add(new BS_BlogEntryPage(
       null,
 
       'In the hour of trial, the question will be THROWN in your face: ‘Where is your GOD? HE can’t stop this PERSECUTION. HE can’t stop this CANCER. What GOOD is HE? WHERE is HE?’ And the answer, according to this text [in ',
-      new BS_BibleLink([ 'to' => '1 Peter 4:14' ]),
+      new BS_BibleLink(['to' => '1 Peter 4:14']),
       '], that God will give you is, ‘[sc]I Am[/sc] HERE, resting on YOU, in your death throes, with GLORY and GOD.”',
     ),
 
@@ -38,7 +38,7 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'https://www.desiringgod.org/messages/how-to-seek-the-holy-spirit' ],
+        ['to' => 'https://www.desiringgod.org/messages/how-to-seek-the-holy-spirit'],
 
         'John Piper ',
         new BS_Citation(null, 'How to Seek the Holy Spirit'),

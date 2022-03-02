@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -25,7 +25,7 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'http://podcasts.ibethel.org/en/podcasts/a-lifestyle-of-peace' ],
+        ['to' => 'http://podcasts.ibethel.org/en/podcasts/a-lifestyle-of-peace'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'A Lifestyle of Peace'),

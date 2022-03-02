@@ -7,20 +7,20 @@ $html->add(new BS_Banner(
 
 // features
 $html->add(new BS_Container(
-  [ 'fluid' => true, 'id' => 'Features', 'ariaLabel' => 'features' ],
+  ['fluid' => true, 'id' => 'Features', 'ariaLabel' => 'features'],
   new BS_Row(
     null,
     ...array_map(
       function ($feature) {
         return new BS_Col(
-          [ 'lg' => 6, 'xl' => 4, 'id' => $feature['_id'], 'className' => 'Feature' ],
+          ['lg' => 6, 'xl' => 4, 'id' => $feature['_id'], 'className' => 'Feature'],
           new BS_Link(
-            [ 'to' => $feature['url'] ],
+            ['to' => $feature['url']],
 
             new BS_Heading2(['className' => 'h2'], $feature["title"]),
-            
+
             new BS_Paragraph(
-              [ 'className' => 'text-light text-decoration-none' ],
+              ['className' => 'text-light text-decoration-none'],
               $feature["subtitle"]
             )
           )
@@ -77,9 +77,9 @@ $html->add(new BS_Container(
     'className' => 'py-section',
   ],
   new BS_Row(
-    [ 'className' => 'justify-content-center' ],
+    ['className' => 'justify-content-center'],
     new BS_Col(
-      [ 'xs' => 12, 'xl' => 10 ],
+      ['xs' => 12, 'xl' => 10],
 
       new BS_SectionHeader([
         'title' => 'Latest Blog Entries',
@@ -87,7 +87,7 @@ $html->add(new BS_Container(
         'subtitle' => 'Christian quotes, mini-articles, music, and more',
       ]),
 
-      new BS_BlogEntries([ 'limit' => 12 ])
+      new BS_BlogEntries(['limit' => 12])
     )
   )
 ));

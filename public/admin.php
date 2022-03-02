@@ -19,10 +19,10 @@ if ($_POST['api']) {
       // prefix the ID as needed
       $_id =
         preg_match('/^[gh]?[0-9]+$/i', $_POST['_id'])
-          ? "strongs-" .
-            (preg_match('/^[0-9]/', $_POST['_id']) ? "g" : "") .
-            mb_strtolower($_POST['_id'])
-          : $_POST['_id'];
+        ? "strongs-" .
+        (preg_match('/^[0-9]/', $_POST['_id']) ? "g" : "") .
+        mb_strtolower($_POST['_id'])
+        : $_POST['_id'];
 
       // is a lexicon entry request
       if (preg_match('/^strongs-/', $_id)) {
@@ -83,8 +83,7 @@ if ($_POST['api']) {
 
             egp_bb(implode(' ', $searchable), true)
           );
-        }
-        else $searchable = null;
+        } else $searchable = null;
 
         // lookup/upsert the entry document
         $output = $db->documentFindUpsert('lexicon-entries', $_id, $document, $searchable);
@@ -93,7 +92,7 @@ if ($_POST['api']) {
         $lexicons = $db->documents('lexicons');
         $lexicons = array_filter(
           $lexicons,
-          function ($lexicon) use($output) {
+          function ($lexicon) use ($output) {
             return $lexicon->languageID === $output->language;
           }
         );
@@ -120,7 +119,7 @@ if ($_POST['api']) {
                 "lexicon" => $lexicon->_id,
                 "entry" => $output->_id,
                 "sequence" =>
-                  $lexicon->_id .
+                $lexicon->_id .
                   "-" .
                   str_pad(substr($output->_id, strpos($output->_id, '-') + 2), 4, "0", STR_PAD_LEFT),
                 "definition" => $upserted->definition,
@@ -144,8 +143,8 @@ if ($_POST['api']) {
         if ($original['shortDefinition'] !== $output->shortDefinition) {
           $db->update(
             'equipgod_old`.`StrongsNumbers',
-            [ 'ShortDefinition' => $output->shortDefinition ],
-            [ 'Number' => $original['_id'] ]
+            ['ShortDefinition' => $output->shortDefinition],
+            ['Number' => $original['_id']]
           );
         }
       }
@@ -165,7 +164,7 @@ if ($_POST['api']) {
       break;
 
     default:
-      $output = [ 'error' => 'invalid API task ' . $_POST['api'] ];
+      $output = ['error' => 'invalid API task ' . $_POST['api']];
   }
 
   // send the response as JSON
@@ -179,30 +178,30 @@ if ($_POST['api']) {
 
 // define available tabs
 $tabs = [
-  [ '_id' => '', 'title' => 'Home' ],
+  ['_id' => '', 'title' => 'Home'],
   [
     '_id' => 'bible',
     'title' => 'Bible',
     'subtabs' => [
-      [ '_id' => 'testaments', 'title' => 'Testaments' ],
-      [ '_id' => 'ranges', 'title' => 'Ranges' ],
-      [ '_id' => 'books', 'title' => 'Books' ],
-      [ '_id' => 'chapters', 'title' => 'Chapters' ],
-      [ '_id' => 'versions', 'title' => 'Versions' ],
-      [ '_id' => 'verses', 'title' => 'Verses' ],
+      ['_id' => 'testaments', 'title' => 'Testaments'],
+      ['_id' => 'ranges', 'title' => 'Ranges'],
+      ['_id' => 'books', 'title' => 'Books'],
+      ['_id' => 'chapters', 'title' => 'Chapters'],
+      ['_id' => 'versions', 'title' => 'Versions'],
+      ['_id' => 'verses', 'title' => 'Verses'],
     ],
   ],
-  [ '_id' => 'blog', 'title' => 'Blog' ],
-  [ '_id' => 'languages', 'title' => 'Languages' ],
+  ['_id' => 'blog', 'title' => 'Blog'],
+  ['_id' => 'languages', 'title' => 'Languages'],
   [
     '_id' => 'lexicons',
     'title' => 'Lexicons',
     'subtabs' => [
-      [ '_id' => 'versions', 'title' => 'Versions' ],
-      [ '_id' => 'entries', 'title' => 'Entries' ],
+      ['_id' => 'versions', 'title' => 'Versions'],
+      ['_id' => 'entries', 'title' => 'Entries'],
     ],
   ],
-  [ '_id' => 'reading-plans', 'title' => 'Reading Plans' ],
+  ['_id' => 'reading-plans', 'title' => 'Reading Plans'],
 ];
 
 // add URLs to tabs/subtabs
@@ -229,12 +228,14 @@ for ($tabIndex = 0; $tabIndex < $tabCount; $tabIndex++) {
 
 // determine the selected tab
 $selectedTab = egp_documentViaID($tabs, $_GET['tab'] ?: '');
+if (!$selectedTab) $selectedTab = (object)[];
 
 // determine the selected tab
 if ($selectedTab->subtabs && $_GET['subtab'])
   $selectedSubtab = egp_documentViaID($selectedTab->subtabs, $_GET['subtab']);
 else
   $selectedSubtab = null;
+if (!$selectedSubtab) $selectedSubtab = (object)[];
 
 // define page metadata
 $metadata = (object) [
@@ -268,20 +269,20 @@ if ($selectedTab->subtabs) {
 // add tab-specific content
 switch ($selectedTab->_id) {
   case 'blog':
-    $html->add(new BS_Division([ 'id' => 'react-like' ]));
+    $html->add(new BS_Division(['id' => 'react-like']));
 
     break;
 
   case 'lexicons':
     if ($selectedSubtab)
-      $html->add(new BS_Division([ 'id' => 'react-lexicons-' . $selectedSubtab->_id ]));
+      $html->add(new BS_Division(['id' => 'react-lexicons-' . $selectedSubtab->_id]));
     else
       $html->add(new BS_Lead(null, 'Please select a menu option above'));
 
     break;
 
   case 'reading-plans':
-    $html->add(new BS_Division([ 'id' => 'react-reading-plans' ]));
+    $html->add(new BS_Division(['id' => 'react-reading-plans']));
 
     break;
 
@@ -306,11 +307,11 @@ function admin_pages() {
   $rows = $db->rows($sql);
 
   $rows = array_map(
-    function ($row) {
+    function ($row) use ($selectedTab) {
       return [
         '_id' => $row['_id'],
         'title' => $row['Title'] ?: 'Home',
-        'url' => $selectedTab->url . '&page=' . $row['_id'],
+        'url' => ($selectedTab ? $selectedTab->url : '') . '&page=' . $row['_id'],
       ];
     },
     $rows
@@ -321,5 +322,5 @@ function admin_pages() {
     'items' => $rows,
   ]));
 
-  $html->add(new BS_Preformatted([ 'title' => 'Pages', 'item' => $rows ]));
+  $html->add(new BS_Preformatted(['title' => 'Pages', 'item' => $rows]));
 }

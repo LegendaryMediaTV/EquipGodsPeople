@@ -1,10 +1,10 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
-    
+
     new BS_Paragraph(
       null,
       '“Really, NO ONE is searching for God. … They know their life is MISSING something. They know they’re just EXISTING. They know that something’s WRONG, that something’s BROKEN. There’s a HOLE, a HOLLOWNESS inside of their soul. And they’re trying to find the LIFE that is eluding them. And MAYBE along the way they concluded that life is found in GOD. …'

@@ -1,4 +1,5 @@
 <?php
+
 /** convert BB shortcodes to HTML */
 function egp_bb($input, $text = false) {
   return preg_replace_callback_array(
@@ -18,11 +19,13 @@ function egp_bb($input, $text = false) {
       },
 
       // new line
-      '/\n/' => function () use ($text) { return $text ? "\n" : new BS_Break(); },
+      '/\n/' => function () use ($text) {
+        return $text ? "\n" : new BS_Break();
+      },
 
       // Bible link
       '/\[bible to="([^"]+)" \/\]/' => function ($match) use ($text) {
-        return $text ? $match[1] : new BS_BibleLink([ 'to' => $match[1] ]);
+        return $text ? $match[1] : new BS_BibleLink(['to' => $match[1]]);
       },
 
       // languages
@@ -45,14 +48,14 @@ function egp_bb($input, $text = false) {
       '/\[strongs id="([^"]+)"( tvm="([^"]+)")? \/\]/' => function ($match) use ($text) {
         return $text
           ? strtoupper($match[1])
-          : new BS_LexiconLink([ 'to' => $match[1], 'tvm'=> $match[3] ]);
+          : new BS_LexiconLink(['to' => $match[1], 'tvm' => $match[3]]);
       },
 
       // custom tags
-      '/\[sc\](.+?)\[\/sc\]/' => function ($match) {
+      '/\[sc\](.+?)\[\/sc\]/' => function ($match) use ($text) {
         return $text ? strtoupper($match[1]) : new BS_SmallCaps(null, $match[1]);
       },
-      '/\[verse\](.+?)\[\/verse\]/' => function ($match) {
+      '/\[verse\](.+?)\[\/verse\]/' => function ($match) use ($text) {
         return $text ? $match[1] : new BS_Verse(null, $match[1]);
       },
     ],
@@ -255,19 +258,19 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'Summary View of the Pre-Existence and Divinity of Our Saviour and Lord Jesus Christ',
+          'Summary View of the Pre-Existence and Divinity of Our Saviour and Lord Jesus Christ',
           'subtitle' => 'Chapter II',
           '_id' => 'chapter-02',
         ],
         [
           'title' =>
-            'The Name Jesus and Also the Name Christ Were Known from the Beginning, and Were Honored by the Inspired Prophets',
+          'The Name Jesus and Also the Name Christ Were Known from the Beginning, and Were Honored by the Inspired Prophets',
           'subtitle' => 'Chapter III',
           '_id' => 'chapter-03',
         ],
         [
           'title' =>
-            'The Religion Proclaimed by Him to All Nations Was Neither New nor Strange',
+          'The Religion Proclaimed by Him to All Nations Was Neither New nor Strange',
           'subtitle' => 'Chapter IV',
           '_id' => 'chapter-04',
         ],
@@ -278,19 +281,19 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'About the Time of Christ, in Accordance with Prophecy, the Rulers Who Had Governed the Jewish Nation in Regular Succession from the Days of Antiquity Came to an End, and Herod, the First Foreigner, Became King',
+          'About the Time of Christ, in Accordance with Prophecy, the Rulers Who Had Governed the Jewish Nation in Regular Succession from the Days of Antiquity Came to an End, and Herod, the First Foreigner, Became King',
           'subtitle' => 'Chapter VI',
           '_id' => 'chapter-06',
         ],
         [
           'title' =>
-            'The Alleged Discrepancy in the Gospels in Regard to the Genealogy of Christ',
+          'The Alleged Discrepancy in the Gospels in Regard to the Genealogy of Christ',
           'subtitle' => 'Chapter VII',
           '_id' => 'chapter-07',
         ],
         [
           'title' =>
-            'The Cruelty of Herod Toward the Infants, and the Manner of His Death',
+          'The Cruelty of Herod Toward the Infants, and the Manner of His Death',
           'subtitle' => 'Chapter VIII',
           '_id' => 'chapter-08',
         ],
@@ -333,25 +336,25 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Course Pursued by the Apostles After the Ascension of Christ',
+          'The Course Pursued by the Apostles After the Ascension of Christ',
           'subtitle' => 'Chapter I',
           '_id' => 'chapter-01',
         ],
         [
           'title' =>
-            'How Tiberius Was Affected When Informed by Pilate Concerning Christ',
+          'How Tiberius Was Affected When Informed by Pilate Concerning Christ',
           'subtitle' => 'Chapter II',
           '_id' => 'chapter-02',
         ],
         [
           'title' =>
-            'The Doctrine of Christ Soon Spread Throughout All the World',
+          'The Doctrine of Christ Soon Spread Throughout All the World',
           'subtitle' => 'Chapter III',
           '_id' => 'chapter-03',
         ],
         [
           'title' =>
-            'After the Death of Tiberius, Caius Appointed Agrippa King of the Jews, Having Punished Herod with Perpetual Exile',
+          'After the Death of Tiberius, Caius Appointed Agrippa King of the Jews, Having Punished Herod with Perpetual Exile',
           'subtitle' => 'Chapter IV',
           '_id' => 'chapter-04',
         ],
@@ -362,7 +365,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Misfortunes Which Overwhelmed the Jews After Their Presumption Against Christ',
+          'The Misfortunes Which Overwhelmed the Jews After Their Presumption Against Christ',
           'subtitle' => 'Chapter VI',
           '_id' => 'chapter-06',
         ],
@@ -383,7 +386,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'Agrippa, Who Was Also Called Herod, Having Persecuted the Apostles, Immediately Experienced the Divine Vengeance',
+          'Agrippa, Who Was Also Called Herod, Having Persecuted the Apostles, Immediately Experienced the Divine Vengeance',
           'subtitle' => 'Chapter X',
           '_id' => 'chapter-10',
         ],
@@ -414,7 +417,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'Mark First Proclaimed Christianity to the Inhabitants of Egypt',
+          'Mark First Proclaimed Christianity to the Inhabitants of Egypt',
           'subtitle' => 'Chapter XVI',
           '_id' => 'chapter-16',
         ],
@@ -430,49 +433,49 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Calamity Which Befell the Jews in Jerusalem on the Day of the Passover',
+          'The Calamity Which Befell the Jews in Jerusalem on the Day of the Passover',
           'subtitle' => 'Chapter XIX',
           '_id' => 'chapter-19',
         ],
         [
           'title' =>
-            'The Events Which Took Place in Jerusalem During the Reign of Nero',
+          'The Events Which Took Place in Jerusalem During the Reign of Nero',
           'subtitle' => 'Chapter XX',
           '_id' => 'chapter-20',
         ],
         [
           'title' =>
-            'The Egyptian, Who Is Mentioned Also in the Acts of the Apostles',
+          'The Egyptian, Who Is Mentioned Also in the Acts of the Apostles',
           'subtitle' => 'Chapter XXI',
           '_id' => 'chapter-21',
         ],
         [
           'title' =>
-            'Paul Having Been Sent Bound from Judea to Rome, Made His Defense, and Was Acquitted of Every Charge',
+          'Paul Having Been Sent Bound from Judea to Rome, Made His Defense, and Was Acquitted of Every Charge',
           'subtitle' => 'Chapter XXII',
           '_id' => 'chapter-22',
         ],
         [
           'title' =>
-            'The Martyrdom of James, Who Was Called the Brother of the Lord',
+          'The Martyrdom of James, Who Was Called the Brother of the Lord',
           'subtitle' => 'Chapter XXIII',
           '_id' => 'chapter-23',
         ],
         [
           'title' =>
-            'Annianus the First Bishop of the Church of Alexandria After Mark',
+          'Annianus the First Bishop of the Church of Alexandria After Mark',
           'subtitle' => 'Chapter XXXIV',
           '_id' => 'chapter-24',
         ],
         [
           'title' =>
-            'The Persecution Under Nero in Which Paul and Peter Were Honored at Rome with Martyrdom in Behalf of Religion',
+          'The Persecution Under Nero in Which Paul and Peter Were Honored at Rome with Martyrdom in Behalf of Religion',
           'subtitle' => 'Chapter XXV',
           '_id' => 'chapter-25',
         ],
         [
           'title' =>
-            'The Jews, Afflicted with Innumerable Evils, Commenced the Last War Against the Romans',
+          'The Jews, Afflicted with Innumerable Evils, Commenced the Last War Against the Romans',
           'subtitle' => 'Chapter XXVI',
           '_id' => 'chapter-26',
         ],
@@ -486,7 +489,7 @@ function egp_ecclesiasticalHistoryTOC() {
       'chapters' => [
         [
           'title' =>
-            'The Parts of the World in Which the Apostles Preached Christ',
+          'The Parts of the World in Which the Apostles Preached Christ',
           'subtitle' => 'Chapter I',
           '_id' => 'chapter-01',
         ],
@@ -607,7 +610,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Divine Scriptures That Are Accepted and Those That Are Not',
+          'The Divine Scriptures That Are Accepted and Those That Are Not',
           'subtitle' => 'Chapter XXV',
           '_id' => 'chapter-25',
         ],
@@ -673,7 +676,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Epistle of Clement and the Writings Falsely Ascribed to Him',
+          'The Epistle of Clement and the Writings Falsely Ascribed to Him',
           'subtitle' => 'Chapter XXXVIII',
           '_id' => 'chapter-38',
         ],
@@ -692,7 +695,7 @@ function egp_ecclesiasticalHistoryTOC() {
       'chapters' => [
         [
           'title' =>
-            'The Bishops of Rome and of Alexandria During the Reign of Trajan',
+          'The Bishops of Rome and of Alexandria During the Reign of Trajan',
           'subtitle' => 'Chapter I',
           '_id' => 'chapter-01',
         ],
@@ -703,19 +706,19 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Apologists That Wrote in Defense of the Faith During the Reign of Adrian',
+          'The Apologists That Wrote in Defense of the Faith During the Reign of Adrian',
           'subtitle' => 'Chapter III',
           '_id' => 'chapter-03',
         ],
         [
           'title' =>
-            'The Bishops of Rome and of Alexandria Under the Same Emperor',
+          'The Bishops of Rome and of Alexandria Under the Same Emperor',
           'subtitle' => 'Chapter IV',
           '_id' => 'chapter-04',
         ],
         [
           'title' =>
-            'The Bishops of Jerusalem from the Age of Our Saviour to the Period Under Consideration',
+          'The Bishops of Jerusalem from the Age of Our Saviour to the Period Under Consideration',
           'subtitle' => 'Chapter V',
           '_id' => 'chapter-05',
         ],
@@ -726,7 +729,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Persons That Became at That Time Leaders of Knowledge Falsely So-Called',
+          'The Persons That Became at That Time Leaders of Knowledge Falsely So-Called',
           'subtitle' => 'Chapter VII',
           '_id' => 'chapter-07',
         ],
@@ -737,13 +740,13 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Epistle of Adrian, Decreeing That We Should Not Be Punished Without a Trial',
+          'The Epistle of Adrian, Decreeing That We Should Not Be Punished Without a Trial',
           'subtitle' => 'Chapter IX',
           '_id' => 'chapter-09',
         ],
         [
           'title' =>
-            'The Bishops of Rome and of Alexandria During the Reign of Antoninus',
+          'The Bishops of Rome and of Alexandria During the Reign of Antoninus',
           'subtitle' => 'Chapter X',
           '_id' => 'chapter-10',
         ],
@@ -759,25 +762,25 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Epistle of Antoninus to the Common Assembly of Asia in Regard to Our Doctrine',
+          'The Epistle of Antoninus to the Common Assembly of Asia in Regard to Our Doctrine',
           'subtitle' => 'Chapter XIII',
           '_id' => 'chapter-13',
         ],
         [
           'title' =>
-            'The Circumstances Related of Polycarp, a Friend of the Apostles',
+          'The Circumstances Related of Polycarp, a Friend of the Apostles',
           'subtitle' => 'Chapter XIV',
           '_id' => 'chapter-14',
         ],
         [
           'title' =>
-            'Under Verus, Polycarp with Others Suffered Martyrdom at Smyrna',
+          'Under Verus, Polycarp with Others Suffered Martyrdom at Smyrna',
           'subtitle' => 'Chapter XV',
           '_id' => 'chapter-15',
         ],
         [
           'title' =>
-            'Justin the Philosopher Preaches the Word of Christ in Rome and Suffers Martyrdom',
+          'Justin the Philosopher Preaches the Word of Christ in Rome and Suffers Martyrdom',
           'subtitle' => 'Chapter XVI',
           '_id' => 'chapter-16',
         ],
@@ -793,7 +796,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Rulers of the Churches of Rome and Alexandria During the Reign of Verus',
+          'The Rulers of the Churches of Rome and Alexandria During the Reign of Verus',
           'subtitle' => 'Chapter XIX',
           '_id' => 'chapter-19',
         ],
@@ -814,7 +817,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'Dionysius, Bishop of Corinth, and the Epistles Which He Wrote',
+          'Dionysius, Bishop of Corinth, and the Epistles Which He Wrote',
           'subtitle' => 'Chapter XXIII',
           '_id' => 'chapter-23',
         ],
@@ -867,19 +870,19 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Number of Those Who Fought for Religion in Gaul Under Verus and the Nature of Their Conflicts',
+          'The Number of Those Who Fought for Religion in Gaul Under Verus and the Nature of Their Conflicts',
           'subtitle' => 'Chapter I',
           '_id' => 'chapter-01',
         ],
         [
           'title' =>
-            'The Martyrs, Beloved of God, Kindly Ministered Unto Those Who Fell in the Persecution',
+          'The Martyrs, Beloved of God, Kindly Ministered Unto Those Who Fell in the Persecution',
           'subtitle' => 'Chapter II',
           '_id' => 'chapter-02',
         ],
         [
           'title' =>
-            'The Vision Which Appeared in a Dream to the Witness Attalus',
+          'The Vision Which Appeared in a Dream to the Witness Attalus',
           'subtitle' => 'Chapter III',
           '_id' => 'chapter-03',
         ],
@@ -890,7 +893,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'God Sent Rain from Heaven for Marcus Aurelius Cæsar in Answer to the Prayers of Our People',
+          'God Sent Rain from Heaven for Marcus Aurelius Cæsar in Answer to the Prayers of Our People',
           'subtitle' => 'Chapter V',
           '_id' => 'chapter-05',
         ],
@@ -901,13 +904,13 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'Even Down to Those Times Miracles Were Performed by the Faithful',
+          'Even Down to Those Times Miracles Were Performed by the Faithful',
           'subtitle' => 'Chapter VII',
           '_id' => 'chapter-07',
         ],
         [
           'title' =>
-            'The Statements of Irenæus in Regard to the Divine Scriptures',
+          'The Statements of Irenæus in Regard to the Divine Scriptures',
           'subtitle' => 'Chapter VIII',
           '_id' => 'chapter-08',
         ],
@@ -948,7 +951,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Circumstances Related of Montanus and His False Prophets',
+          'The Circumstances Related of Montanus and His False Prophets',
           'subtitle' => 'Chapter XVI',
           '_id' => 'chapter-16',
         ],
@@ -959,7 +962,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Manner in Which Apollonius Refuted the Phrygians, and the Persons Whom He Mentions',
+          'The Manner in Which Apollonius Refuted the Phrygians, and the Persons Whom He Mentions',
           'subtitle' => 'Chapter XVIII',
           '_id' => 'chapter-18',
         ],
@@ -1010,7 +1013,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'Those Who First Advanced the Heresy of Artemon; Their Manner of Life, and How They Dared to Corrupt the Sacred Scriptures',
+          'Those Who First Advanced the Heresy of Artemon; Their Manner of Life, and How They Dared to Corrupt the Sacred Scriptures',
           'subtitle' => 'Chapter XXVIII',
           '_id' => 'chapter-28',
         ],
@@ -1034,7 +1037,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'While Still Very Young, He Taught Diligently the Word of Christ',
+          'While Still Very Young, He Taught Diligently the Word of Christ',
           'subtitle' => 'Chapter III',
           '_id' => 'chapter-03',
         ],
@@ -1165,7 +1168,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'Fabianus, Who Was Wonderfully Designated Bishop of Rome by God',
+          'Fabianus, Who Was Wonderfully Designated Bishop of Rome by God',
           'subtitle' => 'Chapter XXIX',
           '_id' => 'chapter-29',
         ],
@@ -1181,7 +1184,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Commentaries Which Origen Composed in Cæsarea in Palestine',
+          'The Commentaries Which Origen Composed in Cæsarea in Palestine',
           'subtitle' => 'Chapter XXXII',
           '_id' => 'chapter-32',
         ],
@@ -1279,7 +1282,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'Cyprian, and the Bishops with Him, First Taught That It Was Necessary to Purify by Baptism Those Converted from Heresy',
+          'Cyprian, and the Bishops with Him, First Taught That It Was Necessary to Purify by Baptism Those Converted from Heresy',
           'subtitle' => 'Chapter III',
           '_id' => 'chapter-03',
         ],
@@ -1300,7 +1303,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Abominable Error of the Heretics; the Divine Vision of Dianysius; and the Ecclesiastical Canon Which He Received',
+          'The Abominable Error of the Heretics; the Divine Vision of Dianysius; and the Ecclesiastical Canon Which He Received',
           'subtitle' => 'Chapter VII',
           '_id' => 'chapter-07',
         ],
@@ -1321,7 +1324,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Events Which Happened at This Time to Dionysius and Those in Egypt',
+          'The Events Which Happened at This Time to Dionysius and Those in Egypt',
           'subtitle' => 'Chapter XI',
           '_id' => 'chapter-11',
         ],
@@ -1367,7 +1370,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Festal Epistles of Dionysius, in Which He Also Gives a Paschal Canon',
+          'The Festal Epistles of Dionysius, in Which He Also Gives a Paschal Canon',
           'subtitle' => 'Chapter XX',
           '_id' => 'chapter-20',
         ],
@@ -1403,7 +1406,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'Paul of Samosata, and the Heresy Introduced by Hint at Antioch',
+          'Paul of Samosata, and the Heresy Introduced by Hint at Antioch',
           'subtitle' => 'Chapter XXVII',
           '_id' => 'chapter-27',
         ],
@@ -1414,7 +1417,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'Paul, Having Been Refuted by Malchion, a Presbyter from the Sophists, Was Excommunicated',
+          'Paul, Having Been Refuted by Malchion, a Presbyter from the Sophists, Was Excommunicated',
           'subtitle' => 'Chapter XXIX',
           '_id' => 'chapter-29',
         ],
@@ -1425,13 +1428,13 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Perversive Heresy of the Manicheans Which Began at This Time',
+          'The Perversive Heresy of the Manicheans Which Began at This Time',
           'subtitle' => 'Chapter XXXI',
           '_id' => 'chapter-31',
         ],
         [
           'title' =>
-            'The Distinguished Ecclesiastics of Our Day, and Which of Them Survived Until the Destruction of the Churches',
+          'The Distinguished Ecclesiastics of Our Day, and Which of Them Survived Until the Destruction of the Churches',
           'subtitle' => 'Chapter XXXII',
           '_id' => 'chapter-32',
         ],
@@ -1464,7 +1467,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Famous Martyrs of God, Who Filled Every Place with Their Memory and Won Various Crowns in Behalf of Religion',
+          'The Famous Martyrs of God, Who Filled Every Place with Their Memory and Won Various Crowns in Behalf of Religion',
           'subtitle' => 'Chapter IV',
           '_id' => 'chapter-04',
         ],
@@ -1495,7 +1498,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Writings of Phileas the Martyr Describing the Occurrences at Alexandria',
+          'The Writings of Phileas the Martyr Describing the Occurrences at Alexandria',
           'subtitle' => 'Chapter X',
           '_id' => 'chapter-10',
         ],
@@ -1506,13 +1509,13 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'Many Others, Both Men and Women, Who Suffered in Various Ways',
+          'Many Others, Both Men and Women, Who Suffered in Various Ways',
           'subtitle' => 'Chapter XII',
           '_id' => 'chapter-12',
         ],
         [
           'title' =>
-            'The Bishops of the Church That Evinced by Their Blood the Genuineness of the Religion Which They Preached',
+          'The Bishops of the Church That Evinced by Their Blood the Genuineness of the Religion Which They Preached',
           'subtitle' => 'Chapter XIII',
           '_id' => 'chapter-13',
         ],
@@ -1658,7 +1661,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Misfortunes Which Happened in Connection With These Things, in Famine, Pestilence, and War',
+          'The Misfortunes Which Happened in Connection With These Things, in Famine, Pestilence, and War',
           'subtitle' => 'Chapter VIII',
           '_id' => 'chapter-08',
         ],
@@ -1669,7 +1672,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Overthrow of the Tyrants and the Words, Which They Uttered Before Their Death',
+          'The Overthrow of the Tyrants and the Words, Which They Uttered Before Their Death',
           'subtitle' => 'Chapter X',
           '_id' => 'chapter-10',
         ],
@@ -1713,7 +1716,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'Copy of an Imperial Epistle in Which Money Is Granted to the Churches',
+          'Copy of an Imperial Epistle in Which Money Is Granted to the Churches',
           'subtitle' => 'Chapter VI',
           '_id' => 'chapter-06',
         ],
@@ -1729,7 +1732,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' =>
-            'The Victory of Constantine, and the Blessings Which Under Him Accrued to the Subjects of the Roman Empire',
+          'The Victory of Constantine, and the Blessings Which Under Him Accrued to the Subjects of the Roman Empire',
           'subtitle' => 'Chapter IX',
           '_id' => 'chapter-09',
         ],
@@ -1758,109 +1761,109 @@ function egp_inflectionName($flags) {
 /** retrieve all inflection types */
 function egp_inflectionTypes() {
   static $types;
-  
+
   if (!$types) {
     $types = [
       (object)[
         '_id' => 'type',
         'title' => 'Type',
         'flags' => [
-          (object)[ '_id' => 'Adj', 'title' => 'Adjective' ],
-          (object)[ '_id' => 'Adv', 'title' => 'Adverb' ],
+          (object)['_id' => 'Adj', 'title' => 'Adjective'],
+          (object)['_id' => 'Adv', 'title' => 'Adverb'],
           // (object)[ '_id' => 'Art', 'title' => 'Definite Article' ],
-          (object)[ '_id' => 'Conj', 'title' => 'Conjunction' ],
+          (object)['_id' => 'Conj', 'title' => 'Conjunction'],
           // (object)[ '_id' => 'Interj', 'title' => 'Interjection' ],
-          (object)[ '_id' => 'Noun', 'title' => 'Noun' ],
-          (object)[ '_id' => 'Ptc', 'title' => 'Participle' ],
-          (object)[ '_id' => 'Prep', 'title' => 'Preposition' ],
-          (object)[ '_id' => 'Pron', 'title' => 'Pronoun' ],
-          (object)[ '_id' => 'Vb', 'title' => 'Verb' ],
-          (object)[ '_id' => 'Vbl', 'title' => 'Verbal' ],
+          (object)['_id' => 'Noun', 'title' => 'Noun'],
+          (object)['_id' => 'Ptc', 'title' => 'Participle'],
+          (object)['_id' => 'Prep', 'title' => 'Preposition'],
+          (object)['_id' => 'Pron', 'title' => 'Pronoun'],
+          (object)['_id' => 'Vb', 'title' => 'Verb'],
+          (object)['_id' => 'Vbl', 'title' => 'Verbal'],
         ],
       ],
       (object)[
         '_id' => 'subtype',
         'title' => 'Sub-Type',
         'flags' => [
-          (object)[ '_id' => 'Pers', 'title' => 'Personal' ],
-          (object)[ '_id' => 'Dem', 'title' => 'Demonstrative' ],
-          (object)[ '_id' => 'Rel', 'title' => 'Relative' ],
-          (object)[ '_id' => 'Correl', 'title' => 'Correlative' ],
-          (object)[ '_id' => 'Indef', 'title' => 'Indefinite' ],
-          (object)[ '_id' => 'Interrog', 'title' => 'Interrogative' ],
-          (object)[ '_id' => 'Refl', 'title' => 'Reflexive' ],
-          (object)[ '_id' => 'Recip', 'title' => 'Reciprocal' ],
+          (object)['_id' => 'Pers', 'title' => 'Personal'],
+          (object)['_id' => 'Dem', 'title' => 'Demonstrative'],
+          (object)['_id' => 'Rel', 'title' => 'Relative'],
+          (object)['_id' => 'Correl', 'title' => 'Correlative'],
+          (object)['_id' => 'Indef', 'title' => 'Indefinite'],
+          (object)['_id' => 'Interrog', 'title' => 'Interrogative'],
+          (object)['_id' => 'Refl', 'title' => 'Reflexive'],
+          (object)['_id' => 'Recip', 'title' => 'Reciprocal'],
         ],
       ],
       (object)[
         '_id' => 'tense',
         'title' => 'Tense',
         'flags' => [
-          (object)[ '_id' => 'Pres', 'title' => 'Present' ],
-          (object)[ '_id' => 'Impf', 'title' => 'Imperfect' ],
-          (object)[ '_id' => 'Fut', 'title' => 'Future' ],
-          (object)[ '_id' => 'Aor', 'title' => 'Aorist' ],
-          (object)[ '_id' => 'Perf', 'title' => 'Perfect' ],
-          (object)[ '_id' => 'Plup', 'title' => 'Pluperfect' ],
-          (object)[ '_id' => 'Futpf', 'title' => 'Future Perfect' ],
+          (object)['_id' => 'Pres', 'title' => 'Present'],
+          (object)['_id' => 'Impf', 'title' => 'Imperfect'],
+          (object)['_id' => 'Fut', 'title' => 'Future'],
+          (object)['_id' => 'Aor', 'title' => 'Aorist'],
+          (object)['_id' => 'Perf', 'title' => 'Perfect'],
+          (object)['_id' => 'Plup', 'title' => 'Pluperfect'],
+          (object)['_id' => 'Futpf', 'title' => 'Future Perfect'],
         ],
       ],
       (object)[
         '_id' => 'voice',
         'title' => 'Voice',
         'flags' => [
-          (object)[ '_id' => 'Act', 'title' => 'Active' ],
-          (object)[ '_id' => 'Middle', 'title' => 'Middle' ],
-          (object)[ '_id' => 'Pass', 'title' => 'Passive' ],
-          (object)[ '_id' => 'Depon', 'title' => 'Deponent' ],
+          (object)['_id' => 'Act', 'title' => 'Active'],
+          (object)['_id' => 'Middle', 'title' => 'Middle'],
+          (object)['_id' => 'Pass', 'title' => 'Passive'],
+          (object)['_id' => 'Depon', 'title' => 'Deponent'],
         ],
       ],
       (object)[
         '_id' => 'mood',
         'title' => 'Mood',
         'flags' => [
-          (object)[ '_id' => 'Indic', 'title' => 'Indicative' ],
-          (object)[ '_id' => 'Subjunc', 'title' => 'Subjunctive' ],
-          (object)[ '_id' => 'Opt', 'title' => 'Optative' ],
-          (object)[ '_id' => 'Impv', 'title' => 'Imperative' ],
+          (object)['_id' => 'Indic', 'title' => 'Indicative'],
+          (object)['_id' => 'Subjunc', 'title' => 'Subjunctive'],
+          (object)['_id' => 'Opt', 'title' => 'Optative'],
+          (object)['_id' => 'Impv', 'title' => 'Imperative'],
         ],
       ],
       (object)[
         '_id' => 'person',
         'title' => 'Person',
         'flags' => [
-          (object)[ '_id' => '1', 'title' => '1st Person' ],
-          (object)[ '_id' => '2', 'title' => '2nd Person' ],
-          (object)[ '_id' => '3', 'title' => '3rd Person' ],
+          (object)['_id' => '1', 'title' => '1st Person'],
+          (object)['_id' => '2', 'title' => '2nd Person'],
+          (object)['_id' => '3', 'title' => '3rd Person'],
         ],
       ],
       (object)[
         '_id' => 'case',
         'title' => 'Case',
         'flags' => [
-          (object)[ '_id' => 'Nom', 'title' => 'Nominative' ],
-          (object)[ '_id' => 'Acc', 'title' => 'Accusative' ],
-          (object)[ '_id' => 'Gen', 'title' => 'Genitive' ],
-          (object)[ '_id' => 'Dat', 'title' => 'Dative' ],
-          (object)[ '_id' => 'Voc', 'title' => 'Vocative' ],
+          (object)['_id' => 'Nom', 'title' => 'Nominative'],
+          (object)['_id' => 'Acc', 'title' => 'Accusative'],
+          (object)['_id' => 'Gen', 'title' => 'Genitive'],
+          (object)['_id' => 'Dat', 'title' => 'Dative'],
+          (object)['_id' => 'Voc', 'title' => 'Vocative'],
         ],
       ],
       (object)[
         '_id' => 'number',
         'title' => 'Number',
         'flags' => [
-          (object)[ '_id' => 'Sg', 'title' => 'Singular' ],
+          (object)['_id' => 'Sg', 'title' => 'Singular'],
           // (object)[ '_id' => 'Dl', 'title' => 'Dual' ],
-          (object)[ '_id' => 'Pl', 'title' => 'Plural' ],
+          (object)['_id' => 'Pl', 'title' => 'Plural'],
         ],
       ],
       (object)[
         '_id' => 'gender',
         'title' => 'Gender',
         'flags' => [
-          (object)[ '_id' => 'Masc', 'title' => 'Masculine' ],
-          (object)[ '_id' => 'Fem', 'title' => 'Feminine' ],
-          (object)[ '_id' => 'Neut', 'title' => 'Neuter' ],
+          (object)['_id' => 'Masc', 'title' => 'Masculine'],
+          (object)['_id' => 'Fem', 'title' => 'Feminine'],
+          (object)['_id' => 'Neut', 'title' => 'Neuter'],
         ],
       ],
     ];
@@ -1908,7 +1911,7 @@ function egp_languages($languageID = null) {
 
   // specific language
   if ($languageID) {
-    switch(substr(strtolower($languageID), 0, 1)) {
+    switch (substr(strtolower($languageID), 0, 1)) {
       case 'g':
         $languageID = 'greek';
 
@@ -1930,47 +1933,46 @@ function egp_languages($languageID = null) {
 /** encode/decode language code and unicode */
 // TODO: update to utilize the new database
 function egp_lexiconConvert($languageID, $input, $encode = null) {
-	global $db;
+  global $db;
 
-	static $allPronunciations, $allAlphabets, $allModifiers, $allPunctuation;
+  static $allPronunciations, $allAlphabets, $allModifiers, $allPunctuation;
 
-	// set static variables
-	if (!$allPronunciations) {
-		/*************************
-		***** Pronunciations *****
-		*************************/
+  // set static variables
+  if (!$allPronunciations) {
+    /**************************
+     ***** Pronunciations *****
+     *************************/
 
-		$sql =
-			"SELECT *" .
-			"\nFROM equipgod_wordpress.EGP_LexiconPronunciationsView" .
-			"\nORDER BY LanguageID, PronunciationTypeID, LetterCode;"
-		;
-		$rows = $db->rows($sql);
-		$rowCount = count($rows);
+    $sql =
+      "SELECT *" .
+      "\nFROM equipgod_wordpress.EGP_LexiconPronunciationsView" .
+      "\nORDER BY LanguageID, PronunciationTypeID, LetterCode;";
+    $rows = $db->rows($sql);
+    $rowCount = count($rows);
 
-		// convert rows into an array
-		$allPronunciations = array();
-		for ($rowIndex = 0; $rowIndex < $rowCount; $rowIndex++) {
-			// create an array for the language
-			if (!isset($allPronunciations[$rows[$rowIndex]['LanguageID']]))
-				$allPronunciations[$rows[$rowIndex]['LanguageID']] = array();
+    // convert rows into an array
+    $allPronunciations = array();
+    for ($rowIndex = 0; $rowIndex < $rowCount; $rowIndex++) {
+      // create an array for the language
+      if (!isset($allPronunciations[$rows[$rowIndex]['LanguageID']]))
+        $allPronunciations[$rows[$rowIndex]['LanguageID']] = array();
 
-			// add the pronunciation to the corresponding language
-			$allPronunciations[$rows[$rowIndex]['LanguageID']][$rows[$rowIndex]['LetterCode']] = $rows[$rowIndex];
-		}
+      // add the pronunciation to the corresponding language
+      $allPronunciations[$rows[$rowIndex]['LanguageID']][$rows[$rowIndex]['LetterCode']] = $rows[$rowIndex];
+    }
 
-		//echo core_dump($allPronunciations, 'Pronunciations');
+    //echo core_dump($allPronunciations, 'Pronunciations');
 
 
-		/********************
-		***** Alphabets *****
-		********************/
+    /*********************
+     ***** Alphabets *****
+     ********************/
 
-		// create an alphabets array
-		$allAlphabets = array('G' => array(), 'H' => array());
+    // create an alphabets array
+    $allAlphabets = array('G' => array(), 'H' => array());
 
-		// get Greek alphabet from the database
-		$sql =
+    // get Greek alphabet from the database
+    $sql =
       "SELECT GreekID," .
       "\nLowerCode, LowerLetter," .
       "\nLowerPsiliCode, LowerPsili, LowerDasiaCode, LowerDasia, LowerOxiaCode, LowerOxia, LowerVariaCode, LowerVaria, LowerPerispomeniCode, LowerPerispomeni, LowerDialytikaCode, LowerDialytika, LowerYpogegrammeniCode, LowerYpogegrammeni, LowerVrachyCode, LowerVrachy, LowerMacronCode, LowerMacron," .
@@ -1987,128 +1989,128 @@ function egp_lexiconConvert($languageID, $input, $encode = null) {
       "\nUpperDasiaProsgegrammeniOxiaCode, UpperDasiaProsgegrammeniOxia, UpperDasiaProsgegrammeniVariaCode, UpperDasiaProsgegrammeniVaria, UpperDasiaProsgegrammeniPerispomeniCode, UpperDasiaProsgegrammeniPerispomeni" .
       "\nFROM equipgod_wordpress.EGP_LexiconGreekAlphabet" .
       "\nORDER BY GreekID;";
-		$rows = $db->rows($sql);
-		$rowCount = count($rows);
+    $rows = $db->rows($sql);
+    $rowCount = count($rows);
 
-		// add Greek to alphabet array
-		for ($rowID = 0; $rowID < $rowCount; $rowID++)
-			$allAlphabets['G'][$rows[$rowID]['LowerCode']] = $rows[$rowID];
+    // add Greek to alphabet array
+    for ($rowID = 0; $rowID < $rowCount; $rowID++)
+      $allAlphabets['G'][$rows[$rowID]['LowerCode']] = $rows[$rowID];
 
-		// get Hebrew alphabet from the database
-		$sql =
+    // get Hebrew alphabet from the database
+    $sql =
       "SELECT HebrewID, LetterCode, Letter" .
       "\nFROM equipgod_wordpress.EGP_LexiconHebrewAlphabet" .
       "\nORDER BY HebrewID;";
-		$rows = $db->rows($sql);
-		$rowCount = count($rows);
+    $rows = $db->rows($sql);
+    $rowCount = count($rows);
 
-		// add Hebrew to alphabet array
-		for ($rowID = 0; $rowID < $rowCount; $rowID++)
-			$allAlphabets['H'][$rows[$rowID]['LetterCode']] = $rows[$rowID];
+    // add Hebrew to alphabet array
+    for ($rowID = 0; $rowID < $rowCount; $rowID++)
+      $allAlphabets['H'][$rows[$rowID]['LetterCode']] = $rows[$rowID];
 
-		//echo core_dump($allAlphabets, 'Alphabets');
+    //echo core_dump($allAlphabets, 'Alphabets');
 
 
-		/********************
-		***** Modifiers *****
-		********************/
+    /*********************
+     ***** Modifiers *****
+     ********************/
 
-		// get modifiers from the database
-		$sql =
+    // get modifiers from the database
+    $sql =
       "SELECT *" .
       "\nFROM equipgod_wordpress.EGP_LexiconPronunciations" .
       "\nWHERE PronunciationTypeID = ?" .
       "\nORDER BY LanguageID, LetterCode;";
-		$rows = $db->rows($sql, 'MOD');
-		$rowCount = count($rows);
+    $rows = $db->rows($sql, 'MOD');
+    $rowCount = count($rows);
 
-		// create a modifiers array
-		$allModifiers = array();
-		for ($rowID = 0; $rowID < $rowCount; $rowID++) {
-			// create an array for the language
-			if (!isset($allModifiers[$rows[$rowID]['LanguageID']]))
-				$allModifiers[$rows[$rowID]['LanguageID']] = array();
+    // create a modifiers array
+    $allModifiers = array();
+    for ($rowID = 0; $rowID < $rowCount; $rowID++) {
+      // create an array for the language
+      if (!isset($allModifiers[$rows[$rowID]['LanguageID']]))
+        $allModifiers[$rows[$rowID]['LanguageID']] = array();
 
-			// add the modifier to the corresponding language
-			$allModifiers[$rows[$rowID]['LanguageID']][$rows[$rowID]['LetterCode']] = $rows[$rowID];
-		}
+      // add the modifier to the corresponding language
+      $allModifiers[$rows[$rowID]['LanguageID']][$rows[$rowID]['LetterCode']] = $rows[$rowID];
+    }
 
-		//echo core_dump($allModifiers, 'Modifiers');
+    //echo core_dump($allModifiers, 'Modifiers');
 
 
-		/**********************
-		***** Punctuation *****
-		**********************/
+    /***********************
+     ***** Punctuation *****
+     **********************/
 
-		// get punctuation from the database
-		$sql =
+    // get punctuation from the database
+    $sql =
       "SELECT LanguageID, Code, Unicode" .
       "\nFROM equipgod_wordpress.EGP_LexiconPunctuation" .
       "\nORDER BY LanguageID, Code;";
-		$rows = $db->rows($sql);
-		$rowCount = count($rows);
+    $rows = $db->rows($sql);
+    $rowCount = count($rows);
 
-		// create a punctuation array
-		$allPunctuation = array();
-		for ($rowID = 0; $rowID < $rowCount; $rowID++) {
-			// create an array for the language
-			if (!isset($allPunctuation[$rows[$rowID]['LanguageID']]))
-				$allPunctuation[$rows[$rowID]['LanguageID']] = array('Code' => array(), 'Unicode' => array());
+    // create a punctuation array
+    $allPunctuation = array();
+    for ($rowID = 0; $rowID < $rowCount; $rowID++) {
+      // create an array for the language
+      if (!isset($allPunctuation[$rows[$rowID]['LanguageID']]))
+        $allPunctuation[$rows[$rowID]['LanguageID']] = array('Code' => array(), 'Unicode' => array());
 
-			// add the punctuation to the corresponding language
-			$allPunctuation[$rows[$rowID]['LanguageID']]['Code'][] = $rows[$rowID]['Code'] !== '' ? $rows[$rowID]['Code'] : ' ';
-			$allPunctuation[$rows[$rowID]['LanguageID']]['Unicode'][] = $rows[$rowID]['Unicode'] !== '' ? $rows[$rowID]['Unicode'] : ' ';
-		}
+      // add the punctuation to the corresponding language
+      $allPunctuation[$rows[$rowID]['LanguageID']]['Code'][] = $rows[$rowID]['Code'] !== '' ? $rows[$rowID]['Code'] : ' ';
+      $allPunctuation[$rows[$rowID]['LanguageID']]['Unicode'][] = $rows[$rowID]['Unicode'] !== '' ? $rows[$rowID]['Unicode'] : ' ';
+    }
 
-		//echo core_dump($allPunctuation, 'Punctuation');
-	}
+    //echo core_dump($allPunctuation, 'Punctuation');
+  }
 
   // normalize language ID
   $languageID = strtoupper(substr($languageID, 0, 1));
 
-	// default encoding to true
-	if (is_null($encode))
-		$encode = true;
+  // default encoding to true
+  if (is_null($encode))
+    $encode = true;
 
 
-	/**********************************
-	***** egp_getLexiconTextSplit *****
-	**********************************/
+  /***********************************
+   ***** egp_getLexiconTextSplit *****
+   **********************************/
 
-	// split input into characters
-	// initialize variables
-	$characters = array();
-	$modifiers = array();
-	$decode = false;
+  // split input into characters
+  // initialize variables
+  $characters = array();
+  $modifiers = array();
+  $decode = false;
 
-	// support changes to Greek modifiers
-	if ($languageID === 'G')
-		$input = str_replace(array('\'', '='), array('’', '^'), $input);
-	// elseif ($languageID === 'H' && $encode)
-	// 	$input = strrev($input);
+  // support changes to Greek modifiers
+  if ($languageID === 'G')
+    $input = str_replace(array('\'', '='), array('’', '^'), $input);
+  // elseif ($languageID === 'H' && $encode)
+  // 	$input = strrev($input);
 
-	// process input, character by character
-	$charCount = mb_strlen($input, 'UTF-8');
-	for ($charID = 0; $charID < $charCount; $charID++) {
-		// get the current character
-		$current = mb_substr($input, $charID, 1, 'UTF-8');
-		//egp_p($charID . ' — ' . $current);
+  // process input, character by character
+  $charCount = mb_strlen($input, 'UTF-8');
+  for ($charID = 0; $charID < $charCount; $charID++) {
+    // get the current character
+    $current = mb_substr($input, $charID, 1, 'UTF-8');
+    //egp_p($charID . ' — ' . $current);
 
-		// is a modifier, add it to the list
-		if (isset($allModifiers[$languageID][$current]) !== false)
-			$modifiers[] = $current;
-		else {
-			// determine type of character
-			$punctuationID = array_search($current, $allPunctuation[$languageID]['Code']);
-			if ($punctuationID === false)
-				$punctuationID = array_search($current, $allPunctuation[$languageID]['Unicode']);
-			if (isset($allAlphabets[$languageID][$languageID === 'G' ? strtolower($current) : $current]))
-				$alphabetID = $languageID === 'G' ? strtolower($current) : $current;
-			else
-				$alphabetID = false;
+    // is a modifier, add it to the list
+    if (isset($allModifiers[$languageID][$current]) !== false)
+      $modifiers[] = $current;
+    else {
+      // determine type of character
+      $punctuationID = array_search($current, $allPunctuation[$languageID]['Code']);
+      if ($punctuationID === false)
+        $punctuationID = array_search($current, $allPunctuation[$languageID]['Unicode']);
+      if (isset($allAlphabets[$languageID][$languageID === 'G' ? strtolower($current) : $current]))
+        $alphabetID = $languageID === 'G' ? strtolower($current) : $current;
+      else
+        $alphabetID = false;
 
-			// is punctuation
-			if ($punctuationID !== false && !$decode) {
+      // is punctuation
+      if ($punctuationID !== false && !$decode) {
         // add stray modifiers
         $characters[] =
           array(
@@ -2119,125 +2121,120 @@ function egp_lexiconConvert($languageID, $input, $encode = null) {
         // add punctuation
         $characters[] = array('Character' => $current, 'Type' => 'punctuation', 'ID' => $punctuationID);
       }
-			// letter of the alphabet
-			elseif ($alphabetID !== false && !$decode) {
-				// determine alphabet key to use
-				$key = $languageID === 'G' ? strtolower($current) : $current;
+      // letter of the alphabet
+      elseif ($alphabetID !== false && !$decode) {
+        // determine alphabet key to use
+        $key = $languageID === 'G' ? strtolower($current) : $current;
 
-				// determine column name to pull
-				if ($languageID === 'G') {
-					$column = ctype_lower($current) ? 'Lower' : 'Upper';
-					if ($modifiers) {
-						if (in_array('+', $modifiers))
-							$column .= 'Dialytika';
-						if (in_array(')', $modifiers))
-							$column .= 'Psili';
-						if (in_array('(', $modifiers))
-							$column .= 'Dasia';
-						if (in_array('|', $modifiers))
-							$column .= ctype_lower($current) ? 'Ypogegrammeni' : 'Prosgegrammeni';
-						if (in_array('-', $modifiers))
-							$column .= 'Vrachy';
-						if (in_array('_', $modifiers))
-							$column .= 'Macron';
-						if (in_array('\\', $modifiers))
-							$column .= 'Varia';
-						if (in_array('/', $modifiers))
-							$column .= 'Oxia';
-						if (in_array('=', $modifiers))
-							$column .= 'Perispomeni';
-						if (in_array('^', $modifiers))
-							$column .= 'Perispomeni';
-					}
-					else
-						$column .= 'Letter';
+        // determine column name to pull
+        if ($languageID === 'G') {
+          $column = ctype_lower($current) ? 'Lower' : 'Upper';
+          if ($modifiers) {
+            if (in_array('+', $modifiers))
+              $column .= 'Dialytika';
+            if (in_array(')', $modifiers))
+              $column .= 'Psili';
+            if (in_array('(', $modifiers))
+              $column .= 'Dasia';
+            if (in_array('|', $modifiers))
+              $column .= ctype_lower($current) ? 'Ypogegrammeni' : 'Prosgegrammeni';
+            if (in_array('-', $modifiers))
+              $column .= 'Vrachy';
+            if (in_array('_', $modifiers))
+              $column .= 'Macron';
+            if (in_array('\\', $modifiers))
+              $column .= 'Varia';
+            if (in_array('/', $modifiers))
+              $column .= 'Oxia';
+            if (in_array('=', $modifiers))
+              $column .= 'Perispomeni';
+            if (in_array('^', $modifiers))
+              $column .= 'Perispomeni';
+          } else
+            $column .= 'Letter';
+        } else
+          $column = 'Letter';
 
-				}
-				else
-					$column = 'Letter';
+        // validate determined column
+        if (!isset($allAlphabets[$languageID][$key][$column]))
+          $column = '«invalid alphabet column “' . $column . '” for ' . implode('', $modifiers) . $current . '»';
 
-				// validate determined column
-				if (!isset($allAlphabets[$languageID][$key][$column]))
-					$column = '«invalid alphabet column “' . $column . '” for ' . implode('', $modifiers) . $current . '»';
+        $characters[] = array('Character' => $current, 'Type' => 'alphabet', 'ID' => $alphabetID, 'Modifiers' => $modifiers, 'Column' => $column);
+      } else {
+        $type = '';
+        $key = '';
+        $column = '';
 
-				$characters[] = array('Character' => $current, 'Type' => 'alphabet', 'ID' => $alphabetID, 'Modifiers' => $modifiers, 'Column' => $column);
-			}
-			else {
-				$type = null;
-				$key = null;
-				$column = null;
+        // check for encoded alphabet
+        foreach ($allAlphabets[$languageID] as $alphabetID => $alphabetRow) {
+          foreach ($alphabetRow as $alphabetColumn => $value) {
+            if (
+              preg_match('/^(Lower|Upper)/', $alphabetColumn)
+              && !preg_match('/Code$/', $alphabetColumn)
+              && $current === $value
+            ) {
+              $type = 'alphabet';
+              $key = $alphabetID;
+              $column = $alphabetColumn;
+              break;
+            }
+          }
 
-				// check for encoded alphabet
-				foreach ($allAlphabets[$languageID] as $alphabetID => $alphabetRow) {
-					foreach ($alphabetRow as $alphabetColumn => $value) {
-						if (
-							preg_match('/^(Lower|Upper)/', $alphabetColumn)
-							&& !preg_match('/Code$/', $alphabetColumn)
-							&& $current === $value
-						) {
-							$type = 'alphabet';
-							$key = $alphabetID;
-							$column = $alphabetColumn;
-							break;
-						}
-					}
+          if ($type)
+            break;
+        }
 
-					if ($type)
-						break;
-				}
+        // is encoded alphabet
+        if ($type === 'alphabet') {
+          $decode = true;
 
-				// is encoded alphabet
-				if ($type === 'alphabet') {
-					$decode = true;
+          $row = array();
 
-					$row = array();
+          if ($languageID === 'G' && substr($column, 0, 1) === 'U')
+            $row['Character'] = strtoupper($key);
+          else
+            $row['Character'] = $key;
 
-					if ($languageID === 'G' && substr($column, 0, 1) === 'U')
-						$row['Character'] = strtoupper($key);
-					else
-						$row['Character'] = $key;
+          $row['Type'] = $type;
+          $row['ID'] = $key;
 
-					$row['Type'] = $type;
-					$row['ID'] = $key;
+          $row['Modifiers'] = array();
+          if (strpos($column, 'Dialytika') !== false)
+            $row['Modifiers'][] = '+';
+          if (strpos($column, 'Psili') !== false)
+            $row['Modifiers'][] = ')';
+          if (strpos($column, 'Dasia') !== false)
+            $row['Modifiers'][] = '(';
+          if (strpos($column, 'Ypogegrammeni') !== false || strpos($column, 'Prosgegrammeni') !== false)
+            $row['Modifiers'][] = '|';
+          if (strpos($column, 'Vrachy') !== false)
+            $row['Modifiers'][] = '-';
+          if (strpos($column, 'Macron') !== false)
+            $row['Modifiers'][] = '_';
+          if (strpos($column, 'Varia') !== false)
+            $row['Modifiers'][] = '\\';
+          if (strpos($column, 'Oxia') !== false)
+            $row['Modifiers'][] = '/';
+          if (strpos($column, 'Perispomeni') !== false)
+            $row['Modifiers'][] = '^';
 
-					$row['Modifiers'] = array();
-					if (strpos($column, 'Dialytika') !== false)
-						$row['Modifiers'][] = '+';
-					if (strpos($column, 'Psili') !== false)
-						$row['Modifiers'][] = ')';
-					if (strpos($column, 'Dasia') !== false)
-						$row['Modifiers'][] = '(';
-					if (strpos($column, 'Ypogegrammeni') !== false || strpos($column, 'Prosgegrammeni') !== false)
-						$row['Modifiers'][] = '|';
-					if (strpos($column, 'Vrachy') !== false)
-						$row['Modifiers'][] = '-';
-					if (strpos($column, 'Macron') !== false)
-						$row['Modifiers'][] = '_';
-					if (strpos($column, 'Varia') !== false)
-						$row['Modifiers'][] = '\\';
-					if (strpos($column, 'Oxia') !== false)
-						$row['Modifiers'][] = '/';
-					if (strpos($column, 'Perispomeni') !== false)
-						$row['Modifiers'][] = '^';
+          $row['Column'] = str_replace('Letter', '', $column) . 'Code';
 
-					$row['Column'] = str_replace('Letter', '', $column) . 'Code';
+          $characters[] = $row;
+        } else {
+          $punctuationID = array_search($current, $allPunctuation[$languageID]['Unicode']);
 
-					$characters[] = $row;
-				}
-				else {
-					$punctuationID = array_search($current, $allPunctuation[$languageID]['Unicode']);
-
-					// is encoded punctuation
-					if ($decode && $punctuationID !== false) {
-						$characters[] =
-							array(
-								'Character' => $allPunctuation[$languageID]['Code'][$punctuationID],
-								'Type' => 'punctuation',
-								'ID' => $punctuationID
-							);
-					}
-					// not sure, leave it alone
-					else {
+          // is encoded punctuation
+          if ($decode && $punctuationID !== false) {
+            $characters[] =
+              array(
+                'Character' => $allPunctuation[$languageID]['Code'][$punctuationID],
+                'Type' => 'punctuation',
+                'ID' => $punctuationID
+              );
+          }
+          // not sure, leave it alone
+          else {
             // add stray modifiers
             $characters[] =
               array(
@@ -2247,72 +2244,72 @@ function egp_lexiconConvert($languageID, $input, $encode = null) {
 
             // add other character
             $characters[] =
-							array(
-								'Character' => $current,
-								'Type' => 'other'
-							);
-					}
-				}
-			}
+              array(
+                'Character' => $current,
+                'Type' => 'other'
+              );
+          }
+        }
+      }
 
-			// clear modifiers for the next letter
-			$modifiers = array();
-		}
-	}
-	$charCount = count($characters);
-	//echo core_dump($characters, 'Characters');
+      // clear modifiers for the next letter
+      $modifiers = array();
+    }
+  }
+  $charCount = count($characters);
+  //echo core_dump($characters, 'Characters');
 
-	// process character-by-character
-	$output = '';
-	for ($charID = 0; $charID < $charCount; $charID++) {
-		if ($characters[$charID]['Character'] === '[') {
-			// peek at the next 10 characters for a close bracket
-			$closePos = false;
-			for ($peekID = 1; $peekID < 10 && $charID + $peekID < $charCount; $peekID++) {
-				if ($characters[$charID + $peekID]['Character'] === ']') {
-					$closePos = $peekID;
-					break;
-				}
-			}
+  // process character-by-character
+  $output = '';
+  for ($charID = 0; $charID < $charCount; $charID++) {
+    if ($characters[$charID]['Character'] === '[') {
+      // peek at the next 10 characters for a close bracket
+      $closePos = false;
+      for ($peekID = 1; $peekID < 10 && $charID + $peekID < $charCount; $peekID++) {
+        if ($characters[$charID + $peekID]['Character'] === ']') {
+          $closePos = $peekID;
+          break;
+        }
+      }
 
-			// if there was a close bracket, get a snip
-			if ($closePos !== false) {
-				$snip = '';
-				for ($peekID = 0; $peekID <= $closePos; $peekID++) {
-					if (is_array($characters[$charID + $peekID]['Modifiers']))
-						$snip .= implode('', $characters[$charID + $peekID]['Modifiers']);
-					$snip .= $characters[$charID + $peekID]['Character'];
-				}
+      // if there was a close bracket, get a snip
+      if ($closePos !== false) {
+        $snip = '';
+        for ($peekID = 0; $peekID <= $closePos; $peekID++) {
+          if (is_array($characters[$charID + $peekID]['Modifiers']))
+            $snip .= implode('', $characters[$charID + $peekID]['Modifiers']);
+          $snip .= $characters[$charID + $peekID]['Character'];
+        }
 
-				$output .= $snip;
-				$charID += $closePos;
+        $output .= $snip;
+        $charID += $closePos;
 
-				continue;
-			}
-		}
+        continue;
+      }
+    }
 
-		// character type determines how to encode/decode
-		switch ($characters[$charID]['Type']) {
-			case 'alphabet':
-				if ($encode)
-					$output .= $allAlphabets[$languageID][$characters[$charID]['ID']][$characters[$charID]['Column']];
-				else
-					$output .= implode('', $characters[$charID]['Modifiers']) . $characters[$charID]['Character'];
+    // character type determines how to encode/decode
+    switch ($characters[$charID]['Type']) {
+      case 'alphabet':
+        if ($encode)
+          $output .= $allAlphabets[$languageID][$characters[$charID]['ID']][$characters[$charID]['Column']];
+        else
+          $output .= implode('', $characters[$charID]['Modifiers']) . $characters[$charID]['Character'];
 
-				break;
-			case 'punctuation':
-				if ($encode)
-					$output .= $allPunctuation[$languageID]['Unicode'][$characters[$charID]['ID']];
-				else
-					$output .= $characters[$charID]['Character'];
+        break;
+      case 'punctuation':
+        if ($encode)
+          $output .= $allPunctuation[$languageID]['Unicode'][$characters[$charID]['ID']];
+        else
+          $output .= $characters[$charID]['Character'];
 
-				break;
-			default:
-				$output .= $characters[$charID]['Character'];
-		}
-	}
+        break;
+      default:
+        $output .= $characters[$charID]['Character'];
+    }
+  }
 
-	return $output;
+  return $output;
 }
 
 /** retrieve a lexicon entry */
@@ -2343,7 +2340,7 @@ function egp_selectedVersions($selectedVersions = null) {
 }
 
 function page_crash($item) {
-  die(new BS_Preformatted([ 'item' => $item ]));
+  die(new BS_Preformatted(['item' => $item]));
 }
 
 /** retrieve page metadata for the given URL */
@@ -2353,12 +2350,12 @@ function page_metadata($url) {
   // tokenize the URL
   $tokens =
     $url !== '/'
-      ? explode('/', substr($url, 1, strlen($url) - 1))
-      : [];
+    ? explode('/', substr($url, 1, strlen($url) - 1))
+    : [];
   $tokens = array_reverse($tokens);
 
   // loop through tokens, looking for a page
-  foreach($tokens as $token) {
+  foreach ($tokens as $token) {
     if ($token) {
       $output = page_metadataViaToken($token);
       if ($output) break;
@@ -2375,7 +2372,7 @@ function page_metadataViaToken($token) {
 
   switch ($token) {
     case '':
-      $output = [ 'url' => '/', 'source' => '/index.php' ];
+      $output = ['url' => '/', 'source' => '/index.php'];
 
       break;
 
@@ -2391,7 +2388,7 @@ function page_metadataViaToken($token) {
       ];
 
       break;
-    
+
     case 'book-01-the-person-and-work-of-christ':
     case 'book-02-the-apostles':
     case 'book-03-missions-and-persecutions':
@@ -2424,7 +2421,7 @@ function page_metadataViaToken($token) {
         'source' => '/classic-works/pamphili-eusebius-ecclesiastical-history/' . $row->_id . '.php',
         'book' => $row,
       ];
-      
+
       break;
 
     case 'classic-works':
@@ -2508,7 +2505,7 @@ function page_metadataViaToken($token) {
         "\n    THEN CONCAT(CASE _id WHEN 'hebrew' THEN 'old-testament' ELSE 'new-testament' END, '-', _id)" .
         "\n    ELSE _id" .
         "\n  END = ?";
-      $row = $db->row($sql, [ $token ]);
+      $row = $db->row($sql, [$token]);
 
       if ($row) {
         // parse the JSON document
@@ -2520,7 +2517,7 @@ function page_metadataViaToken($token) {
             $output['parent'] = 'EGP Blog';
             $output['parentURL'] = '/egp-blog';
             $output['subtitle'] =
-              new BS_Link([ 'to' => $output['parentURL'] ], 'EGP Blog') .
+              new BS_Link(['to' => $output['parentURL']], 'EGP Blog') .
               ' post from ' .
               date('F j, Y', strtotime($output['published']));
             $output['source'] = $output['parentURL'] . '/' . $token . '.php';

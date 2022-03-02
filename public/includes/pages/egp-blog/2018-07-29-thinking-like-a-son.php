@@ -1,10 +1,10 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
-    
+
     new BS_Paragraph(
       null,
       '“One of the more FRUSTRATING parts of my relationship with [God] is the fact that He won’t always TELL ME what to do. All I want is HIS WILL. ‘Just TELL ME what to do. I’ve got Door A, B, C. Just tell me WHICH ONE, and I’m happy. I LOVE Your will. It’s ALWAYS been good.’ There are sometimes I want to know HIS PLAN for my life. ‘Just SHOW ME what I’m SUPPOSED to do.’ And I’m standing here and I hear NOTHING. …'
@@ -25,7 +25,7 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'http://podcasts.ibethel.org/en/podcasts/treasuring-the-word' ],
+        ['to' => 'http://podcasts.ibethel.org/en/podcasts/treasuring-the-word'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Treasuring the Word'),

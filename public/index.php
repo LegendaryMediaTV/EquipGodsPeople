@@ -27,8 +27,7 @@ if ($pageURL !== $metadata->url) {
   if ($_SERVER['SERVER_NAME'] === 'localhost') {
     echo 'Requested: ' . $pageURL . '<br>';
     echo 'Metadata: ' . var_export($metadata, true);
-  }
-  else {
+  } else {
     header('Status: 301 Moved Permanently', false, 301);
     header('Location: ' . $metadata->url);
   }

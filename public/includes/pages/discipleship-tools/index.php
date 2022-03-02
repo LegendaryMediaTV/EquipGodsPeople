@@ -1,9 +1,9 @@
 <?php
 $html->add(new BS_Container(
-  [ 'className' => 'py-section' ],
+  ['className' => 'py-section'],
 
   new BS_SectionWithHeader(
-    [ 'title' => 'Getting More from Your Bible', 'first' => true ],
+    ['title' => 'Getting More from Your Bible', 'first' => true],
 
     new BS_Heading3(null, 'The Amplified Bible'),
 
@@ -11,21 +11,21 @@ $html->add(new BS_Container(
       null,
 
       'You can find it at most any bookstore (',
-      new BS_Link([ 'to' => 'https://www.mardel.com/' ], 'Mardel'),
+      new BS_Link(['to' => 'https://www.mardel.com/'], 'Mardel'),
       ', ',
-      new BS_Link([ 'to' => 'https://www.lifeway.com/' ], 'Lifeway'),
+      new BS_Link(['to' => 'https://www.lifeway.com/'], 'Lifeway'),
       ', ',
       new BS_Link(
-        [ 'to' => 'https://www.booksamillion.com/' ],
+        ['to' => 'https://www.booksamillion.com/'],
         'Books-a-Million'
       ),
       ', ',
       new BS_Link(
-        [ 'to' => 'https://www.barnesandnoble.com/' ],
+        ['to' => 'https://www.barnesandnoble.com/'],
         'Barnes &amp; Noble'
       ),
       ', ',
-      new BS_Link([ 'to' => 'https://www.amazon.com' ], 'Amazon'),
+      new BS_Link(['to' => 'https://www.amazon.com'], 'Amazon'),
       ').',
     ),
 
@@ -79,8 +79,8 @@ $html->add(new BS_Container(
   ////////////////////////////////////////////////////////////////////////
 
   new BS_SectionWithHeader(
-    [ 'title' => 'Going Deeper' ],
-    
+    ['title' => 'Going Deeper'],
+
     new BS_Heading3(null, 'KJV (or NASB) Greek and Hebrew Key Study Bible'),
 
     new BS_List([
@@ -105,8 +105,8 @@ $html->add(new BS_Container(
   ////////////////////////////////////////////////////////////////////////
 
   new BS_SectionWithHeader(
-    [ 'title' => 'Advanced Study Techniques' ],
-    
+    ['title' => 'Advanced Study Techniques'],
+
     new BS_Heading3(null, 'Interlinear Greek New Testament'),
 
     new BS_Paragraph(
@@ -208,11 +208,11 @@ $html->add(new BS_Container(
         'expounded definitions',
         implode('', [
           'shows definition, and the verses that each definition section applies (e.g., a. definition 1 ',
-          new BS_BibleLink([ 'to' => 'Hebrews 6:13' ]),
+          new BS_BibleLink(['to' => 'Hebrews 6:13']),
           '; b. definition 2 ',
-          new BS_BibleLink([ 'to' => 'Acts 2:7' ]),
+          new BS_BibleLink(['to' => 'Acts 2:7']),
           ', ',
-          new BS_BibleLink([ 'to' => 'Romans 3:17' ]),
+          new BS_BibleLink(['to' => 'Romans 3:17']),
           ', etc.)',
         ]),
       ],
@@ -222,13 +222,13 @@ $html->add(new BS_Container(
   ////////////////////////////////////////////////////////////////////////
 
   new BS_SectionWithHeader(
-    [ 'title' => 'Study Methods' ],
-    
+    ['title' => 'Study Methods'],
+
     new BS_Paragraph(
       null,
-      
+
       'The most important thing to do before picking up a book is pray. Ask the Holy Spirit to speak to you, because He reveals all things. (',
-      new BS_BibleLink([ 'to' => '1 Corinthians 2:9–12' ]),
+      new BS_BibleLink(['to' => '1 Corinthians 2:9–12']),
       ')',
     ),
 

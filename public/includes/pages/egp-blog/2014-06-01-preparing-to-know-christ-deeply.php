@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -22,11 +22,11 @@ $html->add(new BS_BlogEntryPage(
 
     new BS_BlockquoteFooter(
       null,
-      
+
       '—',
       new BS_Link(
-        [ 'to' => 'https://www.desiringgod.org/messages/preparing-to-know-christ-deeply-through-suffering' ],
-        
+        ['to' => 'https://www.desiringgod.org/messages/preparing-to-know-christ-deeply-through-suffering'],
+
         'John Piper, ',
         new BS_Citation(
           null,

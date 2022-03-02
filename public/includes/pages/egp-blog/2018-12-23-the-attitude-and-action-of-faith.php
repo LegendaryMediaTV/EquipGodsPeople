@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -25,8 +25,8 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'https://itunes.apple.com/us/podcast/derek-prince-legacy-radio-international/id1345041114?mt=2&i=1000418595255' ],
-        
+        ['to' => 'https://itunes.apple.com/us/podcast/derek-prince-legacy-radio-international/id1345041114?mt=2&i=1000418595255'],
+
         'Derek Prince, ',
         new BS_Citation(null, 'God’s Abundance, part 6'),
       ),

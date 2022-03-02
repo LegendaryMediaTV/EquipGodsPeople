@@ -1,8 +1,8 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
-  new BS_BiblePassage([ 'passage' => 'Luke 6:30', 'version' => 'NASB' ]),
+  new BS_BiblePassage(['passage' => 'Luke 6:30', 'version' => 'NASB']),
 
   new BS_Paragraph(
     null,
@@ -18,11 +18,11 @@ $html->add(new BS_BlogEntryPage(
     null,
 
     'In this passage there is a caveat that many overlook. It says, “Give to everyone who asks of you,” however, it doesn’t say that you have to give as MUCH as they asked of you or even WHAT they asked of you. In fact, Peter and John were once asked for alms by a beggar, but they healed him instead of giving him food or money and then used it as an opportunity to tell people about Jesus. (',
-    new BS_BibleLink([ 'to' => 'Acts 3' ]),
+    new BS_BibleLink(['to' => 'Acts 3']),
     ')',
   ),
 
-  new BS_BiblePassage([ 'passage' => '2 Corinthians 8:11–15', 'version' => 'NLT' ]),
+  new BS_BiblePassage(['passage' => '2 Corinthians 8:11–15', 'version' => 'NLT']),
 
   new BS_Paragraph(
     null,

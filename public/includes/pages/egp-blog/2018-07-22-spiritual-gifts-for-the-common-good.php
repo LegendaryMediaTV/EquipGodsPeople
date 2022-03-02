@@ -1,10 +1,10 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
-    
+
     new BS_Paragraph(
       null,
       '“Nowhere in the Bible does Paul provide a complete list of the gifts that are available to the children of God. In fact, what we see throughout the Bible is that he provides us a variety of partial lists. … And then even Peter hops in … with yet another list. And these lists do not correspond with one another. …'
@@ -40,7 +40,7 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'https://www.tvcresources.net/resource-library/sermons/for-the-common-good' ],
+        ['to' => 'https://www.tvcresources.net/resource-library/sermons/for-the-common-good'],
 
         'Matt Chandler, The Village Church, ',
         new BS_Citation(null, 'For the Common Good'),

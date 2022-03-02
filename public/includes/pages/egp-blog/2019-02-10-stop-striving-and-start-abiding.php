@@ -1,10 +1,10 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
-    
+
     new BS_Paragraph(
       null,
       '“Jesus didn’t come to GIVE you a key, He IS the key. And lot of us, we want a key to God’s hidden treasures, but Jesus didn’t come to GIVE us hidden treasures, He came to BE for us the hidden treasure. … A lot of us really want what God HAS for us, but we don’t want GOD. We want whatever Jesus might PASS ON to us, but we want to pass on JESUS. And a huge part of the dilemma is that we have a sense that Jesus has INSIGHTS to life, He has PRINCIPLES we need. That, the scriptures, if we can just get AHOLD of them and UNDERSTAND them, could help us live the life we’re created to live. But can we do that without God INVADING our space? … We don’t understand that EVERYTHING God wants to do IN us, He wants to do WITH us in HIM.'
@@ -22,7 +22,7 @@ $html->add(new BS_BlogEntryPage(
 
     new BS_BlockquoteFooter(
       null,
-      
+
       '—Erwin McManus, Mosaic, ',
       new BS_Citation(null, 'Hidden Treasures'),
     ),

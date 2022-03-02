@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -15,7 +15,7 @@ $html->add(new BS_BlogEntryPage(
       'The Bible says that He looks for WORSHIPERS … because we always BECOME like whatever we WORSHIP. … It means that it ALL has to be in accordance to what GOD SAYS, and what HE THINKS, and what HE has PURPOSED for my life.”'
     ),
 
-    new BS_BiblePassage([ 'passage' => 'Proverbs 3:5–6', 'version' => 'NASB' ]),
+    new BS_BiblePassage(['passage' => 'Proverbs 3:5–6', 'version' => 'NASB']),
 
     new BS_Paragraph(
       null,
@@ -27,7 +27,7 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'http://podcasts.ibethel.org/en/podcasts/trusting-the-trustworthy-one' ],
+        ['to' => 'http://podcasts.ibethel.org/en/podcasts/trusting-the-trustworthy-one'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Trusting the Trustworthy One'),

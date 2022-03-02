@@ -1,13 +1,13 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
 
     new BS_Paragraph(
       null,
-      
+
       'You are all [[bible to="Psalm 40:17" /]]' . PHP_EOL,
       'Big and small [[bible to="Ephesians 4:6" /]]' . PHP_EOL,
       'Beautiful [[bible to="Psalm 27:4" /]]' . PHP_EOL,
@@ -27,7 +27,7 @@ $html->add(new BS_BlogEntryPage(
 
     new BS_Paragraph(
       null,
-      
+
       'Be near, O God [[bible to="James 4:8" /]]' . PHP_EOL,
       'Be near, O God, of us [[bible to="Hebrews 11:6" /]]' . PHP_EOL,
       'Your nearness is to us our good [[bible to="Psalm 73:28" /]]',

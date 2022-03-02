@@ -1,8 +1,8 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
-  new BS_BiblePassage([ 'passage' => 'Jeremiah 31:2–4', 'version' => 'ESV' ]),
+  new BS_BiblePassage(['passage' => 'Jeremiah 31:2–4', 'version' => 'ESV']),
 
   new BS_Paragraph(
     null,

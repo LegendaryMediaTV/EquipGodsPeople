@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -9,7 +9,7 @@ $html->add(new BS_BlogEntryPage(
       null,
 
       '“I do think we should notice something though. It says, ‘when he saw the WIND.’ [',
-      new BS_BibleLink([ 'to' => 'Matthew 14:30' ]),
+      new BS_BibleLink(['to' => 'Matthew 14:30']),
       '] … We would probably all agree that it’s not really POSSIBLE to ‘see the wind.’ … You see the EFFECT of wind, but you don’t see the WIND, right? … Most of the time we LOSE OUR FAITH because we LOSE SIGHT of God, … but you can see the STUFF around you. … I think the reality is that the moment you begin to move toward God, the VISIBLE and the INVISIBLE become ONE UNIVERSE to you. … You can see how GOD is moving, because it’s not just that the WIND is moving, it’s that JESUS is moving the wind. …',
     ),
 

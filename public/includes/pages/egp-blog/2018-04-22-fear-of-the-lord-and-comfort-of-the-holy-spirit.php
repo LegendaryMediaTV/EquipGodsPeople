@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -20,7 +20,7 @@ $html->add(new BS_BlogEntryPage(
       'But what kept [the early church] strong in a place of PEACE? …'
     ),
 
-    new BS_BiblePassage([ 'passage' => 'Acts 9:31', 'version' => 'NKJV' ]),
+    new BS_BiblePassage(['passage' => 'Acts 9:31', 'version' => 'NKJV']),
 
     new BS_Paragraph(
       null,
@@ -47,7 +47,7 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'http://podcasts.ibethel.org/en/podcasts/increase-from-blessing' ],
+        ['to' => 'http://podcasts.ibethel.org/en/podcasts/increase-from-blessing'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Increase from Blessing'),

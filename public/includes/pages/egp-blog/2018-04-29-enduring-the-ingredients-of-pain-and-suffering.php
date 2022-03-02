@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -10,7 +10,7 @@ $html->add(new BS_BlogEntryPage(
       '“The Bible says that God can use the pain that we’re SUFFERING right now for His Glory. He can turn it into a GOOD thing. …'
     ),
 
-    new BS_BiblePassage([ 'passage' => 'James 1:2–4', 'version' => 'ESV' ]),
+    new BS_BiblePassage(['passage' => 'James 1:2–4', 'version' => 'ESV']),
 
     new BS_Paragraph(
       null,
@@ -27,7 +27,7 @@ $html->add(new BS_BlogEntryPage(
       'It’s like when you’re making a cake, you use ingredients like flour, and butter, and eggs, and sugar. And if you look at each [raw] ingredient…GROSS…the sugar’s fine, but you mix it all up and you throw it in an oven and out comes THIS! … You’re concerned about the END RESULT. And that’s what God’s saying. These are ‘INGREDIENTS’ He throws into our lives. But what we don’t understand is that—those things mixed in—He’s concerned about who we are at the END of our lives. …'
     ),
 
-    new BS_BiblePassage([ 'passage' => 'James 1:12', 'version' => 'ESV' ]),
+    new BS_BiblePassage(['passage' => 'James 1:12', 'version' => 'ESV']),
 
     new BS_Paragraph(
       null,

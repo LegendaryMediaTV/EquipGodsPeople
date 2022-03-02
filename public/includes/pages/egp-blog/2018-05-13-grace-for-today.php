@@ -1,15 +1,15 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
-  new BS_BiblePassage([ 'passage' => '2 Corinthians 12:7–9', 'version' => 'NASB' ]),
+  new BS_BiblePassage(['passage' => '2 Corinthians 12:7–9', 'version' => 'NASB']),
 
   new BS_Paragraph(
     null,
 
     'While most of the time, we think of grace as simply, “not getting the punishment that is deserved” (i.e., just a synonym for mercy), it’s really best defined as “getting favor or kindness that is not deserved”. Looking closer at the word translated “sufficient” (',
     new BS_LexiconLink(
-      [ 'to' => 'G714' ],
+      ['to' => 'G714'],
 
       'G714 ',
       new BS_Italics(null, 'arkeo'),

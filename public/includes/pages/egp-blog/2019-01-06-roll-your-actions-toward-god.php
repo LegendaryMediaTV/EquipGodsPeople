@@ -1,10 +1,10 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Paragraph(
     null,
-    new BS_BibleLink([ 'to' => 'Proverbs 16:3' ]),
+    new BS_BibleLink(['to' => 'Proverbs 16:3']),
     ' literally says, “Roll your actions toward Yahweh and your devices will be setup.” While that can seem a bit cryptic at first, there is a lot of beautiful imagery here.',
   ),
 

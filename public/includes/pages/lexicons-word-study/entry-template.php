@@ -33,7 +33,7 @@ $sql =
   "\n  d.Collection = 'lexicon-definitions'" .
   "\n  AND d.Document LIKE ?" .
   "\nORDER BY l.Sequence";
-$rows = $db->rows($sql, [ '%"entry":"' . $metadata->_id . '"%' ]);
+$rows = $db->rows($sql, ['%"entry":"' . $metadata->_id . '"%']);
 
 // retrieve previous/next
 if ($metadata->previous)
@@ -53,7 +53,7 @@ if ($metadata->inflections) {
 }
 
 $html->add(new BS_Container(
-  [ 'className' => 'py-section' ],
+  ['className' => 'py-section'],
 
   new BS_Nav([
     'tabs' => true,
@@ -62,7 +62,7 @@ $html->add(new BS_Container(
     'className' => 'h4 mb-5',
   ]),
 
-  new BS_DefinitionList([ 'items' => $summary, 'className' => 'mb-5' ]),
+  new BS_DefinitionList(['items' => $summary, 'className' => 'mb-5']),
 
   implode('', array_map(
     function ($row) {
@@ -74,11 +74,11 @@ $html->add(new BS_Container(
         [
           new BS_Heading2(null, $lexicon->title),
 
-          new BS_Blockquote(null, new BS_Paragraph(null, $definition->definition )),
+          new BS_Blockquote(null, new BS_Paragraph(null, $definition->definition)),
 
           $lexicon->copyright
             ? new BS_Paragraph(
-              [ 'className' => 'small text-muted' ],
+              ['className' => 'small text-muted'],
 
               new BS_Italics(null, $lexicon->copyright)
             )
@@ -104,9 +104,9 @@ $html->add(new BS_Container(
         ...array_map(
           function ($inflection) {
             return new BS_Col(
-              [ 'md' => 4 ],
+              ['md' => 4],
 
-              new BS_Span([ 'className' => 'fs-4' ], $inflection['name']),
+              new BS_Span(['className' => 'fs-4'], $inflection['name']),
               ' – ',
               egp_inflectionName($inflection['flags']),
             );
@@ -116,7 +116,7 @@ $html->add(new BS_Container(
         )
       ),
 
-      new BS_Heading3([ 'className' => 'mt-5' ], 'Inflection Legend'),
+      new BS_Heading3(['className' => 'mt-5'], 'Inflection Legend'),
 
       new BS_Row(
         null,
@@ -124,10 +124,10 @@ $html->add(new BS_Container(
         ...array_map(
           function ($inflectionType) {
             return new BS_Col(
-              [ 'md' => 4 ],
+              ['md' => 4],
 
               new BS_Heading4(
-                [ 'className' => 'mt-2' ],
+                ['className' => 'mt-2'],
 
                 $inflectionType->title
               ),

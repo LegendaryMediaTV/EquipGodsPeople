@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -9,7 +9,7 @@ $html->add(new BS_BlogEntryPage(
       null,
 
       '“[Jesus does] not demand OBEDIENCE from people to whom [He has] given no GRACE. … At the last judgment, it will be plain to all the world that ALL disobedience is IN SPITE of much TRUTH and much GRACE. Paul gives the principle in ',
-      new BS_BibleLink([ 'to' => '2 Corinthians 8:12' ]),
+      new BS_BibleLink(['to' => '2 Corinthians 8:12']),
       '. … ‘If the READINESS is there … it is acceptable according to what a person HAS, not according to what he does NOT have.’ … Jesus does NOT demand FRUIT where He has not SOWN seed. …',
     ),
 
@@ -27,9 +27,9 @@ $html->add(new BS_BlogEntryPage(
       null,
 
       '‘The eyes of the [sc]Lord[/sc] run to and fro throughout the whole earth to show Himself mighty on behalf of those whose hearts are whole toward Him.’ (',
-      new BS_BibleLink([ 'to' => '2 Chronicles 16:9' ]),
+      new BS_BibleLink(['to' => '2 Chronicles 16:9']),
       ') I love the thought that God is looking everywhere. ‘Where is SOMEBODY that will let Me LIFT the load? Where is SOMEBODY who will let Me CARRY their load?’ Or ',
-      new BS_BibleLink([ 'to' => 'Isaiah 64:4' ]),
+      new BS_BibleLink(['to' => 'Isaiah 64:4']),
       ', ‘Who is a god like You who WORKS for those who WAIT for Him’, who let You carry their burdens? … Remember, He NEVER leaves you to yourself.”',
     ),
 

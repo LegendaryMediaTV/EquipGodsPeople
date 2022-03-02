@@ -1,8 +1,8 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
-  new BS_BiblePassage([ 'passage' => 'James 3:2–6', 'version' => 'NASB' ]),
+  new BS_BiblePassage(['passage' => 'James 3:2–6', 'version' => 'NASB']),
 
   new BS_Paragraph(
     null,
@@ -19,15 +19,15 @@ $html->add(new BS_BlogEntryPage(
 
     'In verse six, James says that the tongue is “the very world of iniquity.” The word translated here as “world” (',
     new BS_LexiconLink(
-      [ 'to' => 'G2889' ],
+      ['to' => 'G2889'],
 
       'kosmos G2889, ',
       new BS_Italics(null, 'kaw’-smaws'),
     ),
     ') is the word we get “cosmos” directly from, and basically means “all of creation.” So, the idea here is that the things we say are the very universe in which sin resides. He goes on to say in the same verse that the tongue “defiles the entire body.” The word translated here as “defile” (',
     new BS_LexiconLink(
-      [ 'to' => 'G4695' ],
-      
+      ['to' => 'G4695'],
+
       'spiloo G4695, ',
       new BS_Italics(null, 'spee-law’-oh'),
     ),

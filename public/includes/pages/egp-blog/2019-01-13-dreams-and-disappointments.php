@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -27,10 +27,10 @@ $html->add(new BS_BlogEntryPage(
 
     new BS_BlockquoteFooter(
       null,
-      
+
       '—',
       new BS_Link(
-        [ 'to' => 'http://podcasts.ibethel.org/en/podcasts/promises-fulfilled' ],
+        ['to' => 'http://podcasts.ibethel.org/en/podcasts/promises-fulfilled'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Promises Fulfilled'),

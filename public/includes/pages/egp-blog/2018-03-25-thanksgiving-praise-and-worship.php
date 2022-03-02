@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Blockquote(
     null,
@@ -25,7 +25,7 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'http://podcasts.ibethel.org/en/podcasts/designed-for-his-glory' ],
+        ['to' => 'http://podcasts.ibethel.org/en/podcasts/designed-for-his-glory'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Designed for His Glory'),

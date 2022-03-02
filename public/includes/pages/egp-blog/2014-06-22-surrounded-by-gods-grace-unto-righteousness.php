@@ -1,8 +1,8 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
-  new BS_BiblePassage([ 'passage' => 'Isaiah 58:6–11', 'version' => 'NASB' ]),
+  new BS_BiblePassage(['passage' => 'Isaiah 58:6–11', 'version' => 'NASB']),
 
   new BS_Blockquote(
     null,

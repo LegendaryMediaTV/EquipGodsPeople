@@ -1,18 +1,18 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
-  new BS_BiblePassage([ 'passage' => 'Deuteronomy 4:9, 31', 'version' => 'ESV' ]),
+  new BS_BiblePassage(['passage' => 'Deuteronomy 4:9, 31', 'version' => 'ESV']),
 
   new BS_Paragraph(
     null,
 
     'In this passage, both the word “take care” and “keep” literally mean “put a hedge around” (see ',
-    new BS_LexiconLink([ 'to' => 'H8104' ], 'Hebrew lexicon entry H8104'),
+    new BS_LexiconLink(['to' => 'H8104'], 'Hebrew lexicon entry H8104'),
     '). Also, while the word translated “soul” is the usual word for soul, it means “vitality” or “life breath” (see ',
-    new BS_LexiconLink([ 'to' => 'H5315' ], 'Hebrew lexicon entry H5315'),
+    new BS_LexiconLink(['to' => 'H5315'], 'Hebrew lexicon entry H5315'),
     '), so you can think of it as the essence of who you really are. Finally, the word translated “merciful” literally means “full of compassion” (see ',
-    new BS_LexiconLink([ 'to' => 'H7349' ], 'Hebrew lexicon entry H7349'),
+    new BS_LexiconLink(['to' => 'H7349'], 'Hebrew lexicon entry H7349'),
     ').',
   ),
 
@@ -24,7 +24,7 @@ $html->add(new BS_BlogEntryPage(
   new BS_BiblePassage(
     [
       'passage' => 'Deuteronomy 4:9, 31',
-      'version' => (object) [ 'abbreviation' => 'paraphrase' ],
+      'version' => (object) ['abbreviation' => 'paraphrase'],
       'verses' => [
         (object) [
           'number' => 9,

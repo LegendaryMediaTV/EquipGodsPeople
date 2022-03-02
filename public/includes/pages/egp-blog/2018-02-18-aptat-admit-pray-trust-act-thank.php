@@ -1,6 +1,6 @@
 <?php
 $html->add(new BS_BlogEntryPage(
-  [ 'metadata' => $metadata ],
+  ['metadata' => $metadata],
 
   new BS_Paragraph(
     null,
@@ -25,7 +25,7 @@ $html->add(new BS_BlogEntryPage(
 
       '—',
       new BS_Link(
-        [ 'to' => 'https://www.desiringgod.org/labs/practical-steps-to-walk-by-faith' ],
+        ['to' => 'https://www.desiringgod.org/labs/practical-steps-to-walk-by-faith'],
 
         'John Piper, ',
         new BS_Citation(null, 'Practical Steps to Walk by Faith'),

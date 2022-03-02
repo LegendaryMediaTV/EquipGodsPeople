@@ -15,7 +15,7 @@ $items = [
 ];
 
 $html->add(new BS_Container(
-  [ 'className' => 'py-section' ],
+  ['className' => 'py-section'],
 
   new BS_ListGroup([
     'title' => 'Select a Classic Work',
