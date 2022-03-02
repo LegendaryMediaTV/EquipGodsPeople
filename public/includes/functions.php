@@ -63,11 +63,18 @@ function egp_bb($input, $text = false) {
   );
 }
 
-/** retrieve all Bible chapters */
-function egp_bibleChapters($query = false) {
+/** look up a Bible book */
+function egp_bibleBook($query) {
+  $books = egp_bibleBooks('|' . $query . '|');
+
+  return count($books) ? $books[0] : false;
+}
+
+/** retrieve all Bible books */
+function egp_bibleBooks($query = false) {
   global $db;
 
-  return $db->documents('bible-chapters', $query);
+  return $db->documents('bible-books', $query);
 }
 
 /** look up a Bible chapter */
@@ -77,10 +84,15 @@ function egp_bibleChapter($query) {
   return count($chapters) ? $chapters[0] : false;
 }
 
-/** parse the requested Bible passage into chapter, selected verses, and title */
-function egp_biblePassage($query) {
+/** retrieve all Bible chapters */
+function egp_bibleChapters($query = false) {
   global $db;
 
+  return $db->documents('bible-chapters', $query);
+}
+
+/** parse the requested Bible passage into chapter, selected verses, and title */
+function egp_biblePassage($query) {
   if ($query) {
     // split the passage into chapter and verses
     [$passageChapter, $passageVerses] = explode(':', $query, 2);
@@ -149,9 +161,69 @@ function egp_biblePassage($query) {
         'verses' => $verses
       ];
     }
+
+    // look up as Bible book
+    $book = egp_bibleBook($query);
+    if ($book) {
+      return (object) [
+        'book' => $book,
+        'title' => $book->title,
+        'url' => $book->url,
+      ];
+    }
+
+    // look up as Bible testament
+    $testament = egp_bibleTestament($query);
+    if ($testament) {
+      return (object) [
+        'testament' => $testament,
+        'title' => $testament->title,
+        'url' => '/bible-search/' . $testament->_id,
+      ];
+    }
+
+    // look up as Bible range
+    $range = egp_bibleRange($query);
+    if ($range) {
+      return (object) [
+        'range' => $range,
+        'title' => $range->title,
+        'url' => '/bible-search/' . $range->_id,
+      ];
+    }
+
+    page_crash($query);
   }
 
   return false;
+}
+
+/** look up a Bible range */
+function egp_bibleRange($query) {
+  $ranges = egp_bibleRanges('|' . $query . '|');
+
+  return count($ranges) ? $ranges[0] : false;
+}
+
+/** retrieve all Bible ranges */
+function egp_bibleRanges($query = false) {
+  global $db;
+
+  return $db->documents('bible-ranges', $query);
+}
+
+/** look up a Bible testament */
+function egp_bibleTestament($query) {
+  $testaments = egp_bibleTestaments('|' . $query . '|');
+
+  return count($testaments) ? $testaments[0] : false;
+}
+
+/** retrieve all Bible testaments */
+function egp_bibleTestaments($query = false) {
+  global $db;
+
+  return $db->documents('bible-testaments', $query);
 }
 
 // retrieve Bible scriptures for each selected version
@@ -2384,6 +2456,19 @@ function page_metadataViaToken($token) {
         'variant' => 'BibleReadingPlans',
         'url' => '/' . $token,
         'sequence' => 'Bible Reading Plans',
+        'source' => '/' . $token . '/index.php',
+      ];
+
+      break;
+
+    case 'bible-search':
+      $output = [
+        '_id' => $token,
+        'title' => 'Bible Search',
+        'subtitle' => 'search, read, and compare multiple versions of the Bible',
+        'variant' => 'BibleSearch',
+        'url' => '/' . $token,
+        'sequence' => 'BIble Search',
         'source' => '/' . $token . '/index.php',
       ];
 

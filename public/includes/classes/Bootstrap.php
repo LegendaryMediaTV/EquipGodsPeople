@@ -1436,8 +1436,8 @@ class BS_ListGroup extends BS_Division {
 
 class BS_ListGroupItem extends BS_Link {
   function render() {
-    $item = $this->properties['item'];
-    unset($this->properties['item']);
+    // $item = $this->properties['item'];
+    // unset($this->properties['item']);
     $subtitle = $this->properties['subtitle'];
     unset($this->properties['subtitle']);
     $title = $this->properties['title'];
