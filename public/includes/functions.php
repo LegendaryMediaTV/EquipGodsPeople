@@ -286,6 +286,42 @@ function egp_bibleVersions() {
   return $db->documents('bible-versions');
 }
 
+/** set/get selected versions */
+function egp_bibleVersionsSelected($availableVersions) {
+  $output = [];
+
+  // convert available versions to an array of IDs
+  $availableIDs = [];
+  foreach ($availableVersions as $version) {
+    if ($version->public && !($version->goodies && !$_SESSION['goodies']))
+      $availableIDs[] = $version->_id;
+  }
+
+  // pull the current selection
+  if ($_POST['versions'])
+    $versions = $_POST['versions'];
+  elseif ($_SESSION['versions'])
+    $versions = $_SESSION['versions'];
+  else
+    $versions = [];
+  $versions[] = 'esv';
+
+  // validate the current selection
+  foreach ($versions as $version) {
+    if ($version && array_search($version, $availableIDs) !== false)
+      $output[] = $version;
+  }
+
+  // ensure there is a version selection
+  if (!count($output))
+    $output = $_SESSION['goodies'] ? ['nasb', 'kjvs', 'nlt'] : ['asv', 'kjvs', 'ylt'];
+
+  // update the session variable
+  $_SESSION['versions'] = $output;
+
+  return $output;
+}
+
 /** retrieve a document via ID */
 function egp_documentViaCallback($documents, $callback) {
   $output = null;
@@ -2406,11 +2442,7 @@ function egp_lexiconEntry($query) {
   return false;
 }
 
-// ensure there are selected versions
-function egp_selectedVersions($selectedVersions = null) {
-  return $selectedVersions ? $selectedVersions : ['asv', 'kjvs', 'ylt'];
-}
-
+/** crash the page rendering and display the given item */
 function page_crash($item) {
   die(new BS_Preformatted(['item' => $item]));
 }

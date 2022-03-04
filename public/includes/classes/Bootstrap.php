@@ -1251,9 +1251,13 @@ class BS_Select extends BS_HTML {
     // convert options property to children
     if ($options) {
       foreach ($options as $option) {
+        // ensure the option is an object
+        if (is_array($option))
+          $option = (object) $option;
+
         $this->children[] = new BS_SelectOption([
           'item' => $option,
-          'selected' => $selected === (is_array($option) ? $option['_id'] : $option)
+          'selected' => $selected === (gettype($option) === 'object' ? $option->_id : $option)
         ]);
       }
     }
@@ -1271,9 +1275,13 @@ class BS_SelectOption extends BS_HTML {
 
     // convert item property to children
     if ($item) {
-      if (is_array($item)) {
-        $this->properties['value'] = $item['_id'] ?: '';
-        $this->children[] = $item['title'] ?? $item['name'] ?? $item['_id'];
+      // convert arrays to objects
+      if (is_array($item))
+        $item = (object) $item;
+
+      if (gettype($item) === 'object') {
+        $this->properties['value'] = $item->_id ?: '';
+        $this->children[] = $item->title ?: $item->name ?: $item->_id;
       } else {
         $this->properties['value'] = $item;
         $this->children[] = $item;
@@ -2214,6 +2222,68 @@ class BS_BiblePassage extends BS_HTML {
           : null,
       ]
     );
+  }
+}
+
+class BS_BibleSearchForm extends BS_Form {
+  function render() {
+    $versions = $this->properties['versions'];
+    unset($this->properties['versions']);
+
+    // set properties
+    $this->properties['url'] = '/bible-search';
+    $this->properties['className'][] = 'row gx-1 mb-5';
+
+    // convert versions to dropdown options
+    $versionOptions = [];
+    foreach ($versions as $version) {
+      // only use public versions that aren't for goodies or goodies are enabled
+      if ($version->public && !($version->goodies && !$_SESSION['goodies']))
+        $versionOptions[] = (object)['_id' => $version->_id, 'title' => $version->title];
+    }
+
+    // retrieve selected Bible versions
+    $selected = egp_bibleVersionsSelected($versions);
+    $selectedCount = count($selected);
+    // page_crash($selected);
+
+    // form column comfiguration
+    $formCol = ['xs' => 12, 'md' => 6, 'lg' => 4, 'xl' => 3, 'xxl' => 2, 'className' => 'mb-1'];
+
+    // add search textbox
+    $this->children[] = new BS_Col(
+      $formCol,
+      new BS_Textbox([
+        'name' => 'search',
+        'type' => 'search',
+        'value' => $_POST['search'],
+        'placeholder' => 'Bible passage or text'
+      ])
+    );
+
+    // add versions
+    $this->children[] = implode('', array_map(
+      function ($slot) use ($versionOptions, $selected, $selectedCount, $formCol) {
+        return new BS_Col(
+          $formCol,
+          new BS_Select([
+            'name' => 'versions[]',
+            'options' => array_merge([(object)['_id' => '', 'title' => 'slot ' . $slot]], $versionOptions),
+            'selected' => $slot <= $selectedCount ? $selected[$slot - 1] : ''
+          ])
+        );
+      },
+
+      range(1, 7)
+    ));
+
+    // add submit button
+    $this->children[] = new BS_Col(
+      $formCol,
+      new BS_Button(['type' => 'submit', 'className' => 'w-100'], 'Search')
+    );
+
+    return parent::render();
   }
 }
 

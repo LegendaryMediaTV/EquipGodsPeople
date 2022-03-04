@@ -8,10 +8,15 @@ $ranges = egp_bibleRanges();
 $books = egp_bibleBooks();
 // page_crash($books);
 
+$versions = egp_bibleVersions();
+// page_crash($versions);
+
 $html->add(new BS_Container(
   ['fluid' => true, 'className' => 'py-section'],
 
-  // TODO: search form
+  // search form
+  new BS_BibleSearchForm(['versions' => $versions]),
+
   // TODO: scripture results
 
   // Bible book selector
@@ -80,5 +85,5 @@ $html->add(new BS_Container(
         'className' => 'mt-element'
       ]),
     )
-  )
+  ),
 ));
