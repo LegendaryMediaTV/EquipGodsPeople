@@ -1609,15 +1609,14 @@ class BS_Pagination extends BS_List {
 
         $this->children[] =
           new BS_PaginationItem(
-            null,
+            [
+              'active' =>
+              !is_null($activeItem) &&
+                (string) $item->_id === (string) $activeItem
+            ],
 
             new BS_PaginationLink(
-              [
-                'to' => $item->url,
-                'active' =>
-                !is_null($activeItem) &&
-                  (string) $item->_id === (string) $activeItem
-              ],
+              ['to' => $item->url],
 
               $item->title
             )
@@ -1884,6 +1883,39 @@ class BS_Verse extends BS_Superscript {
 ////////////////////////////////////////////////////////////////////////////////
 ////////// Custom Components
 ////////////////////////////////////////////////////////////////////////////////
+
+class BS_BibleChapterPagination extends BS_Pagination {
+  function render() {
+    $book = $this->properties['book'];
+    unset($this->properties['book']);
+    $chapter = $this->properties['chapter'];
+    unset($this->properties['chapter']);
+
+    // create baseline chapter URL
+    $chapterID = preg_replace('/[0-9]+$/', '', $chapter->_id);
+    $chapterURL = preg_replace('/[0-9]+$/', '', $chapter->url);
+
+    $this->properties['items'] = [];
+
+    // add book intro page
+    $this->properties['items'][] = (object) [
+      '_id' => $book->_id,
+      'url' => $book->url,
+      'title' => 'Intro',
+    ];
+
+    // add chapter pages
+    for ($chapterIndex = 1; $chapterIndex <= $book->chapterCount; $chapterIndex++) {
+      $this->properties['items'][] = (object) [
+        '_id' => $chapterID . $chapterIndex,
+        'url' => $chapterURL . $chapterIndex,
+        'title' => $chapterIndex,
+      ];
+    }
+
+    return parent::render();
+  }
+}
 
 class BS_BibleLink extends BS_Link {
   function render() {
@@ -2225,6 +2257,69 @@ class BS_BiblePassage extends BS_HTML {
   }
 }
 
+class BS_BiblePreviousNext extends BS_PreviousNext {
+  function render() {
+    $books = $this->properties['books'];
+    unset($this->properties['books']);
+    $_id = $this->properties['_id'];
+    unset($this->properties['_id']);
+
+    $bookCount = count($books);
+
+    $ranges = egp_bibleRanges();
+    $rangeCount = count($ranges);
+    // page_crash($ranges);
+
+    $itemIDs = [];
+    $itemTitles = [];
+
+    // build out order
+    for ($rangeIndex = 0; $rangeIndex < $rangeCount; $rangeIndex++) {
+      if ($ranges[$rangeIndex]->parent) {
+        $itemIDs[] = $ranges[$rangeIndex]->_id;
+        $itemTitles[] = $ranges[$rangeIndex]->title;
+
+        for ($bookIndex = 0; $bookIndex < $bookCount; $bookIndex++) {
+          if (in_array($books[$bookIndex]->_id, $ranges[$rangeIndex]->books)) {
+            $itemIDs[] = $books[$bookIndex]->_id;
+            $itemTitles[] = $books[$bookIndex]->title;
+
+            for ($chapterIndex = 0; $chapterIndex < $books[$bookIndex]->chapterCount; $chapterIndex++) {
+              $itemIDs[] = $books[$bookIndex]->chapters[$chapterIndex];
+              $itemTitles[] = str_replace('Psalms', 'Psalm', $books[$bookIndex]->title) . ' ' . ($chapterIndex + 1);
+            }
+          }
+        }
+      }
+    }
+    $itemCount = count($itemIDs);
+
+    // determine which item is selected
+    if ($_id)
+      $selectedIndex = array_search($_id, $itemIDs);
+    else
+      $selectedIndex = false;
+
+    // previous
+    if ($selectedIndex >= 1) {
+      $this->properties['previous'] = (object) [
+        'url' => '/bible-search/' . $itemIDs[$selectedIndex - 1],
+        'title' => $itemTitles[$selectedIndex - 1],
+      ];
+    }
+
+    // next
+    if ($selectedIndex < $itemCount - 1) {
+      $this->properties['next'] = (object) [
+        'url' => '/bible-search/' . $itemIDs[$selectedIndex + 1],
+        'title' => $itemTitles[$selectedIndex + 1],
+      ];
+    }
+
+    return parent::render();
+  }
+}
+
 class BS_BibleSearchForm extends BS_Form {
   function render() {
     $versions = $this->properties['versions'];
@@ -2383,89 +2478,6 @@ class BS_BlogEntriesNav extends BS_Nav {
         'title' => htmlspecialchars($row->title)
       ];
     }
-
-    return parent::render();
-  }
-}
-
-class BS_BlogEntryPage extends BS_Container {
-  function render() {
-    global $db;
-
-    $metadata = $this->properties['metadata'];
-    unset($this->properties['metadata']);
-
-    // retrieve previous/next entries
-    $previous = $metadata->previous
-      ? $db->document('blog', $metadata->previous)
-      : null;
-    $next = $metadata->next
-      ? $db->document('blog', $metadata->next)
-      : null;
-
-    $this->properties['className'][] = 'py-section clearfix';
-
-    $this->children = [
-      new BS_Section(
-        ['className' => 'clearfix'],
-
-        $metadata->image
-          ? new BS_Image([
-            'url' => $metadata->image,
-            'alt' => $metadata->imageAlt,
-            'thumbnail' => true,
-            'className' => 'w-md-50 w-xl-40 float-md-end mb-5 ms-md-5'
-          ])
-          : null,
-
-        implode('', $this->children),
-
-        $metadata->verses
-          ? new BS_Section(
-            ['className' => 'mt-element'],
-
-            new BS_Heading2(null, 'Key verses'),
-
-            new BS_Paragraph(
-              ['id' => 'BlogEntryVerses'],
-
-              implode(
-                '; ',
-
-                array_map(
-                  function ($verse) {
-                    return new BS_BibleLink(['to' => $verse]);
-                  },
-
-                  $metadata->verses
-                )
-              )
-            ),
-          )
-          : null,
-      ),
-
-      $metadata->vimeo || $metadata->youtube
-        ? new BS_Section(
-          ['className' => 'mt-element'],
-
-          new BS_Heading2(null, 'Related video'),
-
-          new BS_Embed([
-            'url' => $metadata->vimeo
-              ? 'https://player.vimeo.com/video/' . $metadata->vimeo
-              : 'https://www.youtube.com/embed/' . $metadata->youtube . '?rel=0',
-            'title' => ($metadata->vimeo ? 'Vimeo' : 'YouTube') . ' video',
-          ])
-        )
-        : null,
-
-      new BS_PreviousNext([
-        'previous' => $previous,
-        'next' => $next,
-        'className' => 'mt-element',
-      ]),
-    ];
 
     return parent::render();
   }

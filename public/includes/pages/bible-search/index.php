@@ -17,8 +17,6 @@ $html->add(new BS_Container(
   // search form
   new BS_BibleSearchForm(['versions' => $versions]),
 
-  // TODO: scripture results
-
   // Bible book selector
   new BS_Container(
     null,

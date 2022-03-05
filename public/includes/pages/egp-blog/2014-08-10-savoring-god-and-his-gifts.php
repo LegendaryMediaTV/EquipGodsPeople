@@ -1,6 +1,8 @@
 <?php
-$html->add(new BS_BlogEntryPage(
-  ['metadata' => $metadata],
+require_once('BlogEntryPage.php');
+
+$html->add(new BlogEntryPage(
+  null,
 
   new BS_BiblePassage(['passage' => 'Ecclesiastes 5:17–20', 'version' => 'NLT']),
 

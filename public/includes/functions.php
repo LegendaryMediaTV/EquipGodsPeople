@@ -2476,12 +2476,12 @@ function page_metadataViaToken($token) {
 
   switch ($token) {
     case '':
-      $output = ['url' => '/', 'source' => '/index.php'];
+      $output = (object) ['url' => '/', 'source' => '/index.php'];
 
       break;
 
     case 'bible-reading-plans':
-      $output = [
+      $output = (object) [
         '_id' => $token,
         'title' => 'Bible Reading Plans',
         'subtitle' => 'time-based plans for reading the Bible',
@@ -2494,7 +2494,7 @@ function page_metadataViaToken($token) {
       break;
 
     case 'bible-search':
-      $output = [
+      $output = (object) [
         '_id' => $token,
         'title' => 'Bible Search',
         'subtitle' => 'search, read, and compare multiple versions of the Bible',
@@ -2526,7 +2526,7 @@ function page_metadataViaToken($token) {
       );
       $row = $row[0];
 
-      $output = [
+      $output = (object) [
         '_id' => $token,
         'title' => $row->title,
         'subtitle' => '“Ecclesiastical History” – ' . $row->subtitle,
@@ -2542,7 +2542,7 @@ function page_metadataViaToken($token) {
       break;
 
     case 'classic-works':
-      $output = [
+      $output = (object) [
         '_id' => $token,
         'title' => 'Classic Works',
         'subtitle' => 'books by various Christian authors',
@@ -2555,7 +2555,7 @@ function page_metadataViaToken($token) {
       break;
 
     case 'discipleship-tools':
-      $output = [
+      $output = (object) [
         '_id' => $token,
         'title' => 'Discipleship Tools',
         'subtitle' => 'building a foundation for your walk with God',
@@ -2568,7 +2568,7 @@ function page_metadataViaToken($token) {
       break;
 
     case 'egp-blog':
-      $output = [
+      $output = (object) [
         '_id' => $token,
         'title' => 'EGP Blog',
         'subtitle' => 'Christian quotes, mini-articles, music, and more',
@@ -2581,7 +2581,7 @@ function page_metadataViaToken($token) {
       break;
 
     case 'lexicons-word-study':
-      $output = [
+      $output = (object) [
         '_id' => $token,
         'title' => 'Lexicons (Word Study)',
         'subtitle' => 'explore the original languages of the Bible',
@@ -2594,7 +2594,7 @@ function page_metadataViaToken($token) {
       break;
 
     case 'pamphili-eusebius-ecclesiastical-history':
-      $output = [
+      $output = (object) [
         '_id' => $token,
         'title' => 'Eusebius – Ecclesiastical History',
         'subtitle' => 'a.k.a., “Church History” by Pamphili Eusebius',
@@ -2614,7 +2614,7 @@ function page_metadataViaToken($token) {
         "SELECT Collection, Document" .
         "\nFROM Documents" .
         "\nWHERE" .
-        "\n  Collection IN('bible-books', 'bible-chapters', 'blog', 'language-letters', 'lexicon-entries', 'lexicon-languages', 'reading-plans')" .
+        "\n  Collection IN('bible-books', 'bible-chapters', 'bible-ranges', 'blog', 'language-letters', 'lexicon-entries', 'lexicon-languages', 'reading-plans')" .
         "\n  AND CASE Collection" .
         "\n  	 WHEN 'language-letters'" .
         "\n    THEN REPLACE(REPLACE(_id, 'greek-', 'alphabet-'), 'hebrew-', 'alphabet-')" .
@@ -2626,69 +2626,81 @@ function page_metadataViaToken($token) {
 
       if ($row) {
         // parse the JSON document
-        $output = json_decode($row['Document'], true);
+        $output = json_decode($row['Document']);
 
         switch ($row['Collection']) {
+          case 'bible-books':
+            $output->variant = 'BibleSearch';
+            $output->parent = 'Bible Search';
+            $output->parentURL = '/bible-search';
+            $output->subtitle = 'search, read, and compare multiple versions of the Bible';
+            $output->source = $output->parentURL . '/book-' . $output->sequence . '.php';
+
+            break;
+
           case 'blog':
-            $output['variant'] = 'EGPBlog';
-            $output['parent'] = 'EGP Blog';
-            $output['parentURL'] = '/egp-blog';
-            $output['subtitle'] =
-              new BS_Link(['to' => $output['parentURL']], 'EGP Blog') .
+            $output->variant = 'EGPBlog';
+            $output->parent = 'EGP Blog';
+            $output->parentURL = '/egp-blog';
+            $output->subtitle =
+              new BS_Link(['to' => $output->parentURL], 'EGP Blog') .
               ' post from ' .
-              date('F j, Y', strtotime($output['published']));
-            $output['source'] = $output['parentURL'] . '/' . $token . '.php';
+              date('F j, Y', strtotime($output->published));
+            $output->source = $output->parentURL . '/' . $token . '.php';
 
             break;
 
           case 'language-letters':
-            $output['title'] =
-              $output['language'] === 'hebrew'
-              ? str_replace(']/[', ']&lrm;/&lrm;[', $output['title'])
-              : $output['title'];
-            $output['testament'] = ($output['language'] === 'hebrew' ? 'Old' : 'New') . ' Testament';
-            $output['subtitle'] = $output['parent'] . ' words that start with ' . $output['name'];
-            $output['variant'] = 'WordStudy';
-            $output['parent'] = $output['testament'] . ' ' . ucfirst($output['language']);
-            $output['source'] = '/lexicons-word-study/alphabet-template.php';
+            $output->title =
+              $output->language === 'hebrew'
+              ? str_replace(']/[', ']&lrm;/&lrm;[', $output->title)
+              : $output->title;
+            $output->testament = ($output->language === 'hebrew' ? 'Old' : 'New') . ' Testament';
+            $output->subtitle = $output->parent . ' words that start with ' . $output->name;
+            $output->variant = 'WordStudy';
+            $output->parent = $output->testament . ' ' . ucfirst($output->language);
+            $output->source = '/lexicons-word-study/alphabet-template.php';
 
             break;
 
           case 'lexicon-entries':
-            $output['title'] =
-              $output['language'] === 'hebrew'
-              ? str_replace(']/[', ']&lrm;/&lrm;[', $output['title'])
-              : $output['title'];
-            $output['testament'] = ($output['language'] === 'hebrew' ? 'Old' : 'New') . ' Testament';
-            $output['subtitle'] = $output['shortDefinition'];
-            $output['variant'] = 'WordStudy';
-            $output['parent'] = 'Lexicons (Word Study)';
-            $output['source'] = '/lexicons-word-study/entry-template.php';
+            $output->title =
+              $output->language === 'hebrew'
+              ? str_replace(']/[', ']&lrm;/&lrm;[', $output->title)
+              : $output->title;
+            $output->testament = ($output->language === 'hebrew' ? 'Old' : 'New') . ' Testament';
+            $output->subtitle = $output->shortDefinition;
+            $output->variant = 'WordStudy';
+            $output->parent = 'Lexicons (Word Study)';
+            $output->source = '/lexicons-word-study/entry-template.php';
 
             break;
 
           case 'lexicon-languages':
-            $output['testament'] = ($output['_id'] === 'hebrew' ? 'Old' : 'New') . ' Testament';
-            $output['subtitle'] = 'explore the original languages of the ' . $output['testament'];
-            $output['variant'] = 'WordStudy';
-            $output['parent'] = 'Lexicons (Word Study)';
-            $output['source'] = '/lexicons-word-study/language-template.php';
+            $output->testament = ($output->_id === 'hebrew' ? 'Old' : 'New') . ' Testament';
+            $output->subtitle = 'explore the original languages of the ' . $output->testament;
+            $output->variant = 'WordStudy';
+            $output->parent = 'Lexicons (Word Study)';
+            $output->source = '/lexicons-word-study/language-template.php';
 
             break;
 
           case 'reading-plans':
-            $output['subtitle'] = 'approximately ' . $output['minutes'] . ' minutes of reading per day';
-            $output['variant'] = 'BibleReadingPlans';
-            $output['parent'] = 'Bible Reading Plans';
-            $output['source'] = '/bible-reading-plans/plan-template.php';
+            $output->subtitle = 'approximately ' . $output->minutes . ' minutes of reading per day';
+            $output->variant = 'BibleReadingPlans';
+            $output->parent = 'Bible Reading Plans';
+            $output->source = '/bible-reading-plans/plan-template.php';
 
             break;
 
           default:
-            die('Unsupported collection: ' . $row['Collection'] . ' for ' . $token);
+            die(implode('', [
+              new BS_Paragraph(null, 'Unsupported collection: ' . $row['Collection'] . ' for “' . $token . '”'),
+              new BS_Preformatted(['item' => $output]),
+            ]));
         }
       }
   }
 
-  return $output ? (object) $output : false;
+  return $output ? $output : false;
 }

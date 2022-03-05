@@ -1,6 +1,6 @@
 # Equip God’s People
 
-Equip God’s People web app built on Node/PHP
+Equip God’s People web app built on PHP
 
 ## Backlog
 
