@@ -2298,13 +2298,18 @@ class BS_BiblePreviousNext extends BS_PreviousNext {
     if ($_id)
       $selectedIndex = array_search($_id, $itemIDs);
     else
-      $selectedIndex = false;
+      $selectedIndex = -1;
 
     // previous
     if ($selectedIndex >= 1) {
       $this->properties['previous'] = (object) [
         'url' => '/bible-search/' . $itemIDs[$selectedIndex - 1],
         'title' => $itemTitles[$selectedIndex - 1],
+      ];
+    } else {
+      $this->properties['previous'] = (object) [
+        'url' => '/bible-search',
+        'title' => 'Bible Search',
       ];
     }
 

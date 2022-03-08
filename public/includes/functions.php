@@ -2638,6 +2638,18 @@ function page_metadataViaToken($token) {
 
             break;
 
+          case 'bible-ranges':
+            if (!$output->parent) return false;
+
+            $output->variant = 'BibleSearch';
+            $output->parent = 'Bible Search';
+            $output->parentURL = '/bible-search';
+            $output->url = $output->parentURL . '/' . $output->_id;
+            $output->subtitle = 'search, read, and compare multiple versions of the Bible';
+            $output->source = $output->parentURL . '/range-' . $output->_id . '.php';
+
+            break;
+
           case 'blog':
             $output->variant = 'EGPBlog';
             $output->parent = 'EGP Blog';

@@ -77,11 +77,11 @@ $html->add(new BS_Container(
           $testaments
         ))
       ),
+    ),
 
-      new BS_PreviousNext([
-        'next' => ['title' => $books[0]->title, 'url' => $books[0]->url],
-        'className' => 'mt-element'
-      ]),
-    )
+    new BS_BiblePreviousNext([
+      'books' => $books,
+      'className' => 'mt-element'
+    ])
   ),
 ));
