@@ -7,7 +7,7 @@ for ($languageIndex = 0; $languageIndex < $languageCount; $languageIndex++) {
 
 // define basic summary
 $summary = [];
-$summary['Strong’s ID'] = $metadata->strongs['_id'];
+$summary['Strong’s ID'] = $metadata->strongs->_id;
 $summary[$languages[$languageIndex]->name . ' Word'] = $metadata->name;
 $summary['Transliteration'] = $metadata->word;
 $summary['Pronunciation'] = $metadata->pronunciation;

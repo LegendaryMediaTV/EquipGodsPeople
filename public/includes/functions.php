@@ -45,10 +45,10 @@ function egp_bb($input, $text = false) {
       },
 
       // lexicon link
-      '/\[strongs id="([^"]+)"( tvm="([^"]+)")? \/\]/' => function ($match) use ($text) {
+      '/\[strongs id="([^"]+)"( tvm="([^"]+)"( tvm2="([^"]+)")?)? \/\]/' => function ($match) use ($text) {
         return $text
           ? strtoupper($match[1])
-          : new BS_LexiconLink(['to' => $match[1], 'tvm' => $match[3]]);
+          : new BS_LexiconLink(['to' => $match[1], 'tvm' => $match[3], 'tvm2' => $match[5]]);
       },
 
       // custom tags
@@ -322,7 +322,7 @@ function egp_bibleVersionsSelected($availableVersions) {
   return $output;
 }
 
-/** retrieve a document via ID */
+/** retrieve a document via a callback function */
 function egp_documentViaCallback($documents, $callback) {
   $output = null;
 
@@ -2422,7 +2422,14 @@ function egp_lexiconConvert($languageID, $input, $encode = null) {
 
 /** retrieve a lexicon entry */
 function egp_lexiconEntry($query) {
-  global $db;
+  static $entries;
+
+  // get all lexicon entries
+  if (!$entries) {
+    global $db;
+
+    $entries = $db->documents('lexicon-entries');
+  }
 
   // lower-case the query
   $query = mb_strtolower($query);
@@ -2436,7 +2443,7 @@ function egp_lexiconEntry($query) {
     $query = preg_replace('/^(strongs-[g-h])0+/', '$1', $query);
 
     // query the database
-    return $db->document('lexicon-entries', $query);
+    return egp_documentViaID($entries, $query);
   }
 
   return false;
@@ -2635,6 +2642,15 @@ function page_metadataViaToken($token) {
             $output->parentURL = '/bible-search';
             $output->subtitle = 'search, read, and compare multiple versions of the Bible';
             $output->source = $output->parentURL . '/book-' . $output->sequence . '.php';
+
+            break;
+
+          case 'bible-chapters':
+            $output->variant = 'BibleSearch';
+            $output->parent = 'Bible Search';
+            $output->parentURL = '/bible-search';
+            $output->subtitle = 'search, read, and compare multiple versions of the Bible';
+            $output->source = $output->parentURL . '/bible-chapter-template.php';
 
             break;
 

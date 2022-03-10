@@ -41,9 +41,10 @@ window.onload = () => {
   const popoverTogglers = Array.from(
     document.querySelectorAll('[data-bs-toggle="popover"]')
   );
+  // console.log("Popovers:", popoverTogglers.length);
 
   // initiate the Bootstrap popovers
-  for (const popoverToggler of popoverTogglers.slice(0, 25)) {
+  for (const popoverToggler of popoverTogglers) {
     // activate the Bootstrap popover
     new bootstrap.Popover(popoverToggler);
 
