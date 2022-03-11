@@ -2327,6 +2327,8 @@ class BS_BiblePreviousNext extends BS_PreviousNext {
 
 class BS_BibleSearchForm extends BS_Form {
   function render() {
+    $search = $this->properties['search'];
+    unset($this->properties['search']);
     $versions = $this->properties['versions'];
     unset($this->properties['versions']);
 
@@ -2356,7 +2358,7 @@ class BS_BibleSearchForm extends BS_Form {
       new BS_Textbox([
         'name' => 'search',
         'type' => 'search',
-        'value' => $_POST['search'],
+        'value' => $search ?: $_POST['search'],
         'placeholder' => 'Bible passage or text'
       ])
     );

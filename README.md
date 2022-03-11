@@ -6,11 +6,6 @@ Equip God’s People web app built on PHP
 
 ### Pre-launch
 
-- finish migrating Node front-end content:
-  - finish migrating Bootstrap components
-  - Bible Search to actually search/redirect
-  - map page tokens for Bible testaments
-
 **Revisit old backlog:**
 
 - search engine:

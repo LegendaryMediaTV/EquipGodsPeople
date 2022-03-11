@@ -191,8 +191,6 @@ function egp_biblePassage($query) {
         'url' => '/bible-search/' . $range->_id,
       ];
     }
-
-    page_crash($query);
   }
 
   return false;
@@ -2428,7 +2426,10 @@ function egp_lexiconEntry($query) {
   if (!$entries) {
     global $db;
 
-    $entries = $db->documents('lexicon-entries');
+    $results = $db->documents('lexicon-entries');
+    foreach ($results as $result)
+      $entries[$result->_id] = $result;
+    $results = null;
   }
 
   // lower-case the query
@@ -2443,7 +2444,7 @@ function egp_lexiconEntry($query) {
     $query = preg_replace('/^(strongs-[g-h])0+/', '$1', $query);
 
     // query the database
-    return egp_documentViaID($entries, $query);
+    return $entries[$query];
   }
 
   return false;

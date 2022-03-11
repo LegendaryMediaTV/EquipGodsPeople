@@ -17,7 +17,7 @@ class BibleBookPage extends BS_Container {
 
     $this->children = [
       // search form
-      new BS_BibleSearchForm(['versions' => $versions]),
+      new BS_BibleSearchForm(['versions' => $versions, 'search' => $metadata->title]),
 
       // Bible book selector
       new BS_Container(

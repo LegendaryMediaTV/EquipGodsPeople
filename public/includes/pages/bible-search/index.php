@@ -1,4 +1,22 @@
 <?php
+$versions = egp_bibleVersions();
+// page_crash($versions);
+
+if ($_POST['search']) {
+  // accommodate for submitted version changes
+  egp_bibleVersionsSelected($versions);
+
+  // see if the search query is a Bible passage
+  $passage = egp_biblePassage($_POST['search']);
+
+  // Bible passage found, redirect accordingly
+  if ($passage) {
+    // page_crash($passage);
+    header('Location: ' . ($passage->url ?: $passage->chapter->url));
+    exit;
+  }
+}
+
 $testaments = egp_bibleTestaments();
 // page_crash($testaments);
 
@@ -7,9 +25,6 @@ $ranges = egp_bibleRanges();
 
 $books = egp_bibleBooks();
 // page_crash($books);
-
-$versions = egp_bibleVersions();
-// page_crash($versions);
 
 $html->add(new BS_Container(
   ['fluid' => true, 'className' => 'py-section'],
