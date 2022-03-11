@@ -46,7 +46,7 @@ if ($metadata->inflections) {
   uasort(
     $metadata->inflections,
     function ($a, $b) {
-      return egp_inflectionName($a['flags']) > egp_inflectionName($b['flags']) ? 1 : -1;
+      return egp_inflectionName($a->flags) > egp_inflectionName($b->flags) ? 1 : -1;
     }
   );
   $metadata->inflections = array_values($metadata->inflections);
@@ -106,9 +106,9 @@ $html->add(new BS_Container(
             return new BS_Col(
               ['md' => 4],
 
-              new BS_Span(['className' => 'fs-4'], $inflection['name']),
+              new BS_Span(['className' => 'fs-4'], $inflection->name),
               ' – ',
-              egp_inflectionName($inflection['flags']),
+              egp_inflectionName($inflection->flags),
             );
           },
 
