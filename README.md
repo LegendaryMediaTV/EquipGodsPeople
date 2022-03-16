@@ -6,27 +6,11 @@ Equip God’s People web app built on PHP
 
 ### Pre-launch
 
-**Revisit old backlog:**
-
-- search engine:
-  - when building cache, it should update the Searchable field for lexicon entries, definitions
-  - when building pages, it should upsert page metadata rows (title, description, excerpt, etc.) with searchable combining those and any dependencies
-- fix back-end Bootstrap rendering so that multi-layer nesting works and have LexiconEntryPage use the Inflections component
-- add BB code for Bible links:
-  - use it on the Reading Plan descriptions
-  - change invalid [verse] tags to use [BibleLink] instead:
-    - http://localhost:8000/lexicons-word-study/new-testament-greek/strongs-g10/
-    - http://localhost:8000/lexicons-word-study/new-testament-greek/strongs-g11/
 - Bible Search:
-  - GRKS, GRKT, KJVS doesn't parse correctly due to TVM/TVM2
+  - GRKS, GRKT, KJVS don't parse correctly due to TVM/TVM2
   - GRKT doesn't show translinear definitions
   - GRKS/T don't support Greek color coding system
-  - create pages for each chapter, making React pull in the URL for the passage lookup
-  - create book introduction pages
-  - changing the search criteria should change the URL accordingly (but probably not actually redirect to that URL)
-  - update Bible Link component to point to the right path
-  - make the UI able to add/replace/remove versions (React via CDN), updating the search bar and activating popovers accordingly
-  - enable React/Axios for all pages and make Bible Link show the first selected version
+  - add support for linking to and bolding specific verses within a chapter
   - when searches don't match a passage, then it should do a scripture search
 - finish importing EGP Blog
 - finish importing Classic Works
@@ -36,8 +20,7 @@ Equip God’s People web app built on PHP
   - make the search API query the Searchable fields and return the area, Search Result, relevancy
   - Axios query to PHP API, where either PHP provides desired HTML or it shares JSON and uses React to build the search results
 - revisit Discipleship Tools content
-- create a custom 404 page for automatically routing to the best destination
-- scan the old site to make a distinct list of links for comparison to the new site, adding removed/renamed to the 404 router
+- scan the old site to make a distinct list of links for comparison to the new site, adding removed/renamed to the URL router
 - Bible Passage should show ellipsis between skipped verses (see if the title has a comma, then look for missing verse numbers)
 
 ### Wishlist
@@ -45,7 +28,6 @@ Equip God’s People web app built on PHP
 - make the front-end have a legend for inflection components
 - Bible text editor (select a version and chapter, each potential verse has a textbox and footnotes multi-line textbox)
 - make Lexicon admin use the API to encode Name for the main entry
-- see if lexicon entry info can be pooled rather than making duplicated requests (can cause browser delays/crashes)
 - add bb/bbText support to React:
   - finish migrating BiblePassage to Bootstrap
   - make the back-end BiblePassage component use the Bootstrap component once the passage/scripture is obtained

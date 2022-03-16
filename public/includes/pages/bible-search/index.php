@@ -4,7 +4,7 @@ $versions = egp_bibleVersions();
 
 if ($_POST['search']) {
   // accommodate for submitted version changes
-  egp_bibleVersionsSelected($versions);
+  egp_bibleVersionsSelected();
 
   // see if the search query is a Bible passage
   $passage = egp_biblePassage($_POST['search']);

@@ -27,6 +27,9 @@ function egp_bb($input, $text = false) {
       '/\[bible to="([^"]+)" \/\]/' => function ($match) use ($text) {
         return $text ? $match[1] : new BS_BibleLink(['to' => $match[1]]);
       },
+      '/\[bible to="([^"]+)"\]([^[]+)\[\/bible\]/' => function ($match) use ($text) {
+        return $text ? $match[1] : new BS_BibleLink(['to' => $match[1]], $match[2]);
+      },
 
       // languages
       '/\[greek\](.+?)\[\/greek\]/' => function ($match) use ($text) {
@@ -279,43 +282,55 @@ function egp_bibleVersion($_id) {
 
 /** retrieve all Bible versions */
 function egp_bibleVersions() {
-  global $db;
+  static $output;
 
-  return $db->documents('bible-versions');
+  // retain version information between executions
+  if (!$output) {
+    global $db;
+
+    $output = $db->documents('bible-versions');
+  }
+
+  return $output;
 }
 
 /** set/get selected versions */
-function egp_bibleVersionsSelected($availableVersions) {
-  $output = [];
+function egp_bibleVersionsSelected() {
+  static $output;
 
-  // convert available versions to an array of IDs
-  $availableIDs = [];
-  foreach ($availableVersions as $version) {
-    if ($version->public && !($version->goodies && !$_SESSION['goodies']))
-      $availableIDs[] = $version->_id;
+  if (!$output) {
+    $output = [];
+
+    // convert available versions to an array of IDs
+    $availableIDs = [];
+    $availableVersions = egp_bibleVersions();
+    foreach ($availableVersions as $version) {
+      if ($version->public && !($version->goodies && !$_SESSION['goodies']))
+        $availableIDs[] = $version->_id;
+    }
+
+    // pull the current selection
+    if ($_POST['versions'])
+      $versions = $_POST['versions'];
+    elseif ($_SESSION['versions'])
+      $versions = $_SESSION['versions'];
+    else
+      $versions = [];
+    $versions[] = 'esv';
+
+    // validate the current selection
+    foreach ($versions as $version) {
+      if ($version && array_search($version, $availableIDs) !== false)
+        $output[] = $version;
+    }
+
+    // ensure there is a version selection
+    if (!count($output))
+      $output = $_SESSION['goodies'] ? ['nasb', 'kjvs', 'nlt'] : ['asv', 'kjvs', 'ylt'];
+
+    // update the session variable
+    $_SESSION['versions'] = $output;
   }
-
-  // pull the current selection
-  if ($_POST['versions'])
-    $versions = $_POST['versions'];
-  elseif ($_SESSION['versions'])
-    $versions = $_SESSION['versions'];
-  else
-    $versions = [];
-  $versions[] = 'esv';
-
-  // validate the current selection
-  foreach ($versions as $version) {
-    if ($version && array_search($version, $availableIDs) !== false)
-      $output[] = $version;
-  }
-
-  // ensure there is a version selection
-  if (!count($output))
-    $output = $_SESSION['goodies'] ? ['nasb', 'kjvs', 'nlt'] : ['asv', 'kjvs', 'ylt'];
-
-  // update the session variable
-  $_SESSION['versions'] = $output;
 
   return $output;
 }

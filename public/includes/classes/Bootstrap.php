@@ -199,7 +199,10 @@ class BS_HTMLPage {
     return
       '<body>' .
       new BS_Main(
-        ['ariaLabelledBy' => 'HeroHeading'],
+        [
+          'ariaLabelledBy' => 'HeroHeading',
+          'className' => $this->metadata->admin ? 'pb-3 px-3' : null
+        ],
 
         $this->renderHero(),
         $this->body,
@@ -387,7 +390,7 @@ class BS_HTMLPage {
       '<meta charset="utf-8">' .
       '<meta name="viewport" content="width=device-width, initial-scale=1">' .
       '<meta name="description" content="' .
-      ($this->metadata->description ?: $GLOBALS['siteDescription']) .
+      egp_bb($this->metadata->description ?: $GLOBALS['siteDescription'], true) .
       '">' .
       '<meta name="apple-mobile-web-app-title" content="' . $GLOBALS['siteTitle'] . '">' .
       '<meta name="application-name" content="' . $GLOBALS['siteTitle'] . '">' .
@@ -396,7 +399,7 @@ class BS_HTMLPage {
       '<meta name="robots" content="noindex,nofollow">' .
 
       // add Font Awesome icons: https://cdnjs.com/libraries/font-awesome
-      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />' .
+      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />' .
 
       // add Google Fonts
       '<link href="https://fonts.googleapis.com" rel="preconnect">' .
@@ -1945,13 +1948,20 @@ class BS_BibleLink extends BS_Link {
 
       // add popover information if it isn't disabled and it has a chapter with a verse colon
       if ($popover !== false && $passage->chapter && mb_strpos($passage->title, ':') !== false) {
-        // select the Bible version
-        $version = egp_bibleVersion($version);
+        // retrieve all selected versions
+        $selectedVersions = egp_bibleVersionsSelected();
+
+        // retrieve the provided/selected Bible version
+        $version = egp_bibleVersion($version ?: $selectedVersions[0]);
 
         $this->properties['popover'] = [
           'title' => $passage->title . ' (' . $version->abbreviation . ')',
           'content' => implode('', [
-            new BS_BiblePassage(['passage' => $passage, 'variant' => 'popover']),
+            new BS_BiblePassage([
+              'passage' => $passage,
+              'version' => $version,
+              'variant' => 'popover'
+            ]),
 
             new BS_Paragraph(
               ['className' => 'mt-2 mb-0'],
@@ -2345,7 +2355,7 @@ class BS_BibleSearchForm extends BS_Form {
     }
 
     // retrieve selected Bible versions
-    $selected = egp_bibleVersionsSelected($versions);
+    $selected = egp_bibleVersionsSelected();
     $selectedCount = count($selected);
     // page_crash($selected);
 

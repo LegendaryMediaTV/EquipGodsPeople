@@ -11,7 +11,7 @@ $book = egp_documentViaID($books, $metadata->book);
 $versions = egp_bibleVersions();
 // page_crash($versions);
 
-$selectedVersions = egp_bibleVersionsSelected($versions);
+$selectedVersions = egp_bibleVersionsSelected();
 // page_crash($selectedVersions);
 
 $many = count($selectedVersions) > 2;

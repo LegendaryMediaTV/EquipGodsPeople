@@ -665,9 +665,7 @@ import("./react-bootstrap.js").then((BS) => {
                         re(
                           BS.Link,
                           {
-                            to:
-                              "https://zenith.equipgodspeople.com/" +
-                              this.state.selected.url,
+                            to: this.state.selected.url,
                             newTab: true,
                             external: false,
                             className: "btn btn-dark",
