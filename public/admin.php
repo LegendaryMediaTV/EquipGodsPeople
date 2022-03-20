@@ -10,17 +10,130 @@ if ($_POST['api']) {
 
       break;
 
+    case 'blog':
+      // decode the JSON document
+      $document = $_POST['document'] ? json_decode($_POST['document']) : null;
+
+      // build out and format the provided document
+      if ($document) {
+        $document = (object) [
+          '_id' => $document->_id,
+          'title' => $document->title,
+          'url' => $document->url,
+          'sequence' => $document->sequence,
+          'published' => $document->published,
+          'description' => $document->description,
+          'excerpt' => '',
+          'image' => $document->image,
+          'imageAlt' => $document->imageAlt,
+          'verses' => $document->verses,
+          'vimeo' => $document->vimeo,
+          'youtube' => $document->youtube,
+          'previous' => '',
+          'next' => '',
+        ];
+        if (!$document->image) unset($document->image);
+        if (!$document->imageAlt) unset($document->imageAlt);
+        if (!$document->verses) unset($document->verses);
+        if (!$document->vimeo) unset($document->vimeo);
+        if (!$document->youtube) unset($document->youtube);
+
+        $filename = 'includes/pages/egp-blog/' . $document->_id . '.php';
+        if (file_exists($filename)) {
+          // retrieve the source code and prepare for ad hoc execution
+          $source = file_get_contents($filename);
+          $document->excerpt = str_replace(
+            "<?php\nrequire_once('BlogEntryPage.php');\n\n\$html->add(new BlogEntryPage(",
+            'echo new BS_Division(',
+            $source
+          );
+          $document->excerpt = str_replace(
+            "\n));\n",
+            ");",
+            $document->excerpt
+          );
+
+          // execute code as PHP, capturing output
+          ob_start(); // start output buffer
+          eval($document->excerpt); // execute code
+          $document->excerpt = ob_get_contents(); // store results in a string
+          ob_end_clean(); // stop output buffer
+
+          // convert the HTML to a text excerpt
+          $document->excerpt = admin_excerpt($document->excerpt);
+        }
+        if (!$document->excerpt)
+          unset($document->excerpt);
+
+        // get all blog entry IDs
+        $entries = $db->rows("SELECT _id FROM Documents WHERE Collection = 'blog'");
+        $entries = array_map(
+          function ($entry) {
+            return $entry['_id'];
+          },
+          $entries
+        );
+
+        // swap out and sort IDs as needed
+        if ($_POST['_id'] !== $document->_id) {
+          // remove the old ID
+          $index = array_search($_POST['_id'], $entries);
+          if ($index !== false)
+            unset($entries[$index]);
+
+          // add the new ID
+          $entries[] = $document->_id;
+
+          sort($entries);
+        }
+        $entryCount = count($entries);
+
+        // find the current post's Index
+        $index = array_search($document->_id, $entries);
+
+        // set previous
+        if ($index)
+          $document->previous = $entries[$index - 1];
+        else
+          unset($document->previous);
+
+        // set next
+        if ($index !== $entryCount - 1)
+          $document->next = $entries[$index + 1];
+        else
+          unset($document->next);
+      }
+
+      // retrieving the document for a new entry
+      if ($_POST['_id'] === 'new' && !$document) {
+        $date = date('Y-m-d', mktime(0, 0, 0, date('n'), date('j') + ((7 - date('w')) % 7), date('Y')));
+        $_id = $date . '-new-blog-entry';
+
+        $output = (object)[
+          '_id' => $_id,
+          'title' => 'New Blog Entry',
+          'url' => '/egp-blog/' . $_id,
+          'published' => $date,
+          'sequence' => $date,
+        ];
+      }
+      // lookup/upsert the entry document
+      else
+        $output = $db->documentFindUpsert('blog', $_POST['_id'], $document);
+
+      break;
+
     case 'lexiconConvert':
       $output = egp_lexiconConvert($_POST['languageID'], $_POST['code']);
 
       break;
 
-    case "lexicon-entry":
+    case 'lexicon-entry':
       // prefix the ID as needed
       $_id =
         preg_match('/^[gh]?[0-9]+$/i', $_POST['_id'])
-        ? "strongs-" .
-        (preg_match('/^[0-9]/', $_POST['_id']) ? "g" : "") .
+        ? 'strongs-' .
+        (preg_match('/^[0-9]/', $_POST['_id']) ? 'g' : '') .
         mb_strtolower($_POST['_id'])
         : $_POST['_id'];
 
@@ -115,14 +228,14 @@ if ($_POST['api']) {
             $definitionID,
             $upserted
               ? (object) [
-                "_id" => $definitionID,
-                "lexicon" => $lexicon->_id,
-                "entry" => $output->_id,
-                "sequence" =>
+                '_id' => $definitionID,
+                'lexicon' => $lexicon->_id,
+                'entry' => $output->_id,
+                'sequence' =>
                 $lexicon->_id .
-                  "-" .
-                  str_pad(substr($output->_id, strpos($output->_id, '-') + 2), 4, "0", STR_PAD_LEFT),
-                "definition" => $upserted->definition,
+                  '-' .
+                  str_pad(substr($output->_id, strpos($output->_id, '-') + 2), 4, '0', STR_PAD_LEFT),
+                'definition' => $upserted->definition,
               ]
               : null
           );
@@ -165,6 +278,8 @@ if ($_POST['api']) {
 
     default:
       $output = ['error' => 'invalid API task ' . $_POST['api']];
+
+      break;
   }
 
   // send the response as JSON
@@ -269,6 +384,52 @@ if ($selectedTab->subtabs) {
 // add tab-specific content
 switch ($selectedTab->_id) {
   case 'blog':
+    if (!$_GET['_id']) {
+      $entries = $db->documents('blog');
+
+      $items = [];
+      $items[] = (object) [
+        'title' => 'New Blog Entry',
+        'url' => $selectedTab->url . '&_id=new'
+      ];
+      foreach ($entries as $entry) {
+        $items[] = (object) [
+          'title' => $entry->sequence . ' – ' . $entry->title,
+          'url' => $selectedTab->url . '&_id=' . $entry->_id
+        ];
+      }
+
+      $html->add(new BS_ListGroup(['title' => 'Blog Entries', 'items' => $items]));
+      $html->add(new BS_Preformatted(['item' => $entries]));
+    } else {
+      $entry = $db->document('blog', $_GET['_id']);
+      $previous = $entry->previous ? $db->document('blog', $entry->previous) : null;
+      $next = $entry->next ? $db->document('blog', $entry->next) : null;
+
+      $html->add(new BS_Division(['id' => 'react-blog-entry']));
+
+      $html->add(new BS_Pagination([
+        'items' => [
+          (object)['_id' => 'parent', 'title' => 'Blog Entry List', 'url' => $selectedTab->url],
+          (object)['_id' => 'new', 'title' => 'New Blog Entry', 'url' => $selectedTab->url . '&_id=new'],
+        ],
+        'previous' => $previous ? (object)[
+          '_id' => $previous->_id,
+          'title' => $previous->title,
+          'url' => $selectedTab->url . '&_id=' . $previous->_id
+        ] : null,
+        'next' => $next ? (object)[
+          '_id' => $next->_id,
+          'title' => $next->title,
+          'url' => $selectedTab->url . '&_id=' . $next->_id
+        ] : null,
+        'className' => 'mt-5',
+      ]));
+    }
+
+    break;
+
+  case 'languages':
     $html->add(new BS_Division(['id' => 'react-like']));
 
     break;
@@ -295,32 +456,40 @@ switch ($selectedTab->_id) {
 // display the resultant page
 echo $html;
 
-// TODO: delete this
-function admin_pages() {
-  global $selectedTab, $db, $html;
+function admin_excerpt($html) {
+  $output = '';
 
-  $sql =
-    "SELECT _id, Title" .
-    "\nFROM Pages" .
-    "\nWHERE ParentID IS NULL" .
-    "\nORDER BY Sequence";
-  $rows = $db->rows($sql);
-
-  $rows = array_map(
-    function ($row) use ($selectedTab) {
-      return [
-        '_id' => $row['_id'],
-        'title' => $row['Title'] ?: 'Home',
-        'url' => ($selectedTab ? $selectedTab->url : '') . '&page=' . $row['_id'],
-      ];
-    },
-    $rows
+  $words = preg_split(
+    '/\s+/',
+    str_replace(
+      '°',
+      '',
+      trim(egp_bb(
+        strip_tags(str_replace(
+          ['</blockquote>', '</div>', '</h1>', '</h2>', '</h3>', '</h4>', '</h5>', '</h6>', '</li>'],
+          "\n",
+          $html
+        )),
+        true
+      ))
+    )
   );
+  $wordCount = count($words);
 
-  $html->add(new BS_ListGroup([
-    'title' => 'Select a Page',
-    'items' => $rows,
-  ]));
+  for ($wordIndex = 0; $wordIndex < $wordCount; $wordIndex++) {
+    $len = mb_strlen($output);
 
-  $html->add(new BS_Preformatted(['title' => 'Pages', 'item' => $rows]));
+    $len += mb_strlen($words[$wordIndex]) + 1;
+
+    if ($len <= 298 || ($len <= 300 && $wordIndex == $wordCount - 1))
+      $output .= ($wordIndex ? ' ' : '') . $words[$wordIndex];
+    else {
+      if (mb_substr($output, -1) !== '…')
+        $output .= ' …';
+
+      break;
+    }
+  }
+
+  return $output;
 }

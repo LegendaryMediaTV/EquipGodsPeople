@@ -1010,6 +1010,7 @@ export class FormField extends HTML {
     properties.maxLength = properties.item.maxLength;
     properties.name = properties.item.name;
     properties.options = properties.item.options;
+    properties.type = properties.item.type;
     properties.value = properties.item.value;
     const title = properties.item.title;
     const gridWidth = properties.item.gridWidth ?? 12;

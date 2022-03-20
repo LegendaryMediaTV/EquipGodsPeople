@@ -14,7 +14,7 @@ import("./react-bootstrap.js").then((BS) => {
   const seo = (text) =>
     text
       .toLowerCase()
-      .replace(/(\s|[—–-])+/g, " ")
+      .replace(/(\s|[*—–-])+/g, " ")
       .replace(/&/g, "and")
       .replace(/[^a-z0-9 ]/g, "")
       .trim()
@@ -246,6 +246,281 @@ import("./react-bootstrap.js").then((BS) => {
       }
 
       this.setState({ selected: selected });
+    };
+  }
+
+  class BlogEntry extends RC {
+    state = {};
+
+    render = () =>
+      !this.state.entry || this.state.processing
+        ? re(BS.Spinner, { alert: true })
+        : re(
+            BS.Form,
+            { onSubmit: this.submitHandler },
+
+            re(BS.SectionHeader, {
+              title: this.state.entry.title,
+              subtitle: "blog entry admin form",
+            }),
+
+            re(
+              BS.Container,
+              null,
+              re(
+                BS.Row,
+                null,
+
+                re(BS.FormField, {
+                  item: {
+                    _id: "published",
+                    title: "Published",
+                    // type: "date",
+                    value: this.state.entry.published,
+                    maxLength: 10,
+                    gridWidth: 4,
+                  },
+                  onChange: this.changeHandler.bind(this, "published"),
+                }),
+
+                re(BS.FormField, {
+                  item: {
+                    _id: "title",
+                    title: "Title",
+                    value: this.state.entry.title,
+                    gridWidth: 8,
+                  },
+                  onChange: this.changeHandler.bind(this, "title"),
+                }),
+
+                re(BS.FormField, {
+                  item: {
+                    _id: "_id",
+                    title: "ID",
+                    value: this.state.entry._id,
+                    disabled: true,
+                    gridWidth: 6,
+                  },
+                }),
+
+                re(BS.FormField, {
+                  item: {
+                    _id: "url",
+                    title: "URL",
+                    value: this.state.entry.url,
+                    disabled: true,
+                    gridWidth: 6,
+                  },
+                }),
+
+                re(BS.FormField, {
+                  item: {
+                    _id: "image",
+                    title: "Image",
+                    value: this.state.entry.image,
+                    gridWidth: 4,
+                  },
+                }),
+
+                re(BS.FormField, {
+                  item: {
+                    _id: "imageAlt",
+                    title: "Image Alt",
+                    value: this.state.entry.imageAlt,
+                    lines: 3,
+                    gridWidth: 8,
+                  },
+                }),
+
+                re(BS.FormField, {
+                  item: {
+                    _id: "verses",
+                    title: "Key Verses",
+                    value: this.state.entry.verses.join("\n"),
+                    lines: 5,
+                    gridWidth: 4,
+                  },
+                  onChange: this.changeHandler.bind(this, "verses"),
+                }),
+
+                re(BS.FormField, {
+                  item: {
+                    _id: "description",
+                    title: "Description",
+                    value: this.state.entry.description,
+                    lines: 5,
+                    maxLength: 300,
+                    gridWidth: 8,
+                  },
+                  onChange: this.changeHandler.bind(this, "description"),
+                }),
+
+                this.state.entry.excerpt
+                  ? re(BS.FormField, {
+                      item: {
+                        _id: "excerpt",
+                        title: "Excerpt",
+                        value: this.state.entry.excerpt,
+                        disabled: true,
+                        lines: 3,
+                        gridWidth: 12,
+                      },
+                    })
+                  : null,
+
+                this.state.entry.previous || this.state.entry.next
+                  ? re(
+                      RF,
+                      null,
+
+                      re(BS.FormField, {
+                        item: {
+                          title: "Previous",
+                          value: this.state.entry.previous,
+                          disabled: true,
+                          gridWidth: 6,
+                        },
+                      }),
+
+                      re(BS.FormField, {
+                        item: {
+                          title: "Next",
+                          value: this.state.entry.next,
+                          disabled: true,
+                          gridWidth: 6,
+                        },
+                      })
+                    )
+                  : null
+              ),
+
+              re(
+                BS.Button,
+                { type: "submit", className: "w-100 w-md-auto" },
+                "Submit"
+              )
+            )
+
+            // re(BS.Preformatted, { item: this.state.entry })
+          );
+
+    /*****************
+     ***** Hooks *****
+     ****************/
+
+    componentDidMount = () => {
+      this.load();
+    };
+
+    /********************
+     ***** Handlers *****
+     *******************/
+
+    changeHandler(field, event) {
+      // grab the value
+      let value = event.target.value;
+
+      // split verses by line
+      if (field === "verses") {
+        value = value.trim().split("\n");
+        value = value.map((verse) => verse.trim());
+      }
+
+      this.setState((prevState) => {
+        // clone the blog entry
+        const entry = JSON.parse(JSON.stringify(prevState.entry));
+
+        // apply changes
+        entry[field] = value;
+
+        // clean up the published date
+        entry.published = entry.published.substring(0, 10);
+
+        // make the ID/URL based on the publish date and an SEO-friendly version of the title
+        entry._id = entry.published + "-" + seo(entry.title);
+        entry.url = "/egp-blog/" + entry._id;
+
+        // make the sequence match the date
+        entry.sequence = entry.published;
+
+        // update the React state
+        return { entry: entry };
+      });
+    }
+
+    submitHandler = (event) => {
+      event.preventDefault();
+
+      this.setState({ processing: true });
+
+      // parse the query string parameters
+      const params = new URLSearchParams(document.location.search);
+
+      // build out the form data
+      const data = new FormData();
+      data.append("api", "blog");
+      data.append("_id", params.get("_id"));
+      data.append("document", JSON.stringify(this.state.entry));
+
+      axios
+        .post("/admin", data)
+        .then((response) => {
+          // if the entry ID differs from the document ID, then redirect to the new URL
+          if (params.get("_id") !== response.data._id) {
+            // swap out the ID in the URL
+            params.set("_id", response.data._id);
+
+            // relocate
+            location.href = new URL(
+              location.origin + location.pathname + "?" + params
+            );
+          }
+          // IDs match, update the React state
+          else {
+            // ensure key verses variable is an array
+            if (!response.data.verses) response.data.verses = [];
+
+            this.setState({
+              entry: response.data,
+              processing: false,
+            });
+          }
+        })
+        .catch((err) => {
+          this.setState({ processing: false });
+          alert(err.message);
+        });
+    };
+
+    /*******************
+     ***** Methods *****
+     ******************/
+
+    load = () => {
+      this.setState({ entry: false, processing: false });
+
+      // parse the query string parameters
+      const params = new URLSearchParams(document.location.search);
+
+      // build out the form data
+      const data = new FormData();
+      data.append("api", "blog");
+      data.append("_id", params.get("_id"));
+
+      axios
+        .post("/admin", data)
+        .then((response) => {
+          // remove any timestamp from the published date
+          response.data.published = response.data.published.substr(0, 10);
+
+          // ensure key verses variable is an array
+          if (!response.data.verses) response.data.verses = [];
+
+          this.setState({ entry: response.data });
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
     };
   }
 
@@ -1504,6 +1779,10 @@ import("./react-bootstrap.js").then((BS) => {
   // add the Bible Testaments component to the React container
   reactContainer = document.querySelector("#react-bible-testaments");
   if (reactContainer) ReactDOM.render(re(BibleTestaments), reactContainer);
+
+  // add the Bible Testaments component to the React container
+  reactContainer = document.querySelector("#react-blog-entry");
+  if (reactContainer) ReactDOM.render(re(BlogEntry), reactContainer);
 
   // add the Lexicon Entries component to the React container
   reactContainer = document.querySelector("#react-lexicons-entries");
