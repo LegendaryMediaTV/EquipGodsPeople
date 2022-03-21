@@ -25,8 +25,9 @@ $html->add(new BlogEntryPage(
     new BS_BlockquoteFooter(
       null,
 
+      '—',
       new BS_Link(
-        ['to' => 'https://www.amazon.com/There-Trees-Garden-Divine-Destiny/dp/1929371551/'],
+        ['to' => 'http://www.amazon.com/Forgotten-God-Reversing-Tragic-Neglect/dp/1434767957/'],
 
         'Francis Chan with Danae Yankoski, ',
         new BS_Citation(null, 'Forgotten God: Reversing Our Tragic Neglect of the Holy Spirit'),

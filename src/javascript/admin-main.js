@@ -355,6 +355,26 @@ import("./react-bootstrap.js").then((BS) => {
                   onChange: this.changeHandler.bind(this, "description"),
                 }),
 
+                re(BS.FormField, {
+                  item: {
+                    _id: "youtube",
+                    title: "YouTube",
+                    value: this.state.entry.youtube,
+                    gridWidth: 6,
+                  },
+                  onChange: this.changeHandler.bind(this, "youtube"),
+                }),
+
+                re(BS.FormField, {
+                  item: {
+                    _id: "vimeo",
+                    title: "Vimeo",
+                    value: this.state.entry.vimeo,
+                    gridWidth: 6,
+                  },
+                  onChange: this.changeHandler.bind(this, "vimeo"),
+                }),
+
                 this.state.entry.excerpt
                   ? re(BS.FormField, {
                       item: {
