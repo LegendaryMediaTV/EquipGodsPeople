@@ -12,7 +12,7 @@ $html->add(new BlogEntryPage(
 
   new BS_Paragraph(
     null,
-    'When we draw close to God, He will often reveal things to us ([bible to="Philippians 3:14-15" /]). Ironically, when having these deeper understandings, we can be filled with pride and start boasting in ourselves instead of God ([bible to="Romans 15:17-19" /]). So, God, still desiring to have closeness with us, allows for aspects of this fallen world to keep us humble. Paul compared it to being a thorn, literally, a splinter ([[strongs id="g4647" /]]) in his flesh. I don’t know if you’ve ever had a splinter lodged into you, but when you do, there may be times you can forget about it, but the wrong movement or brush of the skin will more than remind you that it’s there! Paul even said that it was there to torment him, literally, to “beat him up” ([[strongs id="g2852" /]]). ',
+    'When we draw close to God, He will often reveal things to us ([bible to="Philippians 3:14-15" /]). Ironically, when having these deeper understandings, we can be filled with pride and start boasting in ourselves instead of God ([bible to="Romans 15:17-19" /]). So, God, still desiring to have closeness with us, allows for aspects of this fallen world to keep us humble. Paul compared it to being a thorn, literally, a splinter ([strongs id="g4647" /]) in his flesh. I don’t know if you’ve ever had a splinter lodged into you, but when you do, there may be times you can forget about it, but the wrong movement or brush of the skin will more than remind you that it’s there! Paul even said that it was there to torment him, literally, to “beat him up” ([strongs id="g2852" /]). ',
   ),
 
 

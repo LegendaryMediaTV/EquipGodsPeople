@@ -415,9 +415,38 @@ import("./react-bootstrap.js").then((BS) => {
               ),
 
               re(
-                BS.Button,
-                { type: "submit", className: "w-100 w-md-auto" },
-                "Submit"
+                BS.Division,
+                { className: "hstack gap-1" },
+
+                re(
+                  BS.Link,
+                  {
+                    to: this.state.entry.url,
+                    newTab: true,
+                    external: false,
+                    className: "btn btn-dark",
+                  },
+                  "Entry Page"
+                ),
+
+                re(
+                  BS.Link,
+                  {
+                    to:
+                      "https://www.equipgodspeople.com/" +
+                      this.state.entry.published.replace(/-/g, "/"),
+                    newTab: true,
+                    external: false,
+                    className: "btn btn-dark",
+                  },
+                  "Old Site"
+                ),
+
+                re(
+                  BS.Button,
+                  { type: "submit", className: "w-100 w-md-auto" },
+                  "Submit"
+                )
               )
             )
 

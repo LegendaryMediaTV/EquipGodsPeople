@@ -27,7 +27,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://www.amazon.com/Forgotten-God-Reversing-Tragic-Neglect/dp/1434767957/'],
+        ['to' => 'https://www.amazon.com/Forgotten-God-Reversing-Tragic-Neglect/dp/1434767957/'],
 
         'Francis Chan with Danae Yankoski, ',
         new BS_Citation(null, 'Forgotten God: Reversing Our Tragic Neglect of the Holy Spirit'),
