@@ -1922,7 +1922,7 @@ export const rbb = (text) => {
 
   // Small Caps tag
   output = reactReplace(output, /\[sc\](.+?)\[\/sc\]/, (match) =>
-    React.createElement(Verse, null, match[1])
+    React.createElement(SmallCaps, null, match[1])
   );
 
   // Verse tag
@@ -1994,7 +1994,7 @@ const bbHTML = (text) => {
 };
 
 /** BB Code to plain text: https://www.bbcode.org/reference.php */
-const bbText = (text) => {
+export const bbText = (text) => {
   // general replacements
   let output = text;
 

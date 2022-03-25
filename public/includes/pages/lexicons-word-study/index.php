@@ -32,12 +32,12 @@ $html->add(new BS_Container(
   // new BS_Preformatted([ 'item' => $languages ]),
 
   new BS_Row(
-    ['className' => 'mt-5'],
+    null,
 
     ...array_map(
       function ($language) {
         return new BS_Col(
-          ['md' => true],
+          ['md' => true, 'className' => 'mt-4'],
           new BS_LexiconLetterSelector(['language' => $language])
         );
       },

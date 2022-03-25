@@ -6,15 +6,39 @@ Equip God’s People web app built on PHP
 
 ### Pre-launch
 
+- finish importing EGP Blog
+- import other articles into the EGP Blog:
+  - 2004-04-03: Marriage 1: God’s Original Intent
+  - 2004-04-11: Marriage 2: A Christ-Like Love
+  - 2004-04-18: Marriage 3: The Counterpart
+  - 2004-04-25: Marriage 4: The Covenant of Husband and Wife
+  - 2005-08-14: Definition of God
+  - 2005-09: The Will of God
+  - 2005-10: The Sevenfold Spirit of God
+  - 2006-01: Lord of Your Life
+  - 2006-02: The Cross We Bear
+  - 2006-03: He Must Increase, I Must Decrease
+  - 2006-04: The Law of Liberty
+  - 2006-05: Children of Light
+  - 2006-06: Keeping a Clear Conscience
+  - 2006-07: A Good Steward
+  - 2006-08: Turn Your Eyes Upon Jesus
+  - 2006-09: Rejoice! God Is in Control
+  - 2007-05: Christian Perspective on Death
+  - 2009-04: A New Creation 1: Forgiven
+  - 2009-05: A New Creation 2: Go, Sin No More
+  - 2009-06: A New Creation 3: Living the New Life
+  - 2009-07: A New Creation 4: Loving Others
+- finish importing Classic Works
+- finish importing content from the live site:
+  - Teach Yourself Greek
+  - Bible Concordance
 - Bible Search:
   - GRKS, GRKT, KJVS don't parse correctly due to TVM/TVM2
   - GRKT doesn't show translinear definitions
   - GRKS/T don't support Greek color coding system
   - add support for linking to and bolding specific verses within a chapter
   - when searches don't match a passage, then it should do a scripture search
-- finish importing EGP Blog
-- finish importing Classic Works
-- finish importing content from the live site
 - search engine:
   - make each version/page/etc have Searchable and Search Result fields that is updated when the build is executed
   - make the search API query the Searchable fields and return the area, Search Result, relevancy
@@ -40,9 +64,8 @@ Equip God’s People web app built on PHP
   - the page stores the latest info and updates the timestamp, but doesn't update the UI
 - EGP Admin:
   - Bible: testaments, ranges, books, chapters, versions, verses
-  - Blog
   - Languages: languages, letters
-  - Lexicons: lexicons, entries, definitions
+  - Lexicons: lexicons
 - add images with watermarks for all blog entries
 - extract TVM info from the old Online Bible app and storing it in the language, having the number, code, components, and component definitions
 - version-specific icons for toggling Strong's, translinear definitions, etc.

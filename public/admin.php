@@ -388,7 +388,7 @@ switch ($selectedTab->_id) {
       ];
       foreach ($entries as $entry) {
         $items[] = (object) [
-          'title' => $entry->sequence . ' – ' . $entry->title,
+          'title' => $entry->published . ' – ' . egp_bb($entry->title),
           'url' => $selectedTab->url . '&_id=' . $entry->_id
         ];
       }
@@ -408,12 +408,12 @@ switch ($selectedTab->_id) {
         ],
         'previous' => $previous ? (object)[
           '_id' => $previous->_id,
-          'title' => $previous->title,
+          'title' => egp_bb($previous->title),
           'url' => $selectedTab->url . '&_id=' . $previous->_id
         ] : null,
         'next' => $next ? (object)[
           '_id' => $next->_id,
-          'title' => $next->title,
+          'title' => egp_bb($next->title),
           'url' => $selectedTab->url . '&_id=' . $next->_id
         ] : null,
         'className' => 'mt-5',

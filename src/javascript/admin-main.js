@@ -12,7 +12,7 @@ import("./react-bootstrap.js").then((BS) => {
   }, 500);
 
   const seo = (text) =>
-    text
+    BS.bbText(text)
       .toLowerCase()
       .replace(/(\s|[*—–-])+/g, " ")
       .replace(/&/g, "and")
@@ -260,7 +260,7 @@ import("./react-bootstrap.js").then((BS) => {
             { onSubmit: this.submitHandler },
 
             re(BS.SectionHeader, {
-              title: this.state.entry.title,
+              title: BS.rbb(this.state.entry.title),
               subtitle: "blog entry admin form",
             }),
 
@@ -452,9 +452,6 @@ import("./react-bootstrap.js").then((BS) => {
 
         // apply changes
         entry[field] = value;
-
-        // clean up the published date
-        entry.published = entry.published.substring(0, 10);
 
         // make the ID/URL based on the publish date and an SEO-friendly version of the title
         entry._id = entry.published + "-" + seo(entry.title);
