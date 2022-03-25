@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['youtube' => 'Oehry1JC9Rk'],
 
   new BS_Blockquote(
     null,

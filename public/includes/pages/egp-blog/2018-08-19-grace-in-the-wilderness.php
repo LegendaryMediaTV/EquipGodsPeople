@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['verses' => 'Hebrews 4:9–12; 1 Peter 1:6–9; Romans 8:35–39; Matthew 4:1–4; Psalm 18:4–6; Luke 15:18–24'],
 
   new BS_BiblePassage(['passage' => 'Jeremiah 31:2–4', 'version' => 'ESV']),
 

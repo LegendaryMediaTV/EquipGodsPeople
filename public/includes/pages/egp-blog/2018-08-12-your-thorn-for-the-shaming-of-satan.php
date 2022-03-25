@@ -2,7 +2,10 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  [
+    'verses' => '2 Corinthians 12:7–10; Ephesians 3:10–14',
+    'youtube' => 'Pi0x93xzwTY',
+  ],
 
   new BS_Blockquote(
     null,

@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['verses' => 'Matthew 6:1–4; Matthew 10:7–10'],
 
   new BS_BiblePassage(['passage' => 'Luke 6:30', 'version' => 'NASB']),
 

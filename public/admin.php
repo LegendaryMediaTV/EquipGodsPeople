@@ -26,17 +26,11 @@ if ($_POST['api']) {
           'excerpt' => '',
           'image' => $document->image,
           'imageAlt' => $document->imageAlt,
-          'verses' => $document->verses,
-          'vimeo' => $document->vimeo,
-          'youtube' => $document->youtube,
           'previous' => '',
           'next' => '',
         ];
         if (!$document->image) unset($document->image);
         if (!$document->imageAlt) unset($document->imageAlt);
-        if (!$document->verses) unset($document->verses);
-        if (!$document->vimeo) unset($document->vimeo);
-        if (!$document->youtube) unset($document->youtube);
 
         $filename = 'includes/pages/egp-blog/' . $document->_id . '.php';
         if (file_exists($filename)) {
@@ -400,7 +394,6 @@ switch ($selectedTab->_id) {
       }
 
       $html->add(new BS_ListGroup(['title' => 'Blog Entries', 'items' => $items]));
-      $html->add(new BS_Preformatted(['item' => $entries]));
     } else {
       $entry = $db->document('blog', $_GET['_id']);
       $previous = $entry->previous ? $db->document('blog', $entry->previous) : null;
@@ -466,7 +459,18 @@ function admin_excerpt($html) {
       '',
       trim(egp_bb(
         strip_tags(str_replace(
-          ['</blockquote>', '</div>', '</h1>', '</h2>', '</h3>', '</h4>', '</h5>', '</h6>', '</li>'],
+          [
+            '<br />',
+            '</blockquote>',
+            '</div>',
+            '</h1>',
+            '</h2>',
+            '</h3>',
+            '</h4>',
+            '</h5>',
+            '</h6>',
+            '</li>'
+          ],
           "\n",
           $html
         )),

@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['verses' => 'Psalm 16:11; Psalm 118:24; Ecclesiastes 2:24–25; Colossians 3:17; Hebrews 13:15; 1 Thessalonians 5:16–18'],
 
   new BS_BiblePassage(['passage' => 'Ecclesiastes 5:17–20', 'version' => 'NLT']),
 

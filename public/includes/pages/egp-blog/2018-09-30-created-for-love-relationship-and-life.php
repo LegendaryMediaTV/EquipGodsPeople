@@ -2,7 +2,10 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  [
+    'verses' => 'Romans 3:9–12; John 14:6–10; 1 John 4:7–10; Luke 15:4–10; John 10:7–18',
+    'youtube' => '-cBsh5lltc8',
+  ],
 
   new BS_Blockquote(
     null,

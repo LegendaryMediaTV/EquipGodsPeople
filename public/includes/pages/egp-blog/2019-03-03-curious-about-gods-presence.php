@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['verses' => 'Exodus 3:1–6; Exodus 33:1–3, 12–18; Deuteronomy 8; Isaiah 46:3–4'],
 
   new BS_Blockquote(
     null,

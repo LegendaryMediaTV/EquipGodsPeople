@@ -318,8 +318,9 @@ import("./react-bootstrap.js").then((BS) => {
                     _id: "image",
                     title: "Image",
                     value: this.state.entry.image,
-                    gridWidth: 4,
+                    gridWidth: 6,
                   },
+                  onChange: this.changeHandler.bind(this, "image"),
                 }),
 
                 re(BS.FormField, {
@@ -327,20 +328,10 @@ import("./react-bootstrap.js").then((BS) => {
                     _id: "imageAlt",
                     title: "Image Alt",
                     value: this.state.entry.imageAlt,
-                    lines: 3,
-                    gridWidth: 8,
-                  },
-                }),
-
-                re(BS.FormField, {
-                  item: {
-                    _id: "verses",
-                    title: "Key Verses",
-                    value: this.state.entry.verses.join("\n"),
                     lines: 5,
-                    gridWidth: 4,
+                    gridWidth: 6,
                   },
-                  onChange: this.changeHandler.bind(this, "verses"),
+                  onChange: this.changeHandler.bind(this, "imageAlt"),
                 }),
 
                 re(BS.FormField, {
@@ -350,29 +341,9 @@ import("./react-bootstrap.js").then((BS) => {
                     value: this.state.entry.description,
                     lines: 5,
                     maxLength: 300,
-                    gridWidth: 8,
+                    gridWidth: 6,
                   },
                   onChange: this.changeHandler.bind(this, "description"),
-                }),
-
-                re(BS.FormField, {
-                  item: {
-                    _id: "youtube",
-                    title: "YouTube",
-                    value: this.state.entry.youtube,
-                    gridWidth: 6,
-                  },
-                  onChange: this.changeHandler.bind(this, "youtube"),
-                }),
-
-                re(BS.FormField, {
-                  item: {
-                    _id: "vimeo",
-                    title: "Vimeo",
-                    value: this.state.entry.vimeo,
-                    gridWidth: 6,
-                  },
-                  onChange: this.changeHandler.bind(this, "vimeo"),
                 }),
 
                 this.state.entry.excerpt
@@ -382,8 +353,8 @@ import("./react-bootstrap.js").then((BS) => {
                         title: "Excerpt",
                         value: this.state.entry.excerpt,
                         disabled: true,
-                        lines: 3,
-                        gridWidth: 12,
+                        lines: 5,
+                        gridWidth: 6,
                       },
                     })
                   : null,

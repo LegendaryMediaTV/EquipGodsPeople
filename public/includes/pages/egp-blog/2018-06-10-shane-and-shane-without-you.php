@@ -2,7 +2,10 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  [
+    'verses' => 'Exodus 33:13–17',
+    'youtube' => 'eun34_2EmaQ',
+  ],
 
   new BS_Blockquote(
     null,

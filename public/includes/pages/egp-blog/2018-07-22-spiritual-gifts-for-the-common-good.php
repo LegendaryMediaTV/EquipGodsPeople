@@ -2,7 +2,10 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  [
+    'verses' => '1 Corinthians 12:1–11, 27–30; 1 Corinthians 1:4–7; 1 Corinthians 13:1–3, 8–10; Romans 12:4–8; Ephesians 4:11–13; 1 Peter 4:10–11',
+    'vimeo' => '276940895',
+  ],
 
   new BS_Blockquote(
     null,

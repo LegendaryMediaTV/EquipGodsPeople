@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['verses' => 'Isaiah 41:13; Isaiah 43:19; Luke 24:32; Matthew 5:14–16; Matthew 11:28; Matthew 25:1–13; 2 Timothy 2:21'],
 
   new BS_Blockquote(
     null,

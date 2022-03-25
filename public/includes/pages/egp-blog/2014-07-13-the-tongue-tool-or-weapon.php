@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['verses' => 'Titus 3:3–7; Ephesians 5:25–27; Romans 8:26–27; Romans 8:35–39'],
 
   new BS_BiblePassage(['passage' => 'James 3:2–6', 'version' => 'NASB']),
 

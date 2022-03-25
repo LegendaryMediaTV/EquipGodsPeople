@@ -2,7 +2,10 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  [
+    'verses' => '1 Corinthians 1:18–25',
+    'youtube' => 'z6kgvhG3AkI',
+  ],
 
   new BS_Paragraph(
     null,

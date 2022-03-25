@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['verses' => 'Revelation 3:5; Psalm 51:5–7'],
 
   new BS_Paragraph(
     null,
@@ -10,13 +10,13 @@ $html->add(new BlogEntryPage(
   ),
 
   new BS_BiblePassage([
-    'passage' => 'Matthew 23:27-28',
+    'passage' => 'Matthew 23:27–28',
     'version' => 'NASB',
   ]),
 
   new BS_Paragraph(
     null,
-    'As many know from this text and others, the Pharisees were very focused on appearing righteous before others ([bible to="Matthew 15:7-9" /], [bible to="Matthew 23" /]) and often banked their salvation on being a descendant of Moses and Abraham. ([bible to="John 5:44-47" /], [bible to="John 8:33-45" /]) In this passage, Jesus said that their hypocrisy made them like “whitewashed tombs” where they appeared beautiful but were full of all sorts of uncleanness.'
+    'As many know from this text and others, the Pharisees were very focused on appearing righteous before others ([bible to="Matthew 15:7–9" /], [bible to="Matthew 23" /]) and often banked their salvation on being a descendant of Moses and Abraham. ([bible to="John 5:44–47" /], [bible to="John 8:33–45" /]) In this passage, Jesus said that their hypocrisy made them like “whitewashed tombs” where they appeared beautiful but were full of all sorts of uncleanness.'
   ),
 
   new BS_Paragraph(

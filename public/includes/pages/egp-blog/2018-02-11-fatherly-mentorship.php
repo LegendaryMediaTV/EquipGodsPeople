@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['verses' => 'Exodus 2; Exodus 3:1; Exodus 4:18; Exodus 18'],
 
   new BS_Paragraph(
     null,

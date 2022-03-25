@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['verses' => 'Romans 8:14–18; Galatians 4:3–7; John 16:7–14'],
 
   new BS_Blockquote(
     null,
@@ -16,7 +16,7 @@ $html->add(new BlogEntryPage(
       null,
 
       '[b]Comfort (Maybe Your Life Is Too Safe)[/b]' . PHP_EOL,
-      'From my experience, I have felt closest to God when nearness to Him was a necessity. The Bible says that the Spirit comes through in situations where we would normally be afraid ([bible to="Luke 12:11-12" /]). … Jesus refers to the Holy Spirit as the “Helper” or “Comforter.” Let me ask you a simple question: Why would we need to experience the Comforter if our lives are already comfortable? …'
+      'From my experience, I have felt closest to God when nearness to Him was a necessity. The Bible says that the Spirit comes through in situations where we would normally be afraid ([bible to="Luke 12:11–12" /]). … Jesus refers to the Holy Spirit as the “Helper” or “Comforter.” Let me ask you a simple question: Why would we need to experience the Comforter if our lives are already comfortable? …'
     ),
 
     new BS_Paragraph(

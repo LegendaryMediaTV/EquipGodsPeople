@@ -2,7 +2,10 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  [
+    'verses' => '2 Corinthians 8:11–12; Matthew 7:13–14; 1 Corinthians 10:13; Acts 14:21–22; Philippians 4:18–19; 2 Corinthians 9:8–11',
+    'youtube' => 'ilB_QeTTvc8',
+  ],
 
   new BS_Blockquote(
     null,

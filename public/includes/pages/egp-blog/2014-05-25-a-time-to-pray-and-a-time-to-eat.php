@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['verses' => '1 Thessalonians 5:16–18; Matthew 14:19–20; Luke 11:37–40; Mark 7:1–16; Matthew 26:26–29'],
 
   new BS_Paragraph(
     null,

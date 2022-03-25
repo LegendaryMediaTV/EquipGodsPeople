@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['verses' => 'Proverbs 13:12; 1 Corinthians 1:9; Psalm 119:116; Ephesians 3:17–21; 1 Peter 5:6–7, 10; 2 Corinthians 1:19–22; Luke 5:16; Romans 12:2'],
 
   new BS_Blockquote(
     null,

@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['verses' => 'Psalm 62:5–6; Psalm 52:8; Matthew 1:21'],
 
   new BS_Blockquote(
     null,

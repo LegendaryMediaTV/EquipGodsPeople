@@ -2,7 +2,10 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  [
+    'verses' => 'Matthew 6:9–13; Luke 4:33–34; Isaiah 1:13–18; Mark 7:6–9; Romans 5:1–5; 1 Timothy 6:17–19',
+    'youtube' => 'eBPsZcTBVB4',
+  ],
 
   new BS_Blockquote(
     null,

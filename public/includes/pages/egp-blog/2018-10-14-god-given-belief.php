@@ -2,7 +2,10 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  [
+    'verses' => 'John 6:27–29; Ephesians 2:4–10; John 1:12–13; Isaiah 64:6–8; Romans 12:1–3; Romans 14:22–23',
+    'vimeo' => '286907127',
+  ],
 
   new BS_Blockquote(
     null,

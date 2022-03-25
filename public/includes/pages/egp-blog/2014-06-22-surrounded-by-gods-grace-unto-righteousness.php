@@ -2,7 +2,10 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  [
+    'verses' => 'Isaiah 58; Romans 3:19–28; Lamentations 3:21–23; Isaiah 64:6; 1 Peter 1:2',
+    'youtube' => '6xYttipCuXM',
+  ],
 
   new BS_BiblePassage(['passage' => 'Isaiah 58:6–11', 'version' => 'NASB']),
 

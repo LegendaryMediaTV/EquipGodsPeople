@@ -2,7 +2,10 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  [
+    'verses' => 'Isaiah 43:16–19; Philippians 3:12–14; Ecclesiastes 7:8–14; Philippians 2:12–16; 2 Corinthians 5:17–19; Luke 5:36–39; Romans 12:1–2',
+    'youtube' => 'hdged3UgJwk',
+  ],
 
   new BS_Blockquote(
     null,

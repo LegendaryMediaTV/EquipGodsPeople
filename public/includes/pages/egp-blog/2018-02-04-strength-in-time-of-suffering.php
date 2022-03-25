@@ -2,7 +2,10 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  [
+    'verses' => '1 Peter 4:12–14; 1 Peter 5:10; 1 Corinthians 10:13',
+    'youtube' => 'xqgeT26BAnE',
+  ],
 
   new BS_Blockquote(
     null,

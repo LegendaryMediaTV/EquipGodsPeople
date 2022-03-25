@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['verses' => 'Exodus 15:26; Exodus 19:5–6; Deuteronomy 13:4, 18; Deuteronomy 15:4–6; Deuteronomy 26:16–19; Deuteronomy 28:1–2, 15, 45, 62; Deuteronomy 30:2–3, 8–10, 17–20'],
 
   new BS_Paragraph(
     null,

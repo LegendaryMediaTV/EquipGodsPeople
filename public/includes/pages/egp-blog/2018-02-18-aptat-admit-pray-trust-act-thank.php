@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['vimeo' => '172817032'],
 
   new BS_Paragraph(
     null,

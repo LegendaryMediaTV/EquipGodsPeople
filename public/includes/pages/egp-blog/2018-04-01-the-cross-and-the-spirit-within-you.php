@@ -2,7 +2,10 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  [
+    'verses' => 'Romans 8:11–13; Ezekiel 36:26–27; Philippians 3:10–11',
+    'youtube' => 'VuDUwuL3Jg4',
+  ],
 
   new BS_Blockquote(
     null,

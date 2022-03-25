@@ -3,6 +3,18 @@ class BlogEntryPage extends BS_Container {
   function render() {
     global $db, $metadata;
 
+    // extract custom properties
+    $verses = $this->properties['verses'];
+    unset($this->properties['verses']);
+    $vimeo = $this->properties['vimeo'];
+    unset($this->properties['vimeo']);
+    $youtube = $this->properties['youtube'];
+    unset($this->properties['youtube']);
+
+    // split verses into an array as needed
+    if (gettype($verses) === 'string')
+      $verses = explode('; ', $verses);
+
     // retrieve previous/next entries
     $previous = $metadata->previous
       ? $db->document('blog', $metadata->previous)
@@ -28,7 +40,7 @@ class BlogEntryPage extends BS_Container {
 
         implode('', $this->children),
 
-        $metadata->verses
+        $verses
           ? new BS_Section(
             ['className' => 'mt-element'],
 
@@ -45,7 +57,7 @@ class BlogEntryPage extends BS_Container {
                     return new BS_BibleLink(['to' => $verse]);
                   },
 
-                  $metadata->verses
+                  $verses
                 )
               )
             ),
@@ -53,17 +65,17 @@ class BlogEntryPage extends BS_Container {
           : null,
       ),
 
-      $metadata->vimeo || $metadata->youtube
+      $vimeo || $youtube
         ? new BS_Section(
           ['className' => 'mt-element'],
 
           new BS_Heading2(null, 'Related video'),
 
           new BS_Embed([
-            'url' => $metadata->vimeo
-              ? 'https://player.vimeo.com/video/' . $metadata->vimeo
-              : 'https://www.youtube.com/embed/' . $metadata->youtube . '?rel=0',
-            'title' => ($metadata->vimeo ? 'Vimeo' : 'YouTube') . ' video',
+            'url' => $vimeo
+              ? 'https://player.vimeo.com/video/' . $vimeo
+              : 'https://www.youtube.com/embed/' . $youtube . '?rel=0',
+            'title' => ($vimeo ? 'Vimeo' : 'YouTube') . ' video',
           ])
         )
         : null,

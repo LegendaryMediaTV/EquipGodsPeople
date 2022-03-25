@@ -2,7 +2,7 @@
 require_once('BlogEntryPage.php');
 
 $html->add(new BlogEntryPage(
-  null,
+  ['youtube' => '7YxtGHfnoA8'],
 
   new BS_Paragraph(
     null,
