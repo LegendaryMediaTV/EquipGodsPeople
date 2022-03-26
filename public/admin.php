@@ -469,7 +469,8 @@ function admin_excerpt($html) {
             '</h4>',
             '</h5>',
             '</h6>',
-            '</li>'
+            '</li>',
+            '</p>'
           ],
           "\n",
           $html
