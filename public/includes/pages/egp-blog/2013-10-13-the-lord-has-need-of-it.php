@@ -18,7 +18,7 @@ $html->add(new BlogEntryPage(
 
   new BS_Paragraph(
     null,
-    'As many know, “You shall not take the Name of the [sc]Lord[/sc] your God in vain” is one of the Ten Commandments ([bible to="Exodus 20:3-17" /]). But because of the second half of that statement, “for the [sc]Lord[/sc] will not leave him unpunished who takes His Name in vain”, the Jews became HIGHLY paranoid of using His Name at all. In the Hebrew scriptures, God’s Name was written out as four Hebrew letters, “[egp_ConvertText language="H" word="hwhy" \/]” (usually transliterated, “Yahweh” or “Jehovah” [[strongs id="h3068" /]]), often called the Tetragrammaton (Greek for “four letters”), but when reading it aloud, they would say “Adonay” [[strongs id="h136" /]] instead, which is a variation of the Hebrew word for “lord” [[strongs id="h113" /]].',
+    'As many know, “You shall not take the Name of the [sc]Lord[/sc] your God in vain” is one of the Ten Commandments ([bible to="Exodus 20:3-17" /]). But because of the second half of that statement, “for the [sc]Lord[/sc] will not leave him unpunished who takes His Name in vain”, the Jews became HIGHLY paranoid of using His Name at all. In the Hebrew scriptures, God’s Name was written out as four Hebrew letters, “[hebrewCode]yhwh[/hebrewCode]” (usually transliterated, “Yahweh” or “Jehovah” [[strongs id="h3068" /]]), often called the Tetragrammaton (Greek for “four letters”), but when reading it aloud, they would say “Adonay” [[strongs id="h136" /]] instead, which is a variation of the Hebrew word for “lord” [[strongs id="h113" /]].',
   ),
 
   new BS_Paragraph(
