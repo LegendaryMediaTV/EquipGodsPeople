@@ -27,7 +27,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://podcasts.ibethel.org/en/podcasts/warfare-101'],
+        ['to' => 'https://www.podcastics.com/podcast/episode/warfare-101-93517/'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Warfare 101'),

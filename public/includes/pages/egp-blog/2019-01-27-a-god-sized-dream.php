@@ -32,7 +32,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://podcasts.ibethel.org/en/podcasts/promises-fulfilled'],
+        ['to' => 'https://www.podcastics.com/podcast/episode/promises-fulfilled-93484/'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Promises Fulfilled'),

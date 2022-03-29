@@ -17,7 +17,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://www.desiringgod.org/resource-library/books/a-hunger-for-god'],
+        ['to' => 'https://www.desiringgod.org/resource-library/books/a-hunger-for-god'],
 
         'John Piper ',
         new BS_Citation(null, 'A Hunger for God'),

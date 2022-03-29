@@ -32,7 +32,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://podcasts.ibethel.org/en/podcasts/the-first-deeds'],
+        ['to' => 'https://www.podcastics.com/podcast/episode/the-first-deeds-93493/'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'The First Deeds'),

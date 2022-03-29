@@ -22,7 +22,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://podcasts.ibethel.org/en/podcasts/born-for-times-of-crisis'],
+        ['to' => 'https://www.podcastics.com/podcast/episode/born-for-times-of-crisis-93502/'],
 
         'Kris Vallotton, Bethel Church, ',
         new BS_Citation(null, 'Born for Times of Crisis'),

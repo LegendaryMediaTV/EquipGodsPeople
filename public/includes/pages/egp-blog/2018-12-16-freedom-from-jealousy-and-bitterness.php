@@ -32,7 +32,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://podcasts.ibethel.org/en/podcasts/recognizing-divine-favor'],
+        ['to' => 'https://www.podcastics.com/podcast/episode/recognizing-divine-favor-93487/'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Recognizing Divine Favor'),

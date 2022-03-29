@@ -29,7 +29,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://podcasts.ibethel.org/en/podcasts/trusting-the-trustworthy-one'],
+        ['to' => 'https://www.podcastics.com/podcast/episode/trusting-the-trustworthy-one-93528/'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Trusting the Trustworthy One'),

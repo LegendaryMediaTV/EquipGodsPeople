@@ -15,7 +15,7 @@ $html->add(new BS_Container(
 
     'Dr. James Strong (1822-1894) was the professor of Exegetical Theology at Drew Theological Seminary and oversaw the creation of ' .
       new BS_Link(
-        ['to' => 'http://en.wikipedia.org/wiki/Strong%27s_Concordance'],
+        ['to' => 'https://en.wikipedia.org/wiki/Strong%27s_Concordance'],
         'Strong’s Exhaustive Concordance of the Bible'
       ) .
       '. This was published in 1890 and linked every word in the King James Version back to the word in the original language' .

@@ -17,7 +17,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://podcasts.ibethel.org/en/podcasts/full-circle'],
+        ['to' => 'https://www.podcastics.com/podcast/episode/full-circle-93521/'],
 
         'Eric Johnson, Bethel Church, ',
         new BS_Citation(null, 'Full Circle'),

@@ -27,7 +27,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://podcasts.ibethel.org/en/podcasts/treasuring-the-word'],
+        ['to' => 'https://www.podcastics.com/podcast/episode/treasuring-the-word-93507/'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Treasuring the Word'),

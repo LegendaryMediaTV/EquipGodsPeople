@@ -24,7 +24,7 @@ $html->add(new BlogEntryPage(
 
       '—Connor Bales, ',
       new BS_Link(
-        ['to' => 'http://www.nbbctx.org/'],
+        ['to' => 'https://www.nbbctx.org/'],
         'New Beginnings Baptist Church',
       ),
       ', ',

@@ -27,7 +27,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://podcasts.ibethel.org/en/podcasts/a-lifestyle-of-peace'],
+        ['to' => 'https://www.podcastics.com/podcast/episode/a-lifestyle-of-peace-93498/'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'A Lifestyle of Peace'),

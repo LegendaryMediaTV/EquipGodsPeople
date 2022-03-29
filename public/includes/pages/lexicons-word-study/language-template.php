@@ -49,7 +49,7 @@ $html->add(new BS_Container(
           new BS_Superscript(null, 'st'),
           ' centuries BC. This translation is referred to as the ',
           new BS_Link(
-            ['to' => 'http://en.wikipedia.org/wiki/Septuagint'],
+            ['to' => 'https://en.wikipedia.org/wiki/Septuagint'],
             'Septuagint (LXX)'
           ),
           ' because it is said to have been translated by seventy (70) Jewish scholars.',
@@ -86,13 +86,13 @@ $html->add(new BS_Container(
           'Because it would have been the primary language of Jesus and his disciples, some scholars believe that some (if not all) ',
           'of the New Testament books were written completely in Aramaic. The Aramaic version of the New Testament is called the ',
           new BS_Link(
-            ['to' => 'http://en.wikipedia.org/wiki/Peshitta'],
+            ['to' => 'https://en.wikipedia.org/wiki/Peshitta'],
             'Peshitta'
           ),
           '. However, most of the time when the New Testament speakers and writers quoted the Old Testament, they quoted the ',
           'the Greek version of the Old Testament, called the ',
           new BS_Link(
-            ['to' => 'http://en.wikipedia.org/wiki/Septuagint'],
+            ['to' => 'https://en.wikipedia.org/wiki/Septuagint'],
             'Septuagint (LXX)'
           ),
           ', so they undoubtedly could have considered writing in Greek for uniformity sake (though you could argue that the ',

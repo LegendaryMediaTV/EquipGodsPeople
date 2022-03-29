@@ -49,7 +49,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://podcasts.ibethel.org/en/podcasts/increase-from-blessing'],
+        ['to' => 'https://www.podcastics.com/podcast/episode/increase-from-blessing-93520/'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Increase from Blessing'),

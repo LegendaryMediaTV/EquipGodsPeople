@@ -22,7 +22,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://www.amazon.com/The-Spiritual-Man-Watchman-Nee/dp/093500839X/'],
+        ['to' => 'https://www.amazon.com/The-Spiritual-Man-Watchman-Nee/dp/093500839X/'],
 
         'Watchman Nee, ',
         new BS_Citation(null, 'The Spiritual Man'),

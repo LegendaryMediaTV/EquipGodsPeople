@@ -27,7 +27,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://podcasts.ibethel.org/en/podcasts/power-of-confession'],
+        ['to' => 'https://www.podcastics.com/podcast/episode/power-of-confession-93481/'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Power of Confession'),

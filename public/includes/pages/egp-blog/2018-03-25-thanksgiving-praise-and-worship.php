@@ -27,7 +27,7 @@ $html->add(new BlogEntryPage(
 
       '—',
       new BS_Link(
-        ['to' => 'http://podcasts.ibethel.org/en/podcasts/designed-for-his-glory'],
+        ['to' => 'https://www.podcastics.com/podcast/episode/designed-for-his-glory-93525/'],
 
         'Bill Johnson, Bethel Church, ',
         new BS_Citation(null, 'Designed for His Glory'),
