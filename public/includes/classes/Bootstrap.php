@@ -1745,8 +1745,22 @@ class BS_Embed extends BS_Division {
   function render() {
     $title = $this->properties['title'];
     unset($this->properties['title']);
+    $vimeo = $this->properties['vimeo'];
+    unset($this->properties['vimeo']);
     $url = $this->properties['url'];
     unset($this->properties['url']);
+    $youtube = $this->properties['youtube'];
+    unset($this->properties['youtube']);
+
+    // video
+    if ($vimeo || $youtube) {
+      $url = $vimeo
+        ? 'https://player.vimeo.com/video/' . $vimeo
+        : 'https://www.youtube.com/embed/' . $youtube . '?rel=0';
+
+      if (!$title)
+        $title = ($vimeo ? 'Vimeo' : 'YouTube') . ' video';
+    }
 
     // add iFrame child
     $this->children[] = new BS_IFrame([

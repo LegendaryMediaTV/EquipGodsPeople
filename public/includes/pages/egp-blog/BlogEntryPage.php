@@ -72,11 +72,9 @@ class BlogEntryPage extends BS_Container {
           new BS_Heading2(null, 'Related video'),
 
           new BS_Embed([
-            'url' => $vimeo
-              ? 'https://player.vimeo.com/video/' . $vimeo
-              : 'https://www.youtube.com/embed/' . $youtube . '?rel=0',
-            'title' => ($vimeo ? 'Vimeo' : 'YouTube') . ' video',
-          ])
+            'vimeo' => $vimeo,
+            'youtube' => $youtube
+          ]),
         )
         : null,
 

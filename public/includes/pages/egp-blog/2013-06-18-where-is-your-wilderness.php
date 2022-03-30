@@ -14,10 +14,7 @@ $html->add(new BlogEntryPage(
     '[bible to="Luke 5:16" /] (NKJV) “So He [Jesus] Himself often withdrew into the wilderness and prayed.”',
   ),
 
-  new BS_Embed([
-    'url' => 'https://player.vimeo.com/video/38775602',
-    'title' => 'Vimeo video',
-  ]),
+  new BS_Embed(['vimeo' => '38775602', 'className' => 'mb-3']),
 
   new BS_Paragraph(
     null,
@@ -64,8 +61,5 @@ $html->add(new BlogEntryPage(
     ),
   ),
 
-  new BS_Embed([
-    'url' => 'https://player.vimeo.com/video/65384446',
-    'title' => 'Vimeo video',
-  ]),
+  new BS_Embed(['vimeo' => '65384446']),
 ));
