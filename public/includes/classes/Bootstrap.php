@@ -380,8 +380,8 @@ class BS_HTMLPage {
 
       '<title>' .
       egp_bb($this->metadata->title
-        ? str_replace('–', '/', $this->metadata->title) .
-        ($this->metadata->parent ? ' – ' . str_replace('–', '/', $this->metadata->parent) : '') .
+        ? str_replace(' – ', ' / ', $this->metadata->title) .
+        ($this->metadata->parent ? ' – ' . str_replace(' – ', ' / ', $this->metadata->parent) : '') .
         ' | ' .
         $GLOBALS['siteTitle']
         : $GLOBALS['siteTitle'], true) .
