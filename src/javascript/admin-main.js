@@ -14,7 +14,7 @@ import("./react-bootstrap.js").then((BS) => {
   const seo = (text) =>
     BS.bbText(text)
       .toLowerCase()
-      .replace(/(\s|[*—–-])+/g, " ")
+      .replace(/(\s|[*…—–-])+/g, " ")
       .replace(/&/g, "and")
       .replace(/[^a-z0-9 ]/g, "")
       .trim()
