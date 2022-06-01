@@ -607,7 +607,7 @@ class BS_HTMLPage {
       ($this->metadata->react
         ?
         // add Axios JS: https://cdnjs.com/libraries/axios
-        '<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>' .
+        '<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>' .
 
         // add React 17 JS: https://reactjs.org/docs/add-react-to-a-website.html
         '<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>' .
