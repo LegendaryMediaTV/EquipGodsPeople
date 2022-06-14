@@ -28,7 +28,8 @@ $html->add(new BlogEntryPage(
       null,
 
       '—Blaise Pascal, ',
-      new BS_Citation(null, 'Pensées, section VII, published 1669'),
+      new BS_Citation(null, 'Pensées, section VII'),
+      ', published 1669',
     ),
   ),
 
