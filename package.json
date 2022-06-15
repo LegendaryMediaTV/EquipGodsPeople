@@ -1,6 +1,6 @@
 {
   "name": "@legendarymediatv/equipgodspeople",
-  "version": "11.0.45",
+  "version": "11.0.46",
   "description": "Equip God’s People web app",
   "type": "module",
   "scripts": {
@@ -28,7 +28,7 @@
     "react-beautiful-dnd": "^13.1.0",
     "sass": "^1.52.3",
     "slugify": "^1.6.5",
-    "ssh2-sftp-client": "^8.1.0",
+    "ssh2-sftp-client": "^9.0.0",
     "terser": "^5.14.1"
   }
 }
