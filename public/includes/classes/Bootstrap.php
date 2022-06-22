@@ -1035,6 +1035,34 @@ class BS_Superscript extends BS_HTML {
   }
 }
 
+class BS_TableBody extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'tbody';
+    return parent::render();
+  }
+}
+
+class BS_TableCellData extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'td';
+    return parent::render();
+  }
+}
+
+class BS_TableCellHeader extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'th';
+    return parent::render();
+  }
+}
+
+class BS_TableHeader extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'thead';
+    return parent::render();
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////// Layout
 ////////////////////////////////////////////////////////////////////////////////
@@ -1209,6 +1237,16 @@ class BS_Display6 extends BS_Heading6 {
 class BS_Lead extends BS_Paragraph {
   function render() {
     $this->properties['className'][] = 'lead';
+    return parent::render();
+  }
+}
+
+class BS_Table extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'table';
+
+    $this->properties['className'][] = 'table';
+
     return parent::render();
   }
 }
