@@ -13,22 +13,18 @@ Equip God’s People web app built on PHP
   - 2004-04-18: Marriage 3: The Counterpart
   - 2004-04-25: Marriage 4: The Covenant of Husband and Wife
   - 2005-08-14: Definition of God
-  - 2005-09: The Will of God
-  - 2005-10: The Sevenfold Spirit of God
-  - 2006-01: Lord of Your Life
-  - 2006-02: The Cross We Bear
-  - 2006-03: He Must Increase, I Must Decrease
-  - 2006-04: The Law of Liberty
-  - 2006-05: Children of Light
-  - 2006-06: Keeping a Clear Conscience
-  - 2006-07: A Good Steward
-  - 2006-08: Turn Your Eyes Upon Jesus
-  - 2006-09: Rejoice! God Is in Control
-  - 2007-05: Christian Perspective on Death
-  - 2009-04: A New Creation 1: Forgiven
-  - 2009-05: A New Creation 2: Go, Sin No More
-  - 2009-06: A New Creation 3: Living the New Life
-  - 2009-07: A New Creation 4: Loving Others
+  - 2005-09-04: The Will of God
+  - 2005-11-20: The Sevenfold Spirit of God
+  - 2006-01-21: Lord of Your Life
+  - 2006-02-18: The Cross We Bear
+  - 2006-03-25: He Must Increase, I Must Decrease
+  - 2006-04-08: The Law of Liberty
+  - 2006-05-13: Children of Light
+  - 2006-06-24: Keeping a Clear Conscience
+  - 2006-07-08: A Good Steward
+  - 2006-08-19: Turn Your Eyes Upon Jesus
+  - 2006-09-09: Rejoice! God Is in Control
+  - 2007-05-26: Christian Perspective on Death
 - finish importing Classic Works
 - finish importing content from the live site:
   - Teach Yourself Greek
