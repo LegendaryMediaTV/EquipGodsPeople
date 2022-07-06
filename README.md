@@ -6,7 +6,6 @@ Equip God’s People web app built on PHP
 
 ### Pre-launch
 
-- finish importing EGP Blog
 - import other articles into the EGP Blog:
   - 2004-04-03: Marriage 1: God’s Original Intent
   - 2004-04-11: Marriage 2: A Christ-Like Love
@@ -22,11 +21,8 @@ Equip God’s People web app built on PHP
   - 2006-05-13: Children of Light
   - 2006-06-24: Keeping a Clear Conscience
   - 2006-07-08: A Good Steward
-  - 2006-08-19: Turn Your Eyes Upon Jesus
-  - 2006-09-09: Rejoice! God Is in Control
-  - 2007-05-26: Christian Perspective on Death
-- finish importing Classic Works
 - finish importing content from the live site:
+  - Classic Works
   - Teach Yourself Greek
   - Bible Concordance
 - Bible Search:
