@@ -29,6 +29,5 @@ $html->add(new BlogEntryPage(
         ', part 10, chapter 1'
       ),
     ),
-
   ),
 ));

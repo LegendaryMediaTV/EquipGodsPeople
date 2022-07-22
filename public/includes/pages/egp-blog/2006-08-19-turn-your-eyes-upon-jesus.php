@@ -9,7 +9,6 @@ $html->add(new BlogEntryPage(
     'Think of some things that cause stress in your life. When you come up with several, write them as if around a circle. When done, write “Jesus” in bold in the center of the circle. Focus your vision on the word “Jesus” and notice what happens to all the other words.',
   ),
 
-
   new BS_BiblePassage(['passage' => 'Luke 22:41–44', 'version' => 'NLT']),
 
   new BS_BiblePassage(['passage' => 'Hebrews 12:1–4', 'version' => 'NLT']),
