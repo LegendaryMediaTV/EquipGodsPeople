@@ -17,7 +17,7 @@ class lmtv_MySQL extends mysqli {
    ************************/
 
   // constructor
-  function __construct($server, $username, $password, $database, $fatal = true) {
+  function __construct($server, $username, $password, $database) {
     @parent::__construct($server, $username, $password, $database);
 
     if (!$this->connect_errno) {
@@ -25,12 +25,13 @@ class lmtv_MySQL extends mysqli {
       $this->database = $database;
       $this->username = $username;
     } else
-      $this->errors('Database connection failed', null, $fatal);
+      $this->errors('Database connection failed');
   }
 
   // destructor
   function __destruct() {
-    parent::close();
+    if (!$this->connect_errno)
+      parent::close();
   }
 
 
@@ -87,7 +88,7 @@ class lmtv_MySQL extends mysqli {
   }
 
   // show latest errors
-  public function errors($title, $query, $parameters) {
+  public function errors($title, $query = null, $parameters = null) {
     $output = [];
 
     $output['error'] = $title ? $title : 'MySQL errors';
