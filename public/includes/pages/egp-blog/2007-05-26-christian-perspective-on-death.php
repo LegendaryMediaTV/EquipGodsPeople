@@ -6,9 +6,7 @@ $html->add(new BlogEntryPage(
 
   new BS_Paragraph(
     null,
-    'It ',
-    new BS_Strong(null, new BS_Emphasis(null, 'REALLY')),
-    ' hurts to see a close friend or relative die. It spurs something deep inside you that says, “It’s not supposed to be like this… One minute my world was ‘normal’ and the next…unbearable…” Things like this make everything else seem…small…and…insignificant…',
+    'It [strong][/em]REALLY[/em][/strong] hurts to see a close friend or relative die. It spurs something deep inside you that says, “It’s not supposed to be like this… One minute my world was ‘normal’ and the next…unbearable…” Things like this make everything else seem…small…and…insignificant…',
   ),
 
   new BS_Paragraph(
@@ -33,11 +31,7 @@ $html->add(new BlogEntryPage(
 
   new BS_Paragraph(
     null,
-    'See, Jesus wept when He saw how much Lazarus’s death hurt his sisters, and I believe He weeps for those affected by the loss of a loved one. Because of that, Christ’s preparing a place for those of us who have put our trust in Him where this kind of stuff will never happen again. Christ has victory over death and this is ',
-    new BS_Strong(null, new BS_Emphasis(null, 'NOT')),
-    ' our home!!! Every tear will be wiped away and we will spend eternity in the Father and Son’s presence! We won’t even need the sun anymore, because ',
-    new BS_Strong(null, new BS_Emphasis(null, 'THEY')),
-    ' will be our Light!',
+    'See, Jesus wept when He saw how much Lazarus’s death hurt his sisters, and I believe He weeps for those affected by the loss of a loved one. Because of that, Christ’s preparing a place for those of us who have put our trust in Him where this kind of stuff will never happen again. Christ has victory over death and this is [strong][/em]NOT[/em][/strong] our home!!! Every tear will be wiped away and we will spend eternity in the Father and Son’s presence! We won’t even need the sun anymore, because [strong][/em]THEY[/em][/strong] will be our Light!',
   ),
 
   new BS_Paragraph(
@@ -47,9 +41,7 @@ $html->add(new BlogEntryPage(
 
   new BS_Paragraph(
     null,
-    'All of that to say…yeah…it hurts. It’s okay to hurt…and knowing the truth isn’t going to make it not hurt. However, our hope is in the resurrection! If you have put your trust in Christ, then you too will see your Christian loved ones again…and better than ever! Our hope is in knowing that we’ll be in the presence of the Father and Son for eternity, where none of this happens! And ',
-    new BS_Strong(null, new BS_Emphasis(null, 'THAT')),
-    ' is the hope for which we are to be ready to explain!!! ([bible to="1 Peter 3:15" /])',
+    'All of that to say…yeah…it hurts. It’s okay to hurt…and knowing the truth isn’t going to make it not hurt. However, our hope is in the resurrection! If you have put your trust in Christ, then you too will see your Christian loved ones again…and better than ever! Our hope is in knowing that we’ll be in the presence of the Father and Son for eternity, where none of this happens! And [strong][/em]THAT[/em][/strong] is the hope for which we are to be ready to explain!!! ([bible to="1 Peter 3:15" /])',
   ),
 
   new BS_Paragraph(

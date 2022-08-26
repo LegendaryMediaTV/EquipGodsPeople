@@ -8,8 +8,14 @@ function egp_bb($input, $text = false) {
       '/\[b\](.+?)\[\/b\]/' => function ($match) use ($text) {
         return $text ? ('**' . $match[1] . '**') : new BS_Bold(null, $match[1]);
       },
+      '/\[em\](.+?)\[\/em\]/' => function ($match) use ($text) {
+        return $text ? ('*' . $match[1] . '*') : new BS_Emphasis(null, $match[1]);
+      },
       '/\[i\](.+?)\[\/i\]/' => function ($match) use ($text) {
         return $text ? ('*' . $match[1] . '*') : new BS_Italics(null, $match[1]);
+      },
+      '/\[strong\](.+?)\[\/strong\]/' => function ($match) use ($text) {
+        return $text ? ('**' . $match[1] . '**') : new BS_Strong(null, $match[1]);
       },
       '/\[sub\](.+?)\[\/sub\]/' => function ($match) use ($text) {
         return $text ? $match[1] : new BS_Subscript(null, $match[1]);

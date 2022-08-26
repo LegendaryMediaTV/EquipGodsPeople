@@ -21,12 +21,16 @@ $html->add(new BlogEntryPage(
     'Throughout the entire Bible, the importance of unity is greatly stressed. In [bible to="Mark 3:24" /], Jesus tells the Pharisees, “If a kingdom is divided against itself, that kingdom cannot stand.” (NASB) As the Body of Christ, we need to come together and share what God has revealed to us personally instead of each believer “reinventing the wheel” time after time. ([bible to="John 17:20–23" /])'
   ),
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   new BS_Heading2(null, 'Eternal and timeless'),
 
   new BS_Paragraph(
     null,
     'God’s character demands that He be eternal. If He were created, He would have to have a creator, and anything that has a creator can be destroyed. ([bible to="1 Timothy 1:17" /]) The only way to overcome this is for God to have no beginning and no end. [bible to="Genesis 1:14" /] states, “Then God said, ‘Let there be lights in the expanse of the heavens to separate the day from the night, and let them be for signs and for seasons and for days and years.’” (NASB) God created time for us, not Himself. Therefore, since He created it, He is not subject to it. ([bible to="2 Peter 3:8" /])'
   ),
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   new BS_Heading2(null, 'Infinite and limitless'),
 

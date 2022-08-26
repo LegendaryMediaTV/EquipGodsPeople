@@ -15,13 +15,13 @@ $html->add(new BlogEntryPage(
     ),
 
     new BS_List([
-        'items' => [
-          'Those concerning which God has said an emphatic “no.”',
-          'Those about which He has said an equally emphatic “yes.”',
-          'Those concerning which He wants us to consult our own sanctified preferences.',
-          'Those few matters which require special guidance from the Lord to prevent us from making serious mistakes.',
-        ],
-      ]),
+      'items' => [
+        'Those concerning which God has said an emphatic “no.”',
+        'Those about which He has said an equally emphatic “yes.”',
+        'Those concerning which He wants us to consult our own sanctified preferences.',
+        'Those few matters which require special guidance from the Lord to prevent us from making serious mistakes.',
+      ],
+    ]),
 
     new BS_Paragraph(
       null,
@@ -66,9 +66,13 @@ $html->add(new BlogEntryPage(
     new BS_BlockquoteFooter(null, '—A.W. Tozer'),
   ),
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   new BS_Heading2(null, 'Ask God for direction'),
 
   new BS_BiblePassage(['passage' => 'James 1:2–8', 'version' => 'NLT']),
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   new BS_Heading2(null, 'Combining the Spirit and Word'),
 
@@ -89,12 +93,16 @@ $html->add(new BlogEntryPage(
     new BS_BlockquoteFooter(null, '—George Müller'),
   ),
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   new BS_Heading2(null, 'Knowing His voice'),
 
   new BS_Paragraph(
     null,
     'It’s a matter of spiritual maturity. As you draw closer to Christ you’ll know His voice. ([bible to="John 10:24–27" /]) You must study His word because it is the filter of evil. Do a study of the temptations…how did Christ combat the Devil? Plain and simple, He used Scripture. ([bible to="Luke 4:1–13" /]) Even when Satan used Scripture, Jesus used Scripture back (in context of course). Even when the Bible doesn’t directly deal with an issue, the basic concepts behind the issue are there.'
   ),
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   new BS_Heading2(null, 'Response'),
 

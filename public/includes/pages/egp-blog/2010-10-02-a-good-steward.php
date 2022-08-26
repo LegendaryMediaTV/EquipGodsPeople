@@ -13,27 +13,7 @@ $html->add(new BlogEntryPage(
 
     new BS_Paragraph(
       null,
-      'Instead of asking “Why ',
-      new BS_Emphasis(
-        null,
-        'should'
-      ),
-      ' I give this away?” do You want me to ask, “Why ',
-      new BS_Emphasis(
-        null,
-        'shouldn’t'
-      ),
-      ' I give this away?” Should I put the burden of proof on ',
-      new BS_Emphasis(
-        null,
-        'keeping'
-      ),
-      ' rather than on giving? When money comes in, should giving rather than keeping be my default, the rule not the exception? Unless there’s a compelling reason to keep, should I ',
-      new BS_Emphasis(
-        null,
-        'normally'
-      ),
-      ' give?”',
+      'Instead of asking “Why [em]should[/em] I give this away?” do You want me to ask, “Why [em]shouldn’t[/em] I give this away?” Should I put the burden of proof on [em]keeping[/em] rather than on giving? When money comes in, should giving rather than keeping be my default, the rule not the exception? Unless there’s a compelling reason to keep, should I [em]normally[/em] give?”',
     ),
 
     new BS_BlockquoteFooter(

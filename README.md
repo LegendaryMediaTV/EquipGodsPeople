@@ -10,7 +10,6 @@ Equip God’s People web app built on PHP
   - 2004-04-03: Marriage 1: God’s Original Intent
   - 2004-04-11: Marriage 2: A Christ-Like Love
   - 2004-04-18: Marriage 3: The Counterpart
-  - 2004-04-25: Marriage 4: The Covenant of Husband and Wife
 - finish importing content from the live site:
   - Classic Works
   - Teach Yourself Greek

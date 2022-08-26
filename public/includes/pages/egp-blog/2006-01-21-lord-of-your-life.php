@@ -16,11 +16,7 @@ $html->add(new BlogEntryPage(
   new BS_Paragraph(
     null,
 
-    'In [bible to="Luke 6:46"]verse 46[/bible], Jesus asks how can someone call Him Lord, if that person does not do what He says. It is our responsibility as Christians to let Jesus be Lord of ',
-    new BS_Strong(null, new BS_Emphasis(null, 'everything')),
-    ' in our lives. [bible to="Colossians 3:17" /] states, “Whatever you do in word or deed, do ',
-    new BS_Strong(null, new BS_Emphasis(null, 'all')),
-    ' in the name of the Lord Jesus, giving thanks through Him to God the Father.” Thus, you should make a conscious effort to make all your words and actions Christ-centered.',
+    'In [bible to="Luke 6:46"]verse 46[/bible], Jesus asks how can someone call Him Lord, if that person does not do what He says. It is our responsibility as Christians to let Jesus be Lord of [strong][em]everything[/em][/strong] in our lives. [bible to="Colossians 3:17" /] states, “Whatever you do in word or deed, do [strong][em]all[/em][/strong] in the name of the Lord Jesus, giving thanks through Him to God the Father.” Thus, you should make a conscious effort to make all your words and actions Christ-centered.',
   ),
 
   new BS_Blockquote(
@@ -48,9 +44,7 @@ $html->add(new BlogEntryPage(
 
   new BS_Paragraph(
     null,
-    'The significance here is that hearing Christ’s commands is not enough, but ',
-    new BS_Strong(null, new BS_Emphasis(null, 'doing')),
-    ' them is what counts. The word translated as “do” in [bible to="Colossians 3:17" /] and [bible to="Luke 6:46" /], and as “acts” in [bible to="Luke 6:47"]verse 47[/bible] comes from the Greek word “poieo,” [strongs id="g4160" /] which means “to make or build; to do, bring forth, or produce.” This is why His parable of building a house is a perfect example of His message here.',
+    'The significance here is that hearing Christ’s commands is not enough, but [strong][em]doing[/em][/strong] them is what counts. The word translated as “do” in [bible to="Colossians 3:17" /] and [bible to="Luke 6:46" /], and as “acts” in [bible to="Luke 6:47"]verse 47[/bible] comes from the Greek word “poieo,” [strongs id="g4160" /] which means “to make or build; to do, bring forth, or produce.” This is why His parable of building a house is a perfect example of His message here.',
   ),
 
   new BS_Paragraph(

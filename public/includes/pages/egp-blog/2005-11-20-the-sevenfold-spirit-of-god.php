@@ -14,7 +14,7 @@ $html->add(new BlogEntryPage(
 
   new BS_BiblePassage(['passage' => 'Revelation 5:6', 'version' => 'NLT']),
 
-  /////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   new BS_Heading2(null, 'What are the seven spirits?'),
 
@@ -26,13 +26,20 @@ $html->add(new BlogEntryPage(
 
   new BS_BiblePassage(['passage' => '1 John 4:6', 'version' => 'NLT']),
 
+  //////////////////////////////////////////////////////////////////////////////
+
   new BS_Heading3(null, 'II. Spirit of Power'),
 
   new BS_BiblePassage(['passage' => '2 Timothy 1:7', 'version' => 'NLT']),
 
+
+  //////////////////////////////////////////////////////////////////////////////
+
   new BS_Heading3(null, 'III. Spirit of Love'),
 
   new BS_BiblePassage(['passage' => '2 Timothy 1:7', 'version' => 'NLT']),
+
+  //////////////////////////////////////////////////////////////////////////////
 
   new BS_Heading3(null, 'IV. Spirit of Self-Discipline'),
 
@@ -43,11 +50,15 @@ $html->add(new BlogEntryPage(
     'The word translated as “self-discipline” here is the Greek word “sophronismos” ([strongs id="g4995" /]) and is from the base of “sozo” (to save/deliver/redeem) [[strongs id="g4982" /]] and “phren” (gut/mindset/instinct) [[strongs id="g5424" /]]. So, it could literally be translated as “The Spirit of Saved Mindsets/Instincts.” The Holy Spirit’s goal is not to make us rely on our own will/abilities/strength for discipline, but to rely on God to rescue our minds and reclaim our instincts, knitting them to Him.'
   ),
 
+  //////////////////////////////////////////////////////////////////////////////
+
   new BS_Heading3(null, 'V. Spirit of Wisdom'),
 
   new BS_BiblePassage(['passage' => 'Deuteronomy 34:9', 'version' => 'NLT']),
 
   new BS_BiblePassage(['passage' => 'Proverbs 1:23', 'version' => 'NLT']),
+
+  //////////////////////////////////////////////////////////////////////////////
 
   new BS_Heading3(null, 'VI. Spirit of Judgment'),
 
@@ -61,6 +72,8 @@ $html->add(new BlogEntryPage(
 
   new BS_Paragraph(null, 'This spirit was sent to punish the enemies of Jerusalem, thus, it is the Spirit of Judgment.'),
 
+  //////////////////////////////////////////////////////////////////////////////
+
   new BS_Heading3(null, 'VII. Spirit of Life'),
 
   new BS_BiblePassage(['passage' => 'Revelation 11:11', 'version' => 'NLT']),
@@ -69,11 +82,13 @@ $html->add(new BlogEntryPage(
 
   new BS_Paragraph(null, 'Christ died to give us eternal life.'),
 
-  /////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   new BS_Heading2(null, 'What is the effect of this Sevenfold Spirit in our lives?'),
 
   new BS_BiblePassage(['passage' => 'Galatians 5:22–23', 'version' => 'NLT']),
+
+  //////////////////////////////////////////////////////////////////////////////
 
   new BS_Heading3(null, 'Love'),
 
@@ -96,6 +111,8 @@ $html->add(new BlogEntryPage(
     'Unlike “phileo” ([strongs id="g5368" /]), which is more of a close friendship or adoration, “agape” ([strongs id="g26" /]) is a true/unconditional love.'
   ),
 
+  //////////////////////////////////////////////////////////////////////////////
+
   new BS_Heading3(null, 'Joy'),
 
   new BS_Paragraph(null, 'The experience of gladness, a person or thing that causes joy, joy'),
@@ -113,6 +130,8 @@ $html->add(new BlogEntryPage(
       '1b1) of persons who are one’s joy'
     ),
   ),
+
+  //////////////////////////////////////////////////////////////////////////////
 
   new BS_Heading3(null, 'Peace'),
 
@@ -136,6 +155,8 @@ $html->add(new BlogEntryPage(
     ),
   ),
 
+  //////////////////////////////////////////////////////////////////////////////
+
   new BS_Heading3(null, 'Patience'),
 
   new BS_Paragraph(null, 'State of remaining tranquil while awaiting an outcome, patience, steadfastness, endurance, state of being able to bear up under provocation, forbearance'),
@@ -151,6 +172,8 @@ $html->add(new BlogEntryPage(
       '2) patience, forbearance, longsuffering, slowness in avenging wrongs'
     ),
   ),
+
+  //////////////////////////////////////////////////////////////////////////////
 
   new BS_Heading3(null, 'Kindness'),
 
@@ -168,6 +191,8 @@ $html->add(new BlogEntryPage(
     ),
   ),
 
+  //////////////////////////////////////////////////////////////////////////////
+
   new BS_Heading3(null, 'Goodness'),
 
   new BS_Paragraph(null, 'Positive moral quality characterized especially by interest in the welfare of others, goodness, generosity'),
@@ -182,6 +207,8 @@ $html->add(new BlogEntryPage(
       '1) uprightness of heart and life, goodness, kindness'
     ),
   ),
+
+  //////////////////////////////////////////////////////////////////////////////
 
   new BS_Heading3(null, 'Faithfulness'),
 
@@ -206,6 +233,8 @@ $html->add(new BlogEntryPage(
     ),
   ),
 
+  //////////////////////////////////////////////////////////////////////////////
+
   new BS_Heading3(null, 'Meekness'),
 
   new BS_Paragraph(null, 'The quality of not being overly impressed by a sense of one’s self-importance, gentleness, humility, courtesy, considerateness, meekness'),
@@ -220,6 +249,8 @@ $html->add(new BlogEntryPage(
       '1) gentleness, mildness, meekness'
     ),
   ),
+
+  //////////////////////////////////////////////////////////////////////////////
 
   new BS_Heading3(null, 'Self-control'),
 
