@@ -8,8 +8,6 @@ Equip God’s People web app built on PHP
 
 - import other articles into the EGP Blog:
   - 2004-04-03: Marriage 1: God’s Original Intent
-  - 2004-04-11: Marriage 2: A Christ-Like Love
-  - 2004-04-18: Marriage 3: The Counterpart
 - finish importing content from the live site:
   - Classic Works
   - Teach Yourself Greek
