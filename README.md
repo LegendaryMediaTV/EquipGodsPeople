@@ -6,8 +6,6 @@ Equip God’s People web app built on PHP
 
 ### Pre-launch
 
-- import other articles into the EGP Blog:
-  - 2004-04-03: Marriage 1: God’s Original Intent
 - finish importing content from the live site:
   - Classic Works
   - Teach Yourself Greek
