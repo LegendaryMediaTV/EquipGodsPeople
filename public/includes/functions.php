@@ -1,5 +1,15 @@
 <?php
 
+/** search an array using a callback function, returning first index or null */
+function array_search_callback($array, $callback) {
+  foreach ($array as $key => $value) {
+    if (call_user_func($callback, $value) === true)
+      return $key;
+  }
+
+  return null;
+}
+
 /** convert BB shortcodes to HTML */
 function egp_bb($input, $text = false) {
   return preg_replace_callback_array(
@@ -2546,26 +2556,34 @@ function page_metadataViaToken($token) {
     case 'book-08-appendix-the-martyrs-of-palestine':
     case 'book-09-the-great-deliverance':
     case 'book-10-constantine-and-peace':
-      $row = egp_ecclesiasticalHistoryTOC();
-      $row = array_filter(
-        $row,
-        function ($row) use ($token) {
-          return $row->_id === substr($token, 0, 7);
+      // get the table of contents
+      $toc = egp_ecclesiasticalHistoryTOC();
+
+      // find the specific book
+      $rowIndex = array_search_callback(
+        $toc,
+        function ($book) use ($token) {
+          return $book->_id === substr($token, 0, 7);
         }
       );
-      $row = $row[0];
 
       $output = (object) [
         '_id' => $token,
-        'title' => $row->title,
-        'subtitle' => '“Ecclesiastical History” – ' . $row->subtitle,
+        'title' => $toc[$rowIndex]->title,
+        'subtitle' => '“Ecclesiastical History” – ' . $toc[$rowIndex]->subtitle,
         'parent' => 'Eusebius – Ecclesiastical History',
         'parentURL' => '/classic-works/pamphili-eusebius-ecclesiastical-history',
         'variant' => 'ClassicWorks',
-        'url' => $row->url,
-        'sequence' => $row->_id,
-        'source' => '/classic-works/pamphili-eusebius-ecclesiastical-history/' . $row->_id . '.php',
-        'book' => $row,
+        'url' => $toc[$rowIndex]->url,
+        'sequence' => $toc[$rowIndex]->_id,
+        'source' => '/classic-works/pamphili-eusebius-ecclesiastical-history/' . $toc[$rowIndex]->_id . '.php',
+        'book' => $toc[$rowIndex],
+        'previous' => $toc[$rowIndex - 1]
+          ? ['url' => $toc[$rowIndex - 1]->url, 'title' => $toc[$rowIndex - 1]->subtitle . ' – ' . $toc[$rowIndex - 1]->title]
+          : null,
+        'next' => $toc[$rowIndex + 1]
+          ? ['url' => $toc[$rowIndex + 1]->url, 'title' => $toc[$rowIndex + 1]->subtitle . ' – ' . $toc[$rowIndex + 1]->title]
+          : null,
       ];
 
       break;

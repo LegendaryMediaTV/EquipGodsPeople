@@ -1193,4 +1193,12 @@ $html->add(new BS_Container(
       ' Abgarus therefore commanded the citizens to assemble early in the morning to hear the preaching of Thaddeus, and afterward he ordered gold and silver to be given him. But he refused to take it, saying, If we have forsaken that which was our own, how shall we take that which is another’s? These things were done in the three hundred and fortieth year.” I have inserted them here in their proper place, translated from the Syriac literally, and I hope to good purpose.',
     ),
   ),
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  new BS_PreviousNext([
+    'previous' => $metadata->previous,
+    'next' => $metadata->next,
+    'className' => 'mt-5'
+  ]),
 ));

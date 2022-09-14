@@ -44,7 +44,7 @@ Equip God’s People web app built on PHP
   - Languages: languages, letters
   - Lexicons: lexicons
 - add images with watermarks for all blog entries
-- extract TVM info from the old Online Bible app and storing it in the language, having the number, code, components, and component definitions
+- extract TVM info from the old Online Bible app and store it in the language, having the number, code, components, and component definitions
 - version-specific icons for toggling Strong's, translinear definitions, etc.
 - version reorder drag-and-drop
 - Hebrew letter pronunciations: https://en.wikipedia.org/wiki/Hebrew_alphabet
