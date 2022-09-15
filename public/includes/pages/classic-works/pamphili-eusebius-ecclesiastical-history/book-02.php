@@ -1072,7 +1072,7 @@ $html->add(new BS_Container(
     new BS_Paragraph(
       null,
       new BS_Verse(null, 1),
-      ' But after Paul, in consequence of his appeal to Cæsar, had been sent to Rome by Festus, the Jews, being frustrated in their hope of entrapping him by the snares which they had laid for him, turned against James, the brother of the Lord, to whom the episcopal seat at Jerusalem bad been entrusted by the apostles. The following daring measures were undertaken by them against him.',
+      ' But after Paul, in consequence of his appeal to Cæsar, had been sent to Rome by Festus, the Jews, being frustrated in their hope of entrapping him by the snares which they had laid for him, turned against James, the brother of the Lord, to whom the episcopal seat at Jerusalem had been entrusted by the apostles. The following daring measures were undertaken by them against him.',
     ),
 
     new BS_Paragraph(
