@@ -7,7 +7,7 @@ $html->add(new BS_Banner(
     ['to' => $metadata->parentURL, 'variant' => 'dark'],
     '“Ecclesiastical History” (a.k.a., “Church History”) by Pamphili Eusebius'
   ),
-  ', covering various bishops and early extra-biblical writings'
+  ', covering various bishops and early extra-biblical writings around the 2[sup]nd[/sup] century'
 ));
 
 $html->add(new BS_Container(
