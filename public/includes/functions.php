@@ -793,7 +793,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' => 'Evarestus, the Fourth Bishop of the Church of Rome',
-          'subtitle' => 'Chapter XXXXIV',
+          'subtitle' => 'Chapter XXXIV',
           '_id' => 'chapter-34',
         ],
         [
@@ -1332,7 +1332,7 @@ function egp_ecclesiasticalHistoryTOC() {
         ],
         [
           'title' => 'Philip Cæsar',
-          'subtitle' => 'Chapter XXXXIV',
+          'subtitle' => 'Chapter XXXIV',
           '_id' => 'chapter-34',
         ],
         [
