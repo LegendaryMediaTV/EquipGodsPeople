@@ -1676,6 +1676,11 @@ function egp_ecclesiasticalHistoryTOC() {
           'subtitle' => 'Chapter XVII',
           '_id' => 'chapter-17',
         ],
+        [
+          'title' => 'That Which Follows Is Found in Some Copies in the Eighth Book',
+          'subtitle' => 'Addendum',
+          '_id' => 'addendum',
+        ],
       ],
     ],
     [
