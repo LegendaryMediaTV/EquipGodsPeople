@@ -2568,7 +2568,9 @@ function page_metadataViaToken($token) {
       $rowIndex = array_search_callback(
         $toc,
         function ($book) use ($token) {
-          return $book->_id === substr($token, 0, 7);
+          return
+            substr($book->_id, 0, 7) === substr($token, 0, 7)
+            && strpos($token, '-appendix') === strpos($book->_id, '-appendix');
         }
       );
 
