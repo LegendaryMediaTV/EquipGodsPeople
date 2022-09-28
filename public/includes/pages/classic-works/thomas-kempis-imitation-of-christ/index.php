@@ -1,15 +1,11 @@
 <?php
 // retrieve the table of contents for all books in the series
-$toc = egp_tocEcclesiasticalHistory();
+$toc = egp_tocImitationOfChrist();
 
 $html->add(new BS_Banner(
   null,
 
-  '“The Ecclesiastical History of Eusebius Pamphilus, Bishop of Cæsarea, in Palestine”—or simply “Church History”—is a series of ten books that contain the history of early Christianity from the 1',
-  new BS_Superscript(null, 'st'),
-  ' century (basically where Acts and the Epistles left off) to the 4',
-  new BS_Superscript(null, 'th'),
-  ' century (when it was written).'
+  '“The Imitation of Christ” is a series of four devotional books written in the 15[sup]th[/sup] century and is considered an inspiration for the “What Would Jesus Do” movement.'
 ));
 
 $html->add(new BS_Container(

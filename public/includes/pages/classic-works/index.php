@@ -6,7 +6,7 @@ $items = [
   ],
   [
     'title' => 'Thomas à Kempis – The Imitation of Christ',
-    'url' => '/classic-works',
+    'url' => '/classic-works/thomas-kempis-imitation-of-christ',
   ],
   [
     'title' => 'A.W. Tozer – The Pursuit of God',

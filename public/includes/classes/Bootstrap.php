@@ -486,6 +486,10 @@ class BS_HTMLPage {
             'title' => 'Pamphili Eusebius – Ecclesiastical History',
             'url' => '/classic-works/pamphili-eusebius-ecclesiastical-history',
           ],
+          [
+            'title' => 'Thomas à Kempis – The Imitation of Christ',
+            'url' => '/classic-works/thomas-kempis-imitation-of-christ',
+          ],
         ],
       ],
     ];

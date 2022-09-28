@@ -379,8 +379,611 @@ function egp_documentViaID($documents, $_id) {
   return $output;
 }
 
-/** Eusebius’ Ecclesiastical History books and chapters */
-function egp_ecclesiasticalHistoryTOC() {
+/** determine the inflection name using the given flags */
+function egp_inflectionName($flags) {
+  $output = [];
+
+  // retrieve inflection types
+  $inflectionTypes = egp_inflectionTypes();
+
+  foreach ($inflectionTypes as $inflectionType) {
+    foreach ($inflectionType->flags as $inflectionFlag) {
+      if (in_array($inflectionFlag->_id, $flags))
+        $output[] = $inflectionFlag->_id;
+    }
+  }
+
+  return implode('', $output);
+}
+
+/** retrieve all inflection types */
+function egp_inflectionTypes() {
+  static $types;
+
+  if (!$types) {
+    $types = [
+      (object)[
+        '_id' => 'type',
+        'title' => 'Type',
+        'flags' => [
+          (object)['_id' => 'Adj', 'title' => 'Adjective'],
+          (object)['_id' => 'Adv', 'title' => 'Adverb'],
+          // (object)[ '_id' => 'Art', 'title' => 'Definite Article' ],
+          (object)['_id' => 'Conj', 'title' => 'Conjunction'],
+          // (object)[ '_id' => 'Interj', 'title' => 'Interjection' ],
+          (object)['_id' => 'Noun', 'title' => 'Noun'],
+          (object)['_id' => 'Ptc', 'title' => 'Participle'],
+          (object)['_id' => 'Prep', 'title' => 'Preposition'],
+          (object)['_id' => 'Pron', 'title' => 'Pronoun'],
+          (object)['_id' => 'Vb', 'title' => 'Verb'],
+          (object)['_id' => 'Vbl', 'title' => 'Verbal'],
+        ],
+      ],
+      (object)[
+        '_id' => 'subtype',
+        'title' => 'Sub-Type',
+        'flags' => [
+          (object)['_id' => 'Pers', 'title' => 'Personal'],
+          (object)['_id' => 'Dem', 'title' => 'Demonstrative'],
+          (object)['_id' => 'Rel', 'title' => 'Relative'],
+          (object)['_id' => 'Correl', 'title' => 'Correlative'],
+          (object)['_id' => 'Indef', 'title' => 'Indefinite'],
+          (object)['_id' => 'Interrog', 'title' => 'Interrogative'],
+          (object)['_id' => 'Refl', 'title' => 'Reflexive'],
+          (object)['_id' => 'Recip', 'title' => 'Reciprocal'],
+        ],
+      ],
+      (object)[
+        '_id' => 'tense',
+        'title' => 'Tense',
+        'flags' => [
+          (object)['_id' => 'Pres', 'title' => 'Present'],
+          (object)['_id' => 'Impf', 'title' => 'Imperfect'],
+          (object)['_id' => 'Fut', 'title' => 'Future'],
+          (object)['_id' => 'Aor', 'title' => 'Aorist'],
+          (object)['_id' => 'Perf', 'title' => 'Perfect'],
+          (object)['_id' => 'Plup', 'title' => 'Pluperfect'],
+          (object)['_id' => 'Futpf', 'title' => 'Future Perfect'],
+        ],
+      ],
+      (object)[
+        '_id' => 'voice',
+        'title' => 'Voice',
+        'flags' => [
+          (object)['_id' => 'Act', 'title' => 'Active'],
+          (object)['_id' => 'Middle', 'title' => 'Middle'],
+          (object)['_id' => 'Pass', 'title' => 'Passive'],
+          (object)['_id' => 'Depon', 'title' => 'Deponent'],
+        ],
+      ],
+      (object)[
+        '_id' => 'mood',
+        'title' => 'Mood',
+        'flags' => [
+          (object)['_id' => 'Indic', 'title' => 'Indicative'],
+          (object)['_id' => 'Subjunc', 'title' => 'Subjunctive'],
+          (object)['_id' => 'Opt', 'title' => 'Optative'],
+          (object)['_id' => 'Impv', 'title' => 'Imperative'],
+        ],
+      ],
+      (object)[
+        '_id' => 'person',
+        'title' => 'Person',
+        'flags' => [
+          (object)['_id' => '1', 'title' => '1st Person'],
+          (object)['_id' => '2', 'title' => '2nd Person'],
+          (object)['_id' => '3', 'title' => '3rd Person'],
+        ],
+      ],
+      (object)[
+        '_id' => 'case',
+        'title' => 'Case',
+        'flags' => [
+          (object)['_id' => 'Nom', 'title' => 'Nominative'],
+          (object)['_id' => 'Acc', 'title' => 'Accusative'],
+          (object)['_id' => 'Gen', 'title' => 'Genitive'],
+          (object)['_id' => 'Dat', 'title' => 'Dative'],
+          (object)['_id' => 'Voc', 'title' => 'Vocative'],
+        ],
+      ],
+      (object)[
+        '_id' => 'number',
+        'title' => 'Number',
+        'flags' => [
+          (object)['_id' => 'Sg', 'title' => 'Singular'],
+          // (object)[ '_id' => 'Dl', 'title' => 'Dual' ],
+          (object)['_id' => 'Pl', 'title' => 'Plural'],
+        ],
+      ],
+      (object)[
+        '_id' => 'gender',
+        'title' => 'Gender',
+        'flags' => [
+          (object)['_id' => 'Masc', 'title' => 'Masculine'],
+          (object)['_id' => 'Fem', 'title' => 'Feminine'],
+          (object)['_id' => 'Neut', 'title' => 'Neuter'],
+        ],
+      ],
+    ];
+  }
+
+  return $types;
+}
+
+/** retrieve all language objects */
+function egp_languages($languageID = null) {
+  static $languages;
+
+  if (!$languages) {
+    global $db;
+
+    $sql =
+      "SELECT Document" .
+      "\nFROM Documents" .
+      "\nWHERE Collection = 'lexicon-languages'" .
+      "\nORDER BY Sequence";
+    $languages = $db->rows($sql);
+
+    $languages = array_map(
+      function ($row) {
+        global $db;
+
+        $language = json_decode($row['Document']);
+
+        $sql =
+          "SELECT Document" .
+          "\nFROM Documents" .
+          "\nWHERE Collection = 'language-letters' AND _id LIKE '{$language->_id}-%'" .
+          "\nORDER BY Sequence";
+        $letters = $db->rows($sql);
+
+        $language->letters = [];
+        foreach ($letters as $letter)
+          $language->letters[] = json_decode($letter['Document']);
+
+        return $language;
+      },
+      $languages
+    );
+  }
+
+  // specific language
+  if ($languageID) {
+    switch (substr(strtolower($languageID), 0, 1)) {
+      case 'g':
+        $languageID = 'greek';
+
+        break;
+
+      case 'h':
+        $languageID = 'hebrew';
+
+        break;
+    }
+
+    return egp_documentViaID($languages, $languageID);
+  }
+  // all languages
+  else
+    return $languages;
+}
+
+/** encode/decode language code and unicode */
+// TODO: update to utilize the new database
+function egp_lexiconConvert($languageID, $input, $encode = null) {
+  global $db;
+
+  static $allPronunciations, $allAlphabets, $allModifiers, $allPunctuation;
+
+  // set static variables
+  if (!$allPronunciations) {
+    /**************************
+     ***** Pronunciations *****
+     *************************/
+
+    $sql =
+      "SELECT *" .
+      "\nFROM equipgod_wordpress.EGP_LexiconPronunciationsView" .
+      "\nORDER BY LanguageID, PronunciationTypeID, LetterCode;";
+    $rows = $db->rows($sql);
+    $rowCount = count($rows);
+
+    // convert rows into an array
+    $allPronunciations = array();
+    for ($rowIndex = 0; $rowIndex < $rowCount; $rowIndex++) {
+      // create an array for the language
+      if (!isset($allPronunciations[$rows[$rowIndex]['LanguageID']]))
+        $allPronunciations[$rows[$rowIndex]['LanguageID']] = array();
+
+      // add the pronunciation to the corresponding language
+      $allPronunciations[$rows[$rowIndex]['LanguageID']][$rows[$rowIndex]['LetterCode']] = $rows[$rowIndex];
+    }
+
+    //echo core_dump($allPronunciations, 'Pronunciations');
+
+
+    /*********************
+     ***** Alphabets *****
+     ********************/
+
+    // create an alphabets array
+    $allAlphabets = array('G' => array(), 'H' => array());
+
+    // get Greek alphabet from the database
+    $sql =
+      "SELECT GreekID," .
+      "\nLowerCode, LowerLetter," .
+      "\nLowerPsiliCode, LowerPsili, LowerDasiaCode, LowerDasia, LowerOxiaCode, LowerOxia, LowerVariaCode, LowerVaria, LowerPerispomeniCode, LowerPerispomeni, LowerDialytikaCode, LowerDialytika, LowerYpogegrammeniCode, LowerYpogegrammeni, LowerVrachyCode, LowerVrachy, LowerMacronCode, LowerMacron," .
+      "\nLowerPsiliOxiaCode, LowerPsiliOxia, LowerPsiliVariaCode, LowerPsiliVaria, LowerPsiliPerispomeniCode, LowerPsiliPerispomeni, LowerPsiliYpogegrammeniCode, LowerPsiliYpogegrammeni," .
+      "\nLowerDasiaOxiaCode, LowerDasiaOxia, LowerDasiaVariaCode, LowerDasiaVaria, LowerDasiaPerispomeniCode, LowerDasiaPerispomeni, LowerDasiaYpogegrammeniCode, LowerDasiaYpogegrammeni," .
+      "\nLowerDialytikaOxiaCode, LowerDialytikaOxia, LowerDialytikaVariaCode, LowerDialytikaVaria, LowerDialytikaPerispomeniCode, LowerDialytikaPerispomeni," .
+      "\nLowerYpogegrammeniOxiaCode, LowerYpogegrammeniOxia, LowerYpogegrammeniVariaCode, LowerYpogegrammeniVaria, LowerYpogegrammeniPerispomeniCode, LowerYpogegrammeniPerispomeni," .
+      "\nLowerPsiliYpogegrammeniOxiaCode, LowerPsiliYpogegrammeniOxia, LowerPsiliYpogegrammeniVariaCode, LowerPsiliYpogegrammeniVaria, LowerPsiliYpogegrammeniPerispomeniCode, LowerPsiliYpogegrammeniPerispomeni," .
+      "\nLowerDasiaYpogegrammeniOxiaCode, LowerDasiaYpogegrammeniOxia, LowerDasiaYpogegrammeniVariaCode, LowerDasiaYpogegrammeniVaria, LowerDasiaYpogegrammeniPerispomeniCode, LowerDasiaYpogegrammeniPerispomeni," .
+      "\nUpperCode, UpperLetter," .
+      "\nUpperPsiliCode, UpperPsili, UpperDasiaCode, UpperDasia, UpperOxiaCode, UpperOxia, UpperVariaCode, UpperVaria, UpperDialytikaCode, UpperDialytika, UpperProsgegrammeniCode, UpperProsgegrammeni, UpperVrachyCode, UpperVrachy, UpperMacronCode, UpperMacron," .
+      "\nUpperPsiliOxiaCode, UpperPsiliOxia, UpperPsiliVariaCode, UpperPsiliVaria, UpperPsiliPerispomeniCode, UpperPsiliPerispomeni, UpperPsiliProsgegrammeniCode, UpperPsiliProsgegrammeni, UpperDasiaOxiaCode, UpperDasiaOxia, UpperDasiaVariaCode, UpperDasiaVaria, UpperDasiaPerispomeniCode, UpperDasiaPerispomeni," .
+      "\nUpperDasiaProsgegrammeniCode, UpperDasiaProsgegrammeni, UpperPsiliProsgegrammeniOxiaCode, UpperPsiliProsgegrammeniOxia, UpperPsiliProsgegrammeniVariaCode, UpperPsiliProsgegrammeniVaria, UpperPsiliProsgegrammeniPerispomeniCode, UpperPsiliProsgegrammeniPerispomeni," .
+      "\nUpperDasiaProsgegrammeniOxiaCode, UpperDasiaProsgegrammeniOxia, UpperDasiaProsgegrammeniVariaCode, UpperDasiaProsgegrammeniVaria, UpperDasiaProsgegrammeniPerispomeniCode, UpperDasiaProsgegrammeniPerispomeni" .
+      "\nFROM equipgod_wordpress.EGP_LexiconGreekAlphabet" .
+      "\nORDER BY GreekID;";
+    $rows = $db->rows($sql);
+    $rowCount = count($rows);
+
+    // add Greek to alphabet array
+    for ($rowID = 0; $rowID < $rowCount; $rowID++)
+      $allAlphabets['G'][$rows[$rowID]['LowerCode']] = $rows[$rowID];
+
+    // get Hebrew alphabet from the database
+    $sql =
+      "SELECT HebrewID, LetterCode, Letter" .
+      "\nFROM equipgod_wordpress.EGP_LexiconHebrewAlphabet" .
+      "\nORDER BY HebrewID;";
+    $rows = $db->rows($sql);
+    $rowCount = count($rows);
+
+    // add Hebrew to alphabet array
+    for ($rowID = 0; $rowID < $rowCount; $rowID++)
+      $allAlphabets['H'][$rows[$rowID]['LetterCode']] = $rows[$rowID];
+
+    //echo core_dump($allAlphabets, 'Alphabets');
+
+
+    /*********************
+     ***** Modifiers *****
+     ********************/
+
+    // get modifiers from the database
+    $sql =
+      "SELECT *" .
+      "\nFROM equipgod_wordpress.EGP_LexiconPronunciations" .
+      "\nWHERE PronunciationTypeID = ?" .
+      "\nORDER BY LanguageID, LetterCode;";
+    $rows = $db->rows($sql, 'MOD');
+    $rowCount = count($rows);
+
+    // create a modifiers array
+    $allModifiers = array();
+    for ($rowID = 0; $rowID < $rowCount; $rowID++) {
+      // create an array for the language
+      if (!isset($allModifiers[$rows[$rowID]['LanguageID']]))
+        $allModifiers[$rows[$rowID]['LanguageID']] = array();
+
+      // add the modifier to the corresponding language
+      $allModifiers[$rows[$rowID]['LanguageID']][$rows[$rowID]['LetterCode']] = $rows[$rowID];
+    }
+
+    //echo core_dump($allModifiers, 'Modifiers');
+
+
+    /***********************
+     ***** Punctuation *****
+     **********************/
+
+    // get punctuation from the database
+    $sql =
+      "SELECT LanguageID, Code, Unicode" .
+      "\nFROM equipgod_wordpress.EGP_LexiconPunctuation" .
+      "\nORDER BY LanguageID, Code;";
+    $rows = $db->rows($sql);
+    $rowCount = count($rows);
+
+    // create a punctuation array
+    $allPunctuation = array();
+    for ($rowID = 0; $rowID < $rowCount; $rowID++) {
+      // create an array for the language
+      if (!isset($allPunctuation[$rows[$rowID]['LanguageID']]))
+        $allPunctuation[$rows[$rowID]['LanguageID']] = array('Code' => array(), 'Unicode' => array());
+
+      // add the punctuation to the corresponding language
+      $allPunctuation[$rows[$rowID]['LanguageID']]['Code'][] = $rows[$rowID]['Code'] !== '' ? $rows[$rowID]['Code'] : ' ';
+      $allPunctuation[$rows[$rowID]['LanguageID']]['Unicode'][] = $rows[$rowID]['Unicode'] !== '' ? $rows[$rowID]['Unicode'] : ' ';
+    }
+
+    //echo core_dump($allPunctuation, 'Punctuation');
+  }
+
+  // normalize language ID
+  $languageID = strtoupper(substr($languageID, 0, 1));
+
+  // default encoding to true
+  if (is_null($encode))
+    $encode = true;
+
+
+  /***********************************
+   ***** egp_getLexiconTextSplit *****
+   **********************************/
+
+  // split input into characters
+  // initialize variables
+  $characters = array();
+  $modifiers = array();
+  $decode = false;
+
+  // support changes to Greek modifiers
+  if ($languageID === 'G')
+    $input = str_replace(array('\'', '='), array('’', '^'), $input);
+  // elseif ($languageID === 'H' && $encode)
+  // 	$input = strrev($input);
+
+  // process input, character by character
+  $charCount = mb_strlen($input, 'UTF-8');
+  for ($charID = 0; $charID < $charCount; $charID++) {
+    // get the current character
+    $current = mb_substr($input, $charID, 1, 'UTF-8');
+    //egp_p($charID . ' — ' . $current);
+
+    // is a modifier, add it to the list
+    if (isset($allModifiers[$languageID][$current]) !== false)
+      $modifiers[] = $current;
+    else {
+      // determine type of character
+      $punctuationID = array_search($current, $allPunctuation[$languageID]['Code']);
+      if ($punctuationID === false)
+        $punctuationID = array_search($current, $allPunctuation[$languageID]['Unicode']);
+      if (isset($allAlphabets[$languageID][$languageID === 'G' ? strtolower($current) : $current]))
+        $alphabetID = $languageID === 'G' ? strtolower($current) : $current;
+      else
+        $alphabetID = false;
+
+      // is punctuation
+      if ($punctuationID !== false && !$decode) {
+        // add stray modifiers
+        $characters[] =
+          array(
+            'Character' => implode('', $modifiers),
+            'Type' => 'other'
+          );
+
+        // add punctuation
+        $characters[] = array('Character' => $current, 'Type' => 'punctuation', 'ID' => $punctuationID);
+      }
+      // letter of the alphabet
+      elseif ($alphabetID !== false && !$decode) {
+        // determine alphabet key to use
+        $key = $languageID === 'G' ? strtolower($current) : $current;
+
+        // determine column name to pull
+        if ($languageID === 'G') {
+          $column = ctype_lower($current) ? 'Lower' : 'Upper';
+          if ($modifiers) {
+            if (in_array('+', $modifiers))
+              $column .= 'Dialytika';
+            if (in_array(')', $modifiers))
+              $column .= 'Psili';
+            if (in_array('(', $modifiers))
+              $column .= 'Dasia';
+            if (in_array('|', $modifiers))
+              $column .= ctype_lower($current) ? 'Ypogegrammeni' : 'Prosgegrammeni';
+            if (in_array('-', $modifiers))
+              $column .= 'Vrachy';
+            if (in_array('_', $modifiers))
+              $column .= 'Macron';
+            if (in_array('\\', $modifiers))
+              $column .= 'Varia';
+            if (in_array('/', $modifiers))
+              $column .= 'Oxia';
+            if (in_array('=', $modifiers))
+              $column .= 'Perispomeni';
+            if (in_array('^', $modifiers))
+              $column .= 'Perispomeni';
+          } else
+            $column .= 'Letter';
+        } else
+          $column = 'Letter';
+
+        // validate determined column
+        if (!isset($allAlphabets[$languageID][$key][$column]))
+          $column = '«invalid alphabet column “' . $column . '” for ' . implode('', $modifiers) . $current . '»';
+
+        $characters[] = array('Character' => $current, 'Type' => 'alphabet', 'ID' => $alphabetID, 'Modifiers' => $modifiers, 'Column' => $column);
+      } else {
+        $type = '';
+        $key = '';
+        $column = '';
+
+        // check for encoded alphabet
+        foreach ($allAlphabets[$languageID] as $alphabetID => $alphabetRow) {
+          foreach ($alphabetRow as $alphabetColumn => $value) {
+            if (
+              preg_match('/^(Lower|Upper)/', $alphabetColumn)
+              && !preg_match('/Code$/', $alphabetColumn)
+              && $current === $value
+            ) {
+              $type = 'alphabet';
+              $key = $alphabetID;
+              $column = $alphabetColumn;
+              break;
+            }
+          }
+
+          if ($type)
+            break;
+        }
+
+        // is encoded alphabet
+        if ($type === 'alphabet') {
+          $decode = true;
+
+          $row = array();
+
+          if ($languageID === 'G' && substr($column, 0, 1) === 'U')
+            $row['Character'] = strtoupper($key);
+          else
+            $row['Character'] = $key;
+
+          $row['Type'] = $type;
+          $row['ID'] = $key;
+
+          $row['Modifiers'] = array();
+          if (strpos($column, 'Dialytika') !== false)
+            $row['Modifiers'][] = '+';
+          if (strpos($column, 'Psili') !== false)
+            $row['Modifiers'][] = ')';
+          if (strpos($column, 'Dasia') !== false)
+            $row['Modifiers'][] = '(';
+          if (strpos($column, 'Ypogegrammeni') !== false || strpos($column, 'Prosgegrammeni') !== false)
+            $row['Modifiers'][] = '|';
+          if (strpos($column, 'Vrachy') !== false)
+            $row['Modifiers'][] = '-';
+          if (strpos($column, 'Macron') !== false)
+            $row['Modifiers'][] = '_';
+          if (strpos($column, 'Varia') !== false)
+            $row['Modifiers'][] = '\\';
+          if (strpos($column, 'Oxia') !== false)
+            $row['Modifiers'][] = '/';
+          if (strpos($column, 'Perispomeni') !== false)
+            $row['Modifiers'][] = '^';
+
+          $row['Column'] = str_replace('Letter', '', $column) . 'Code';
+
+          $characters[] = $row;
+        } else {
+          $punctuationID = array_search($current, $allPunctuation[$languageID]['Unicode']);
+
+          // is encoded punctuation
+          if ($decode && $punctuationID !== false) {
+            $characters[] =
+              array(
+                'Character' => $allPunctuation[$languageID]['Code'][$punctuationID],
+                'Type' => 'punctuation',
+                'ID' => $punctuationID
+              );
+          }
+          // not sure, leave it alone
+          else {
+            // add stray modifiers
+            $characters[] =
+              array(
+                'Character' => implode('', $modifiers),
+                'Type' => 'other'
+              );
+
+            // add other character
+            $characters[] =
+              array(
+                'Character' => $current,
+                'Type' => 'other'
+              );
+          }
+        }
+      }
+
+      // clear modifiers for the next letter
+      $modifiers = array();
+    }
+  }
+  $charCount = count($characters);
+  //echo core_dump($characters, 'Characters');
+
+  // process character-by-character
+  $output = '';
+  for ($charID = 0; $charID < $charCount; $charID++) {
+    if ($characters[$charID]['Character'] === '[') {
+      // peek at the next 10 characters for a close bracket
+      $closePos = false;
+      for ($peekID = 1; $peekID < 10 && $charID + $peekID < $charCount; $peekID++) {
+        if ($characters[$charID + $peekID]['Character'] === ']') {
+          $closePos = $peekID;
+          break;
+        }
+      }
+
+      // if there was a close bracket, get a snip
+      if ($closePos !== false) {
+        $snip = '';
+        for ($peekID = 0; $peekID <= $closePos; $peekID++) {
+          if (is_array($characters[$charID + $peekID]['Modifiers']))
+            $snip .= implode('', $characters[$charID + $peekID]['Modifiers']);
+          $snip .= $characters[$charID + $peekID]['Character'];
+        }
+
+        $output .= $snip;
+        $charID += $closePos;
+
+        continue;
+      }
+    }
+
+    // character type determines how to encode/decode
+    switch ($characters[$charID]['Type']) {
+      case 'alphabet':
+        if ($encode)
+          $output .= $allAlphabets[$languageID][$characters[$charID]['ID']][$characters[$charID]['Column']];
+        else
+          $output .= implode('', $characters[$charID]['Modifiers']) . $characters[$charID]['Character'];
+
+        break;
+      case 'punctuation':
+        if ($encode)
+          $output .= $allPunctuation[$languageID]['Unicode'][$characters[$charID]['ID']];
+        else
+          $output .= $characters[$charID]['Character'];
+
+        break;
+      default:
+        $output .= $characters[$charID]['Character'];
+    }
+  }
+
+  return $output;
+}
+
+/** retrieve a lexicon entry */
+function egp_lexiconEntry($query) {
+  static $entries;
+
+  // get all lexicon entries
+  if (!$entries) {
+    global $db;
+
+    $results = $db->documents('lexicon-entries');
+    foreach ($results as $result)
+      $entries[$result->_id] = $result;
+    $results = null;
+  }
+
+  // lower-case the query
+  $query = mb_strtolower($query);
+
+  if (preg_match('/^(strongs-)?[gh][0-9]{1,4}$/', $query)) {
+    // prefix query as needed
+    if (mb_substr($query, 0, 1) !== 's')
+      $query = 'strongs-' . $query;
+
+    // remove leading zeroes
+    $query = preg_replace('/^(strongs-[g-h])0+/', '$1', $query);
+
+    // query the database
+    return $entries[$query];
+  }
+
+  return false;
+}
+
+/** Eusebius’s Ecclesiastical History books and chapters */
+function egp_tocEcclesiasticalHistory() {
   return json_decode(json_encode([
     [
       '_id' => 'book-01',
@@ -1883,607 +2486,612 @@ function egp_ecclesiasticalHistoryTOC() {
   ]));
 }
 
-/** determine the inflection name using the given flags */
-function egp_inflectionName($flags) {
-  $output = [];
-
-  // retrieve inflection types
-  $inflectionTypes = egp_inflectionTypes();
-
-  foreach ($inflectionTypes as $inflectionType) {
-    foreach ($inflectionType->flags as $inflectionFlag) {
-      if (in_array($inflectionFlag->_id, $flags))
-        $output[] = $inflectionFlag->_id;
-    }
-  }
-
-  return implode('', $output);
-}
-
-/** retrieve all inflection types */
-function egp_inflectionTypes() {
-  static $types;
-
-  if (!$types) {
-    $types = [
-      (object)[
-        '_id' => 'type',
-        'title' => 'Type',
-        'flags' => [
-          (object)['_id' => 'Adj', 'title' => 'Adjective'],
-          (object)['_id' => 'Adv', 'title' => 'Adverb'],
-          // (object)[ '_id' => 'Art', 'title' => 'Definite Article' ],
-          (object)['_id' => 'Conj', 'title' => 'Conjunction'],
-          // (object)[ '_id' => 'Interj', 'title' => 'Interjection' ],
-          (object)['_id' => 'Noun', 'title' => 'Noun'],
-          (object)['_id' => 'Ptc', 'title' => 'Participle'],
-          (object)['_id' => 'Prep', 'title' => 'Preposition'],
-          (object)['_id' => 'Pron', 'title' => 'Pronoun'],
-          (object)['_id' => 'Vb', 'title' => 'Verb'],
-          (object)['_id' => 'Vbl', 'title' => 'Verbal'],
+/** Kempis’s Imitation of Christ books and chapters */
+function egp_tocImitationOfChrist() {
+  return json_decode(json_encode([
+    [
+      '_id' => 'book-1',
+      'title' => 'Thoughts Helpful in the Life of the Soul',
+      'subtitle' => 'Book I',
+      'url' => '/classic-works/thomas-kempis-imitation-of-christ/book-1-thoughts-helpful-in-the-life-of-the-soul',
+      'chapters' => [
+        [
+          'title' => 'Imitating Christ and Despising All Vanities on Earth',
+          'subtitle' => 'Chapter I',
+          '_id' => 'chapter-01'
+        ],
+        [
+          'title' => 'Having a Humble Opinion of Self',
+          'subtitle' => 'Chapter II',
+          '_id' => 'chapter-02'
+        ],
+        [
+          'title' => 'The Doctrine of Truth',
+          'subtitle' => 'Chapter III',
+          '_id' => 'chapter-03'
+        ],
+        [
+          'title' => 'Prudence in Action',
+          'subtitle' => 'Chapter IV',
+          '_id' => 'chapter-04'
+        ],
+        [
+          'title' => 'Reading the Holy Scripture',
+          'subtitle' => 'Chapter V',
+          '_id' => 'chapter-05'
+        ],
+        [
+          'title' => 'Unbridled Affections',
+          'subtitle' => 'Chapter VI',
+          '_id' => 'chapter-06'
+        ],
+        [
+          'title' => 'Avoiding False Hope and Pride',
+          'subtitle' => 'Chapter VII',
+          '_id' => 'chapter-07'
+        ],
+        [
+          'title' => 'Shunning Over-Familiarity',
+          'subtitle' => 'Chapter VIII',
+          '_id' => 'chapter-08'
+        ],
+        [
+          'title' => 'Obedience and Subjection',
+          'subtitle' => 'Chapter IX',
+          '_id' => 'chapter-09'
+        ],
+        [
+          'title' => 'Avoiding Idle Talk',
+          'subtitle' => 'Chapter X',
+          '_id' => 'chapter-10'
+        ],
+        [
+          'title' => 'Acquiring Peace and Zeal for Perfection',
+          'subtitle' => 'Chapter XI',
+          '_id' => 'chapter-11'
+        ],
+        [
+          'title' => 'The Value of Adversity',
+          'subtitle' => 'Chapter XII',
+          '_id' => 'chapter-12'
+        ],
+        [
+          'title' => 'Resisting Temptation',
+          'subtitle' => 'Chapter XIII',
+          '_id' => 'chapter-13'
+        ],
+        [
+          'title' => 'Avoiding Rash Judgment',
+          'subtitle' => 'Chapter XIV',
+          '_id' => 'chapter-14'
+        ],
+        [
+          'title' => 'Works Done in Charity',
+          'subtitle' => 'Chapter XV',
+          '_id' => 'chapter-15'
+        ],
+        [
+          'title' => 'Bearing with the Faults of Others',
+          'subtitle' => 'Chapter XVI',
+          '_id' => 'chapter-16'
+        ],
+        [
+          'title' => 'Monastic Life',
+          'subtitle' => 'Chapter XVII',
+          '_id' => 'chapter-17'
+        ],
+        [
+          'title' => 'The Example Set Us by the Holy Fathers',
+          'subtitle' => 'Chapter XVIII',
+          '_id' => 'chapter-18'
+        ],
+        [
+          'title' => 'The Practices of a Good Religious',
+          'subtitle' => 'Chapter XIX',
+          '_id' => 'chapter-19'
+        ],
+        [
+          'title' => 'The Love of Solitude and Silence',
+          'subtitle' => 'Chapter XX',
+          '_id' => 'chapter-20'
+        ],
+        [
+          'title' => 'Sorrow of Heart',
+          'subtitle' => 'Chapter XXI',
+          '_id' => 'chapter-21'
+        ],
+        [
+          'title' => 'Thoughts on the Misery of Man',
+          'subtitle' => 'Chapter XXII',
+          '_id' => 'chapter-22'
+        ],
+        [
+          'title' => 'Thoughts on Death',
+          'subtitle' => 'Chapter XXIII',
+          '_id' => 'chapter-23'
+        ],
+        [
+          'title' => 'Judgment and the Punishment of Sin',
+          'subtitle' => 'Chapter XXIV',
+          '_id' => 'chapter-24'
+        ],
+        [
+          'title' => 'Zeal in Amending Our Lives',
+          'subtitle' => 'Chapter XXV',
+          '_id' => 'chapter-25'
         ],
       ],
-      (object)[
-        '_id' => 'subtype',
-        'title' => 'Sub-Type',
-        'flags' => [
-          (object)['_id' => 'Pers', 'title' => 'Personal'],
-          (object)['_id' => 'Dem', 'title' => 'Demonstrative'],
-          (object)['_id' => 'Rel', 'title' => 'Relative'],
-          (object)['_id' => 'Correl', 'title' => 'Correlative'],
-          (object)['_id' => 'Indef', 'title' => 'Indefinite'],
-          (object)['_id' => 'Interrog', 'title' => 'Interrogative'],
-          (object)['_id' => 'Refl', 'title' => 'Reflexive'],
-          (object)['_id' => 'Recip', 'title' => 'Reciprocal'],
+    ],
+    [
+      '_id' => 'book-2',
+      'title' => 'The Interior Life',
+      'subtitle' => 'Book II',
+      'url' => '/classic-works/thomas-kempis-imitation-of-christ/book-2-the-interior-life',
+      'chapters' => [
+        [
+          'title' => 'Meditation',
+          'subtitle' => 'Chapter I',
+          '_id' => 'chapter-01',
+        ],
+        [
+          'title' => 'Humility',
+          'subtitle' => 'Chapter II',
+          '_id' => 'chapter-02',
+        ],
+        [
+          'title' => 'Goodness and Peace in Man',
+          'subtitle' => 'Chapter III',
+          '_id' => 'chapter-03',
+        ],
+        [
+          'title' => 'Purity of Mind and Unity of Purpose',
+          'subtitle' => 'Chapter IV',
+          '_id' => 'chapter-04',
+        ],
+        [
+          'title' => 'Ourselves',
+          'subtitle' => 'Chapter V',
+          '_id' => 'chapter-05',
+        ],
+        [
+          'title' => 'The Joy of a Good Conscience',
+          'subtitle' => 'Chapter VI',
+          '_id' => 'chapter-06',
+        ],
+        [
+          'title' => 'Loving Jesus Above All Things',
+          'subtitle' => 'Chapter VII',
+          '_id' => 'chapter-07',
+        ],
+        [
+          'title' => 'The Intimate Friendship of Jesus',
+          'subtitle' => 'Chapter VIII',
+          '_id' => 'chapter-08',
+        ],
+        [
+          'title' => 'Wanting No Share in Comfort',
+          'subtitle' => 'Chapter IX',
+          '_id' => 'chapter-09',
+        ],
+        [
+          'title' => 'Appreciating God’s Grace',
+          'subtitle' => 'Chapter X',
+          '_id' => 'chapter-10',
+        ],
+        [
+          'title' => 'Few Love the Cross of Jesus',
+          'subtitle' => 'Chapter XI',
+          '_id' => 'chapter-11',
+        ],
+        [
+          'title' => 'The Royal Road of the Holy Cross',
+          'subtitle' => 'Chapter XII',
+          '_id' => 'chapter-12',
         ],
       ],
-      (object)[
-        '_id' => 'tense',
-        'title' => 'Tense',
-        'flags' => [
-          (object)['_id' => 'Pres', 'title' => 'Present'],
-          (object)['_id' => 'Impf', 'title' => 'Imperfect'],
-          (object)['_id' => 'Fut', 'title' => 'Future'],
-          (object)['_id' => 'Aor', 'title' => 'Aorist'],
-          (object)['_id' => 'Perf', 'title' => 'Perfect'],
-          (object)['_id' => 'Plup', 'title' => 'Pluperfect'],
-          (object)['_id' => 'Futpf', 'title' => 'Future Perfect'],
+    ],
+    [
+      '_id' => 'book-3',
+      'title' => 'Internal Consolation',
+      'subtitle' => 'Book III',
+      'url' => '/classic-works/thomas-kempis-imitation-of-christ/book-3-internal-consolation',
+      'chapters' => [
+        [
+          'title' => 'The Inward Conversation of Christ with the Faithful Soul',
+          'subtitle' => 'Chapter I',
+          '_id' => 'chapter-01',
+        ],
+        [
+          'title' => 'Truth Speaks Inwardly without the Sound of Words',
+          'subtitle' => 'Chapter II',
+          '_id' => 'chapter-02',
+        ],
+        [
+          'title' => 'Listen Humbly to the Words of God; Many Do Not Heed Them',
+          'subtitle' => 'Chapter III',
+          '_id' => 'chapter-03',
+        ],
+        [
+          'title' => 'We Must Walk Before God in Humility and Truth',
+          'subtitle' => 'Chapter IV',
+          '_id' => 'chapter-04',
+        ],
+        [
+          'title' => 'The Wonderful Effect of Divine Love',
+          'subtitle' => 'Chapter V',
+          '_id' => 'chapter-05',
+        ],
+        [
+          'title' => 'The Proving of a True Lover',
+          'subtitle' => 'Chapter VI',
+          '_id' => 'chapter-06',
+        ],
+        [
+          'title' => 'Grace Must Be Hidden Under the Mantle of Humility',
+          'subtitle' => 'Chapter VII',
+          '_id' => 'chapter-07',
+        ],
+        [
+          'title' => 'Self-Abasement in the Sight of God',
+          'subtitle' => 'Chapter VIII',
+          '_id' => 'chapter-08',
+        ],
+        [
+          'title' => 'All Things Should Be Referred to God as Their Last End',
+          'subtitle' => 'Chapter IX',
+          '_id' => 'chapter-09',
+        ],
+        [
+          'title' => 'To Despise the World and Serve God Is Sweet',
+          'subtitle' => 'Chapter X',
+          '_id' => 'chapter-10',
+        ],
+        [
+          'title' => 'The Longings of Our Hearts Must Be Examined and Moderated',
+          'subtitle' => 'Chapter XI',
+          '_id' => 'chapter-11',
+        ],
+        [
+          'title' => 'Acquiring Patience in the Fight Against Concupiscence',
+          'subtitle' => 'Chapter XII',
+          '_id' => 'chapter-12',
+        ],
+        [
+          'title' => 'The Obedience of One Humbly Subject to the Example of Jesus Christ',
+          'subtitle' => 'Chapter XIII',
+          '_id' => 'chapter-13',
+        ],
+        [
+          'title' => 'Consider the Hidden Judgments of God Lest You Become Proud of Your Own Good Deeds',
+          'subtitle' => 'Chapter XIV',
+          '_id' => 'chapter-14',
+        ],
+        [
+          'title' => 'How One Should Feel and Speak on Every Desirable Thing',
+          'subtitle' => 'Chapter XV',
+          '_id' => 'chapter-15',
+        ],
+        [
+          'title' => 'True Comfort Is to Be Sought in God Alone',
+          'subtitle' => 'Chapter XVI',
+          '_id' => 'chapter-16',
+        ],
+        [
+          'title' => 'All Our Care Is to Be Placed in God',
+          'subtitle' => 'Chapter XVII',
+          '_id' => 'chapter-17',
+        ],
+        [
+          'title' => 'Temporal Sufferings Should Be Borne Patiently, After the Example of Christ',
+          'subtitle' => 'Chapter XVIII',
+          '_id' => 'chapter-18',
+        ],
+        [
+          'title' => 'True Patience in Suffering',
+          'subtitle' => 'Chapter XIX',
+          '_id' => 'chapter-19',
+        ],
+        [
+          'title' => 'Confessing Our Weakness in the Miseries of Life',
+          'subtitle' => 'Chapter XX',
+          '_id' => 'chapter-20',
+        ],
+        [
+          'title' => 'Above All Goods and All Gifts We Must Rest in God',
+          'subtitle' => 'Chapter XXI',
+          '_id' => 'chapter-21',
+        ],
+        [
+          'title' => 'Remember the Innumerable Gifts of God',
+          'subtitle' => 'Chapter XXII',
+          '_id' => 'chapter-22',
+        ],
+        [
+          'title' => 'Four Things Which Bring Great Peace',
+          'subtitle' => 'Chapter XXIII',
+          '_id' => 'chapter-23',
+        ],
+        [
+          'title' => 'Avoiding Curious Inquiry About the Lives of Others',
+          'subtitle' => 'Chapter XXIV',
+          '_id' => 'chapter-24',
+        ],
+        [
+          'title' => 'The Basis of Firm Peace of Heart and True Progress',
+          'subtitle' => 'Chapter XXV',
+          '_id' => 'chapter-25',
+        ],
+        [
+          'title' => 'The Excellence of a Free Mind, Gained Through Prayer Rather Than by Study',
+          'subtitle' => 'Chapter XXVI',
+          '_id' => 'chapter-26',
+        ],
+        [
+          'title' => 'Self-Love Is the Greatest Hindrance to the Highest Good',
+          'subtitle' => 'Chapter XXVII',
+          '_id' => 'chapter-27',
+        ],
+        [
+          'title' => 'Strength Against Slander',
+          'subtitle' => 'Chapter XXVIII',
+          '_id' => 'chapter-28',
+        ],
+        [
+          'title' => 'How We Must Call Upon and Bless the Lord When Trouble Presses',
+          'subtitle' => 'Chapter XXIX',
+          '_id' => 'chapter-29',
+        ],
+        [
+          'title' => 'The Quest of Divine Help and Confidence in Regaining Grace',
+          'subtitle' => 'Chapter XXX',
+          '_id' => 'chapter-30',
+        ],
+        [
+          'title' => 'To Find the Creator, Forsake All Creatures',
+          'subtitle' => 'Chapter XXXI',
+          '_id' => 'chapter-31',
+        ],
+        [
+          'title' => 'Self-Denial and the Renunciation of Evil Appetites',
+          'subtitle' => 'Chapter XXXII',
+          '_id' => 'chapter-32',
+        ],
+        [
+          'title' => 'Restlessness of Soul-Directing Our Final Intention Toward God',
+          'subtitle' => 'Chapter XXXIII',
+          '_id' => 'chapter-33',
+        ],
+        [
+          'title' => 'God Is Sweet Above All Things and in All Things to Those Who Love Him',
+          'subtitle' => 'Chapter XXXIV',
+          '_id' => 'chapter-34',
+        ],
+        [
+          'title' => 'There Is No Security from Temptation in This Life',
+          'subtitle' => 'Chapter XXXV',
+          '_id' => 'chapter-35',
+        ],
+        [
+          'title' => 'The Vain Judgments of Men',
+          'subtitle' => 'Chapter XXXVI',
+          '_id' => 'chapter-36',
+        ],
+        [
+          'title' => 'Pure and Entire Resignation of Self to Obtain Freedom of Heart',
+          'subtitle' => 'Chapter XXXVII',
+          '_id' => 'chapter-37',
+        ],
+        [
+          'title' => 'The Right Ordering of External Affairs; Recourse to God in Dangers',
+          'subtitle' => 'Chapter XXXVIII',
+          '_id' => 'chapter-38',
+        ],
+        [
+          'title' => 'A Man Should Not Be Unduly Solicitous About His Affairs',
+          'subtitle' => 'Chapter XXXIX',
+          '_id' => 'chapter-39',
+        ],
+        [
+          'title' => 'Man Has No Good in Himself and Can Glory in Nothing',
+          'subtitle' => 'Chapter XL',
+          '_id' => 'chapter-40',
+        ],
+        [
+          'title' => 'Contempt for All Earthly Honor',
+          'subtitle' => 'Chapter XLI',
+          '_id' => 'chapter-41',
+        ],
+        [
+          'title' => 'Peace Is Not to Be Placed in Men',
+          'subtitle' => 'Chapter XLII',
+          '_id' => 'chapter-42',
+        ],
+        [
+          'title' => 'Beware Vain and Worldly Knowledge',
+          'subtitle' => 'Chapter XLIII',
+          '_id' => 'chapter-43',
+        ],
+        [
+          'title' => 'Do Not Be Concerned About Outward Things',
+          'subtitle' => 'Chapter XLIV',
+          '_id' => 'chapter-44',
+        ],
+        [
+          'title' => 'All Men Are Not to Be Believed, for It Is Easy to Err in Speech',
+          'subtitle' => 'Chapter XLV',
+          '_id' => 'chapter-45',
+        ],
+        [
+          'title' => 'Trust in God Against Slander',
+          'subtitle' => 'Chapter XLVI',
+          '_id' => 'chapter-46',
+        ],
+        [
+          'title' => 'Every Trial Must Be Borne for the Sake of Eternal Life',
+          'subtitle' => 'Chapter XLVII',
+          '_id' => 'chapter-47',
+        ],
+        [
+          'title' => 'The Day of Eternity and the Distresses of This Life',
+          'subtitle' => 'Chapter XLVIII',
+          '_id' => 'chapter-48',
+        ],
+        [
+          'title' => 'The Desire of Eternal Life; the Great Rewards Promised to Those Who Struggle',
+          'subtitle' => 'Chapter XLIX',
+          '_id' => 'chapter-49',
+        ],
+        [
+          'title' => 'How a Desolate Person Ought to Commit Himself into the Hands of God',
+          'subtitle' => 'Chapter L',
+          '_id' => 'chapter-50',
+        ],
+        [
+          'title' => 'When We Cannot Attain to the Highest, We Must Practice the Humble Works',
+          'subtitle' => 'Chapter LI',
+          '_id' => 'chapter-51',
+        ],
+        [
+          'title' => 'A Man Ought Not to Consider Himself Worthy of Consolation, but Rather Deserving of Chastisement',
+          'subtitle' => 'Chapter LII',
+          '_id' => 'chapter-52',
+        ],
+        [
+          'title' => 'God’s Grace Is Not Given to the Earthly Minded',
+          'subtitle' => 'Chapter LIII',
+          '_id' => 'chapter-53',
+        ],
+        [
+          'title' => 'The Different Motions of Nature and Grace',
+          'subtitle' => 'Chapter LIV',
+          '_id' => 'chapter-54',
+        ],
+        [
+          'title' => 'The Corruption of Nature and the Efficacy of Divine Grace',
+          'subtitle' => 'Chapter LV',
+          '_id' => 'chapter-55',
+        ],
+        [
+          'title' => 'We Ought to Deny Ourselves and Imitate Christ Through Bearing the Cross',
+          'subtitle' => 'Chapter LVI',
+          '_id' => 'chapter-56',
+        ],
+        [
+          'title' => 'A Man Should Not Be Too Downcast When He Falls into Defects',
+          'subtitle' => 'Chapter LVII',
+          '_id' => 'chapter-57',
+        ],
+        [
+          'title' => 'High Matters and the Hidden Judgments of God Are Not to Be Scrutinized',
+          'subtitle' => 'Chapter LVIII',
+          '_id' => 'chapter-58',
+        ],
+        [
+          'title' => 'All Hope and Trust Are to Be Fixed in God Alone',
+          'subtitle' => 'Chapter LIX',
+          '_id' => 'chapter-59',
         ],
       ],
-      (object)[
-        '_id' => 'voice',
-        'title' => 'Voice',
-        'flags' => [
-          (object)['_id' => 'Act', 'title' => 'Active'],
-          (object)['_id' => 'Middle', 'title' => 'Middle'],
-          (object)['_id' => 'Pass', 'title' => 'Passive'],
-          (object)['_id' => 'Depon', 'title' => 'Deponent'],
+    ],
+    [
+      '_id' => 'book-4',
+      'title' => 'An Invitation to Holy Communion',
+      'subtitle' => 'Book IV',
+      'url' => '/classic-works/thomas-kempis-imitation-of-christ/book-4-an-invitation-to-holy-communion',
+      'chapters' => [
+        [
+          'title' => 'The Great Reverence with Which We Should Receive Christ',
+          'subtitle' => 'Chapter I',
+          '_id' => 'chapter-01',
+        ],
+        [
+          'title' => 'God’s Great Goodness and Love Is Shown to Man in This Sacrament',
+          'subtitle' => 'Chapter II',
+          '_id' => 'chapter-02',
+        ],
+        [
+          'title' => 'It Is Profitable to Receive Communion Often',
+          'subtitle' => 'Chapter III',
+          '_id' => 'chapter-03',
+        ],
+        [
+          'title' => 'Many Blessings Are Given Those Who Receive Communion Worthily',
+          'subtitle' => 'Chapter IV',
+          '_id' => 'chapter-04',
+        ],
+        [
+          'title' => 'The Dignity of the Sacrament and of the Priesthood',
+          'subtitle' => 'Chapter V',
+          '_id' => 'chapter-05',
+        ],
+        [
+          'title' => 'An Inquiry on the Proper Thing to Do Before Communion',
+          'subtitle' => 'Chapter VI',
+          '_id' => 'chapter-06',
+        ],
+        [
+          'title' => 'The Examination of Conscience and the Resolution to Amend',
+          'subtitle' => 'Chapter VII',
+          '_id' => 'chapter-07',
+        ],
+        [
+          'title' => 'The Offering of Christ on the Cross; Our Offering',
+          'subtitle' => 'Chapter VIII',
+          '_id' => 'chapter-08',
+        ],
+        [
+          'title' => 'We Should Offer Ourselves and All That We Have to God, Praying for All',
+          'subtitle' => 'Chapter IX',
+          '_id' => 'chapter-09',
+        ],
+        [
+          'title' => 'Do Not Lightly Forego Holy Communion',
+          'subtitle' => 'Chapter X',
+          '_id' => 'chapter-10',
+        ],
+        [
+          'title' => 'The Body of Christ and Sacred Scripture Are Most Necessary to a Faithful Soul',
+          'subtitle' => 'Chapter XI',
+          '_id' => 'chapter-11',
+        ],
+        [
+          'title' => 'The Communicant Should Prepare Himself for Christ with Great Care',
+          'subtitle' => 'Chapter XII',
+          '_id' => 'chapter-12',
+        ],
+        [
+          'title' => 'With All Her Heart the Devout Soul Should Desire Union with Christ in the Sacrament',
+          'subtitle' => 'Chapter XIII',
+          '_id' => 'chapter-13',
+        ],
+        [
+          'title' => 'The Ardent Longing of Devout Men for the Body of Christ',
+          'subtitle' => 'Chapter XIV',
+          '_id' => 'chapter-14',
+        ],
+        [
+          'title' => 'The Grace of Devotion Is Acquired Through Humility and Self-Denial',
+          'subtitle' => 'Chapter XV',
+          '_id' => 'chapter-15',
+        ],
+        [
+          'title' => 'We Should Show Our Needs to Christ and Ask His Grace',
+          'subtitle' => 'Chapter XVI',
+          '_id' => 'chapter-16',
+        ],
+        [
+          'title' => 'The Burning Love and Strong Desire to Receive Christ',
+          'subtitle' => 'Chapter XVII',
+          '_id' => 'chapter-17',
+        ],
+        [
+          'title' => 'Man Should Not Scrutinize This Sacrament in Curiosity, but Humbly Imitate Christ and Submit Reason to Holy Faith',
+          'subtitle' => 'Chapter XVIII',
+          '_id' => 'chapter-18',
         ],
       ],
-      (object)[
-        '_id' => 'mood',
-        'title' => 'Mood',
-        'flags' => [
-          (object)['_id' => 'Indic', 'title' => 'Indicative'],
-          (object)['_id' => 'Subjunc', 'title' => 'Subjunctive'],
-          (object)['_id' => 'Opt', 'title' => 'Optative'],
-          (object)['_id' => 'Impv', 'title' => 'Imperative'],
-        ],
-      ],
-      (object)[
-        '_id' => 'person',
-        'title' => 'Person',
-        'flags' => [
-          (object)['_id' => '1', 'title' => '1st Person'],
-          (object)['_id' => '2', 'title' => '2nd Person'],
-          (object)['_id' => '3', 'title' => '3rd Person'],
-        ],
-      ],
-      (object)[
-        '_id' => 'case',
-        'title' => 'Case',
-        'flags' => [
-          (object)['_id' => 'Nom', 'title' => 'Nominative'],
-          (object)['_id' => 'Acc', 'title' => 'Accusative'],
-          (object)['_id' => 'Gen', 'title' => 'Genitive'],
-          (object)['_id' => 'Dat', 'title' => 'Dative'],
-          (object)['_id' => 'Voc', 'title' => 'Vocative'],
-        ],
-      ],
-      (object)[
-        '_id' => 'number',
-        'title' => 'Number',
-        'flags' => [
-          (object)['_id' => 'Sg', 'title' => 'Singular'],
-          // (object)[ '_id' => 'Dl', 'title' => 'Dual' ],
-          (object)['_id' => 'Pl', 'title' => 'Plural'],
-        ],
-      ],
-      (object)[
-        '_id' => 'gender',
-        'title' => 'Gender',
-        'flags' => [
-          (object)['_id' => 'Masc', 'title' => 'Masculine'],
-          (object)['_id' => 'Fem', 'title' => 'Feminine'],
-          (object)['_id' => 'Neut', 'title' => 'Neuter'],
-        ],
-      ],
-    ];
-  }
-
-  return $types;
-}
-
-/** retrieve all language objects */
-function egp_languages($languageID = null) {
-  static $languages;
-
-  if (!$languages) {
-    global $db;
-
-    $sql =
-      "SELECT Document" .
-      "\nFROM Documents" .
-      "\nWHERE Collection = 'lexicon-languages'" .
-      "\nORDER BY Sequence";
-    $languages = $db->rows($sql);
-
-    $languages = array_map(
-      function ($row) {
-        global $db;
-
-        $language = json_decode($row['Document']);
-
-        $sql =
-          "SELECT Document" .
-          "\nFROM Documents" .
-          "\nWHERE Collection = 'language-letters' AND _id LIKE '{$language->_id}-%'" .
-          "\nORDER BY Sequence";
-        $letters = $db->rows($sql);
-
-        $language->letters = [];
-        foreach ($letters as $letter)
-          $language->letters[] = json_decode($letter['Document']);
-
-        return $language;
-      },
-      $languages
-    );
-  }
-
-  // specific language
-  if ($languageID) {
-    switch (substr(strtolower($languageID), 0, 1)) {
-      case 'g':
-        $languageID = 'greek';
-
-        break;
-
-      case 'h':
-        $languageID = 'hebrew';
-
-        break;
-    }
-
-    return egp_documentViaID($languages, $languageID);
-  }
-  // all languages
-  else
-    return $languages;
-}
-
-/** encode/decode language code and unicode */
-// TODO: update to utilize the new database
-function egp_lexiconConvert($languageID, $input, $encode = null) {
-  global $db;
-
-  static $allPronunciations, $allAlphabets, $allModifiers, $allPunctuation;
-
-  // set static variables
-  if (!$allPronunciations) {
-    /**************************
-     ***** Pronunciations *****
-     *************************/
-
-    $sql =
-      "SELECT *" .
-      "\nFROM equipgod_wordpress.EGP_LexiconPronunciationsView" .
-      "\nORDER BY LanguageID, PronunciationTypeID, LetterCode;";
-    $rows = $db->rows($sql);
-    $rowCount = count($rows);
-
-    // convert rows into an array
-    $allPronunciations = array();
-    for ($rowIndex = 0; $rowIndex < $rowCount; $rowIndex++) {
-      // create an array for the language
-      if (!isset($allPronunciations[$rows[$rowIndex]['LanguageID']]))
-        $allPronunciations[$rows[$rowIndex]['LanguageID']] = array();
-
-      // add the pronunciation to the corresponding language
-      $allPronunciations[$rows[$rowIndex]['LanguageID']][$rows[$rowIndex]['LetterCode']] = $rows[$rowIndex];
-    }
-
-    //echo core_dump($allPronunciations, 'Pronunciations');
-
-
-    /*********************
-     ***** Alphabets *****
-     ********************/
-
-    // create an alphabets array
-    $allAlphabets = array('G' => array(), 'H' => array());
-
-    // get Greek alphabet from the database
-    $sql =
-      "SELECT GreekID," .
-      "\nLowerCode, LowerLetter," .
-      "\nLowerPsiliCode, LowerPsili, LowerDasiaCode, LowerDasia, LowerOxiaCode, LowerOxia, LowerVariaCode, LowerVaria, LowerPerispomeniCode, LowerPerispomeni, LowerDialytikaCode, LowerDialytika, LowerYpogegrammeniCode, LowerYpogegrammeni, LowerVrachyCode, LowerVrachy, LowerMacronCode, LowerMacron," .
-      "\nLowerPsiliOxiaCode, LowerPsiliOxia, LowerPsiliVariaCode, LowerPsiliVaria, LowerPsiliPerispomeniCode, LowerPsiliPerispomeni, LowerPsiliYpogegrammeniCode, LowerPsiliYpogegrammeni," .
-      "\nLowerDasiaOxiaCode, LowerDasiaOxia, LowerDasiaVariaCode, LowerDasiaVaria, LowerDasiaPerispomeniCode, LowerDasiaPerispomeni, LowerDasiaYpogegrammeniCode, LowerDasiaYpogegrammeni," .
-      "\nLowerDialytikaOxiaCode, LowerDialytikaOxia, LowerDialytikaVariaCode, LowerDialytikaVaria, LowerDialytikaPerispomeniCode, LowerDialytikaPerispomeni," .
-      "\nLowerYpogegrammeniOxiaCode, LowerYpogegrammeniOxia, LowerYpogegrammeniVariaCode, LowerYpogegrammeniVaria, LowerYpogegrammeniPerispomeniCode, LowerYpogegrammeniPerispomeni," .
-      "\nLowerPsiliYpogegrammeniOxiaCode, LowerPsiliYpogegrammeniOxia, LowerPsiliYpogegrammeniVariaCode, LowerPsiliYpogegrammeniVaria, LowerPsiliYpogegrammeniPerispomeniCode, LowerPsiliYpogegrammeniPerispomeni," .
-      "\nLowerDasiaYpogegrammeniOxiaCode, LowerDasiaYpogegrammeniOxia, LowerDasiaYpogegrammeniVariaCode, LowerDasiaYpogegrammeniVaria, LowerDasiaYpogegrammeniPerispomeniCode, LowerDasiaYpogegrammeniPerispomeni," .
-      "\nUpperCode, UpperLetter," .
-      "\nUpperPsiliCode, UpperPsili, UpperDasiaCode, UpperDasia, UpperOxiaCode, UpperOxia, UpperVariaCode, UpperVaria, UpperDialytikaCode, UpperDialytika, UpperProsgegrammeniCode, UpperProsgegrammeni, UpperVrachyCode, UpperVrachy, UpperMacronCode, UpperMacron," .
-      "\nUpperPsiliOxiaCode, UpperPsiliOxia, UpperPsiliVariaCode, UpperPsiliVaria, UpperPsiliPerispomeniCode, UpperPsiliPerispomeni, UpperPsiliProsgegrammeniCode, UpperPsiliProsgegrammeni, UpperDasiaOxiaCode, UpperDasiaOxia, UpperDasiaVariaCode, UpperDasiaVaria, UpperDasiaPerispomeniCode, UpperDasiaPerispomeni," .
-      "\nUpperDasiaProsgegrammeniCode, UpperDasiaProsgegrammeni, UpperPsiliProsgegrammeniOxiaCode, UpperPsiliProsgegrammeniOxia, UpperPsiliProsgegrammeniVariaCode, UpperPsiliProsgegrammeniVaria, UpperPsiliProsgegrammeniPerispomeniCode, UpperPsiliProsgegrammeniPerispomeni," .
-      "\nUpperDasiaProsgegrammeniOxiaCode, UpperDasiaProsgegrammeniOxia, UpperDasiaProsgegrammeniVariaCode, UpperDasiaProsgegrammeniVaria, UpperDasiaProsgegrammeniPerispomeniCode, UpperDasiaProsgegrammeniPerispomeni" .
-      "\nFROM equipgod_wordpress.EGP_LexiconGreekAlphabet" .
-      "\nORDER BY GreekID;";
-    $rows = $db->rows($sql);
-    $rowCount = count($rows);
-
-    // add Greek to alphabet array
-    for ($rowID = 0; $rowID < $rowCount; $rowID++)
-      $allAlphabets['G'][$rows[$rowID]['LowerCode']] = $rows[$rowID];
-
-    // get Hebrew alphabet from the database
-    $sql =
-      "SELECT HebrewID, LetterCode, Letter" .
-      "\nFROM equipgod_wordpress.EGP_LexiconHebrewAlphabet" .
-      "\nORDER BY HebrewID;";
-    $rows = $db->rows($sql);
-    $rowCount = count($rows);
-
-    // add Hebrew to alphabet array
-    for ($rowID = 0; $rowID < $rowCount; $rowID++)
-      $allAlphabets['H'][$rows[$rowID]['LetterCode']] = $rows[$rowID];
-
-    //echo core_dump($allAlphabets, 'Alphabets');
-
-
-    /*********************
-     ***** Modifiers *****
-     ********************/
-
-    // get modifiers from the database
-    $sql =
-      "SELECT *" .
-      "\nFROM equipgod_wordpress.EGP_LexiconPronunciations" .
-      "\nWHERE PronunciationTypeID = ?" .
-      "\nORDER BY LanguageID, LetterCode;";
-    $rows = $db->rows($sql, 'MOD');
-    $rowCount = count($rows);
-
-    // create a modifiers array
-    $allModifiers = array();
-    for ($rowID = 0; $rowID < $rowCount; $rowID++) {
-      // create an array for the language
-      if (!isset($allModifiers[$rows[$rowID]['LanguageID']]))
-        $allModifiers[$rows[$rowID]['LanguageID']] = array();
-
-      // add the modifier to the corresponding language
-      $allModifiers[$rows[$rowID]['LanguageID']][$rows[$rowID]['LetterCode']] = $rows[$rowID];
-    }
-
-    //echo core_dump($allModifiers, 'Modifiers');
-
-
-    /***********************
-     ***** Punctuation *****
-     **********************/
-
-    // get punctuation from the database
-    $sql =
-      "SELECT LanguageID, Code, Unicode" .
-      "\nFROM equipgod_wordpress.EGP_LexiconPunctuation" .
-      "\nORDER BY LanguageID, Code;";
-    $rows = $db->rows($sql);
-    $rowCount = count($rows);
-
-    // create a punctuation array
-    $allPunctuation = array();
-    for ($rowID = 0; $rowID < $rowCount; $rowID++) {
-      // create an array for the language
-      if (!isset($allPunctuation[$rows[$rowID]['LanguageID']]))
-        $allPunctuation[$rows[$rowID]['LanguageID']] = array('Code' => array(), 'Unicode' => array());
-
-      // add the punctuation to the corresponding language
-      $allPunctuation[$rows[$rowID]['LanguageID']]['Code'][] = $rows[$rowID]['Code'] !== '' ? $rows[$rowID]['Code'] : ' ';
-      $allPunctuation[$rows[$rowID]['LanguageID']]['Unicode'][] = $rows[$rowID]['Unicode'] !== '' ? $rows[$rowID]['Unicode'] : ' ';
-    }
-
-    //echo core_dump($allPunctuation, 'Punctuation');
-  }
-
-  // normalize language ID
-  $languageID = strtoupper(substr($languageID, 0, 1));
-
-  // default encoding to true
-  if (is_null($encode))
-    $encode = true;
-
-
-  /***********************************
-   ***** egp_getLexiconTextSplit *****
-   **********************************/
-
-  // split input into characters
-  // initialize variables
-  $characters = array();
-  $modifiers = array();
-  $decode = false;
-
-  // support changes to Greek modifiers
-  if ($languageID === 'G')
-    $input = str_replace(array('\'', '='), array('’', '^'), $input);
-  // elseif ($languageID === 'H' && $encode)
-  // 	$input = strrev($input);
-
-  // process input, character by character
-  $charCount = mb_strlen($input, 'UTF-8');
-  for ($charID = 0; $charID < $charCount; $charID++) {
-    // get the current character
-    $current = mb_substr($input, $charID, 1, 'UTF-8');
-    //egp_p($charID . ' — ' . $current);
-
-    // is a modifier, add it to the list
-    if (isset($allModifiers[$languageID][$current]) !== false)
-      $modifiers[] = $current;
-    else {
-      // determine type of character
-      $punctuationID = array_search($current, $allPunctuation[$languageID]['Code']);
-      if ($punctuationID === false)
-        $punctuationID = array_search($current, $allPunctuation[$languageID]['Unicode']);
-      if (isset($allAlphabets[$languageID][$languageID === 'G' ? strtolower($current) : $current]))
-        $alphabetID = $languageID === 'G' ? strtolower($current) : $current;
-      else
-        $alphabetID = false;
-
-      // is punctuation
-      if ($punctuationID !== false && !$decode) {
-        // add stray modifiers
-        $characters[] =
-          array(
-            'Character' => implode('', $modifiers),
-            'Type' => 'other'
-          );
-
-        // add punctuation
-        $characters[] = array('Character' => $current, 'Type' => 'punctuation', 'ID' => $punctuationID);
-      }
-      // letter of the alphabet
-      elseif ($alphabetID !== false && !$decode) {
-        // determine alphabet key to use
-        $key = $languageID === 'G' ? strtolower($current) : $current;
-
-        // determine column name to pull
-        if ($languageID === 'G') {
-          $column = ctype_lower($current) ? 'Lower' : 'Upper';
-          if ($modifiers) {
-            if (in_array('+', $modifiers))
-              $column .= 'Dialytika';
-            if (in_array(')', $modifiers))
-              $column .= 'Psili';
-            if (in_array('(', $modifiers))
-              $column .= 'Dasia';
-            if (in_array('|', $modifiers))
-              $column .= ctype_lower($current) ? 'Ypogegrammeni' : 'Prosgegrammeni';
-            if (in_array('-', $modifiers))
-              $column .= 'Vrachy';
-            if (in_array('_', $modifiers))
-              $column .= 'Macron';
-            if (in_array('\\', $modifiers))
-              $column .= 'Varia';
-            if (in_array('/', $modifiers))
-              $column .= 'Oxia';
-            if (in_array('=', $modifiers))
-              $column .= 'Perispomeni';
-            if (in_array('^', $modifiers))
-              $column .= 'Perispomeni';
-          } else
-            $column .= 'Letter';
-        } else
-          $column = 'Letter';
-
-        // validate determined column
-        if (!isset($allAlphabets[$languageID][$key][$column]))
-          $column = '«invalid alphabet column “' . $column . '” for ' . implode('', $modifiers) . $current . '»';
-
-        $characters[] = array('Character' => $current, 'Type' => 'alphabet', 'ID' => $alphabetID, 'Modifiers' => $modifiers, 'Column' => $column);
-      } else {
-        $type = '';
-        $key = '';
-        $column = '';
-
-        // check for encoded alphabet
-        foreach ($allAlphabets[$languageID] as $alphabetID => $alphabetRow) {
-          foreach ($alphabetRow as $alphabetColumn => $value) {
-            if (
-              preg_match('/^(Lower|Upper)/', $alphabetColumn)
-              && !preg_match('/Code$/', $alphabetColumn)
-              && $current === $value
-            ) {
-              $type = 'alphabet';
-              $key = $alphabetID;
-              $column = $alphabetColumn;
-              break;
-            }
-          }
-
-          if ($type)
-            break;
-        }
-
-        // is encoded alphabet
-        if ($type === 'alphabet') {
-          $decode = true;
-
-          $row = array();
-
-          if ($languageID === 'G' && substr($column, 0, 1) === 'U')
-            $row['Character'] = strtoupper($key);
-          else
-            $row['Character'] = $key;
-
-          $row['Type'] = $type;
-          $row['ID'] = $key;
-
-          $row['Modifiers'] = array();
-          if (strpos($column, 'Dialytika') !== false)
-            $row['Modifiers'][] = '+';
-          if (strpos($column, 'Psili') !== false)
-            $row['Modifiers'][] = ')';
-          if (strpos($column, 'Dasia') !== false)
-            $row['Modifiers'][] = '(';
-          if (strpos($column, 'Ypogegrammeni') !== false || strpos($column, 'Prosgegrammeni') !== false)
-            $row['Modifiers'][] = '|';
-          if (strpos($column, 'Vrachy') !== false)
-            $row['Modifiers'][] = '-';
-          if (strpos($column, 'Macron') !== false)
-            $row['Modifiers'][] = '_';
-          if (strpos($column, 'Varia') !== false)
-            $row['Modifiers'][] = '\\';
-          if (strpos($column, 'Oxia') !== false)
-            $row['Modifiers'][] = '/';
-          if (strpos($column, 'Perispomeni') !== false)
-            $row['Modifiers'][] = '^';
-
-          $row['Column'] = str_replace('Letter', '', $column) . 'Code';
-
-          $characters[] = $row;
-        } else {
-          $punctuationID = array_search($current, $allPunctuation[$languageID]['Unicode']);
-
-          // is encoded punctuation
-          if ($decode && $punctuationID !== false) {
-            $characters[] =
-              array(
-                'Character' => $allPunctuation[$languageID]['Code'][$punctuationID],
-                'Type' => 'punctuation',
-                'ID' => $punctuationID
-              );
-          }
-          // not sure, leave it alone
-          else {
-            // add stray modifiers
-            $characters[] =
-              array(
-                'Character' => implode('', $modifiers),
-                'Type' => 'other'
-              );
-
-            // add other character
-            $characters[] =
-              array(
-                'Character' => $current,
-                'Type' => 'other'
-              );
-          }
-        }
-      }
-
-      // clear modifiers for the next letter
-      $modifiers = array();
-    }
-  }
-  $charCount = count($characters);
-  //echo core_dump($characters, 'Characters');
-
-  // process character-by-character
-  $output = '';
-  for ($charID = 0; $charID < $charCount; $charID++) {
-    if ($characters[$charID]['Character'] === '[') {
-      // peek at the next 10 characters for a close bracket
-      $closePos = false;
-      for ($peekID = 1; $peekID < 10 && $charID + $peekID < $charCount; $peekID++) {
-        if ($characters[$charID + $peekID]['Character'] === ']') {
-          $closePos = $peekID;
-          break;
-        }
-      }
-
-      // if there was a close bracket, get a snip
-      if ($closePos !== false) {
-        $snip = '';
-        for ($peekID = 0; $peekID <= $closePos; $peekID++) {
-          if (is_array($characters[$charID + $peekID]['Modifiers']))
-            $snip .= implode('', $characters[$charID + $peekID]['Modifiers']);
-          $snip .= $characters[$charID + $peekID]['Character'];
-        }
-
-        $output .= $snip;
-        $charID += $closePos;
-
-        continue;
-      }
-    }
-
-    // character type determines how to encode/decode
-    switch ($characters[$charID]['Type']) {
-      case 'alphabet':
-        if ($encode)
-          $output .= $allAlphabets[$languageID][$characters[$charID]['ID']][$characters[$charID]['Column']];
-        else
-          $output .= implode('', $characters[$charID]['Modifiers']) . $characters[$charID]['Character'];
-
-        break;
-      case 'punctuation':
-        if ($encode)
-          $output .= $allPunctuation[$languageID]['Unicode'][$characters[$charID]['ID']];
-        else
-          $output .= $characters[$charID]['Character'];
-
-        break;
-      default:
-        $output .= $characters[$charID]['Character'];
-    }
-  }
-
-  return $output;
-}
-
-/** retrieve a lexicon entry */
-function egp_lexiconEntry($query) {
-  static $entries;
-
-  // get all lexicon entries
-  if (!$entries) {
-    global $db;
-
-    $results = $db->documents('lexicon-entries');
-    foreach ($results as $result)
-      $entries[$result->_id] = $result;
-    $results = null;
-  }
-
-  // lower-case the query
-  $query = mb_strtolower($query);
-
-  if (preg_match('/^(strongs-)?[gh][0-9]{1,4}$/', $query)) {
-    // prefix query as needed
-    if (mb_substr($query, 0, 1) !== 's')
-      $query = 'strongs-' . $query;
-
-    // remove leading zeroes
-    $query = preg_replace('/^(strongs-[g-h])0+/', '$1', $query);
-
-    // query the database
-    return $entries[$query];
-  }
-
-  return false;
+    ],
+  ]));
 }
 
 /** crash the page rendering and display the given item */
@@ -2562,7 +3170,7 @@ function page_metadataViaToken($token) {
     case 'book-09-the-great-deliverance':
     case 'book-10-constantine-and-peace':
       // get the table of contents
-      $toc = egp_ecclesiasticalHistoryTOC();
+      $toc = egp_tocEcclesiasticalHistory();
 
       // find the specific book
       $rowIndex = array_search_callback(
@@ -2584,6 +3192,42 @@ function page_metadataViaToken($token) {
         'url' => $toc[$rowIndex]->url,
         'sequence' => $toc[$rowIndex]->_id,
         'source' => '/classic-works/pamphili-eusebius-ecclesiastical-history/' . $toc[$rowIndex]->_id . '.php',
+        'book' => $toc[$rowIndex],
+        'previous' => $toc[$rowIndex - 1]
+          ? ['url' => $toc[$rowIndex - 1]->url, 'title' => $toc[$rowIndex - 1]->subtitle . ' – ' . $toc[$rowIndex - 1]->title]
+          : null,
+        'next' => $toc[$rowIndex + 1]
+          ? ['url' => $toc[$rowIndex + 1]->url, 'title' => $toc[$rowIndex + 1]->subtitle . ' – ' . $toc[$rowIndex + 1]->title]
+          : null,
+      ];
+
+      break;
+
+    case 'book-1-thoughts-helpful-in-the-life-of-the-soul':
+    case 'book-2-the-interior-life':
+    case 'book-3-internal-consolation':
+    case 'book-4-an-invitation-to-holy-communion':
+      // get the table of contents
+      $toc = egp_tocImitationOfChrist();
+
+      // find the specific book
+      $rowIndex = array_search_callback(
+        $toc,
+        function ($book) use ($token) {
+          return $book->_id === substr($token, 0, 6);
+        }
+      );
+
+      $output = (object) [
+        '_id' => $token,
+        'title' => $toc[$rowIndex]->title,
+        'subtitle' => '“The Imitation of Christ” – ' . $toc[$rowIndex]->subtitle,
+        'parent' => 'Kempis – The Imitation of Christ',
+        'parentURL' => '/classic-works/thomas-kempis-imitation-of-christ',
+        'variant' => 'ClassicWorks',
+        'url' => $toc[$rowIndex]->url,
+        'sequence' => $toc[$rowIndex]->_id,
+        'source' => '/classic-works/thomas-kempis-imitation-of-christ/' . $toc[$rowIndex]->_id . '.php',
         'book' => $toc[$rowIndex],
         'previous' => $toc[$rowIndex - 1]
           ? ['url' => $toc[$rowIndex - 1]->url, 'title' => $toc[$rowIndex - 1]->subtitle . ' – ' . $toc[$rowIndex - 1]->title]
@@ -2656,6 +3300,20 @@ function page_metadataViaToken($token) {
         'variant' => 'ClassicWorks',
         'url' => '/classic-works/' . $token,
         'sequence' => 'Eusebius Ecclesiastical History',
+        'source' => '/classic-works/' . $token . '/index.php',
+      ];
+
+      break;
+
+    case 'thomas-kempis-imitation-of-christ':
+      $output = (object) [
+        '_id' => $token,
+        'title' => 'Kempis – The Imitation of Christ',
+        'subtitle' => 'by Thomas à Kempis',
+        'parent' => 'Classic Works',
+        'variant' => 'ClassicWorks',
+        'url' => '/classic-works/' . $token,
+        'sequence' => 'Kempis Imitation of Christ',
         'source' => '/classic-works/' . $token . '/index.php',
       ];
 
