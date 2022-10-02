@@ -46,5 +46,11 @@ $html->add(new BS_Container(
     },
 
     $toc
-  ))
+  )),
+
+  new BS_PreviousNext([
+    'previous' => ['url' => '/classic-works', 'title' => 'Classic Works'],
+    'next' => ['url' => $toc[0]->url, 'title' => $toc[0]->subtitle . ' – ' . $toc[0]->title],
+    'className' => 'mt-5'
+  ]),
 ));

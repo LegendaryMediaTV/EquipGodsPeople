@@ -3000,6 +3000,10 @@ function egp_tocImitationOfChrist() {
       'url' => '/classic-works/thomas-kempis-imitation-of-christ/book-4-an-invitation-to-holy-communion',
       'chapters' => [
         [
+          'title' => 'Introduction',
+          '_id' => 'introduction',
+        ],
+        [
           'title' => 'The Great Reverence with Which We Should Receive Christ',
           'subtitle' => 'Chapter I',
           '_id' => 'chapter-01',
@@ -3195,10 +3199,10 @@ function page_metadataViaToken($token) {
         'book' => $toc[$rowIndex],
         'previous' => $toc[$rowIndex - 1]
           ? ['url' => $toc[$rowIndex - 1]->url, 'title' => $toc[$rowIndex - 1]->subtitle . ' – ' . $toc[$rowIndex - 1]->title]
-          : null,
+          : ['url' => '/classic-works', 'title' => 'Classic Works'],
         'next' => $toc[$rowIndex + 1]
           ? ['url' => $toc[$rowIndex + 1]->url, 'title' => $toc[$rowIndex + 1]->subtitle . ' – ' . $toc[$rowIndex + 1]->title]
-          : null,
+          : ['url' => '/classic-works', 'title' => 'Classic Works'],
       ];
 
       break;
@@ -3231,10 +3235,10 @@ function page_metadataViaToken($token) {
         'book' => $toc[$rowIndex],
         'previous' => $toc[$rowIndex - 1]
           ? ['url' => $toc[$rowIndex - 1]->url, 'title' => $toc[$rowIndex - 1]->subtitle . ' – ' . $toc[$rowIndex - 1]->title]
-          : null,
+          : ['url' => '/classic-works', 'title' => 'Classic Works'],
         'next' => $toc[$rowIndex + 1]
           ? ['url' => $toc[$rowIndex + 1]->url, 'title' => $toc[$rowIndex + 1]->subtitle . ' – ' . $toc[$rowIndex + 1]->title]
-          : null,
+          : ['url' => '/classic-works', 'title' => 'Classic Works'],
       ];
 
       break;
