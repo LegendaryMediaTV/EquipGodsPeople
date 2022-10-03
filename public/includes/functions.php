@@ -3105,61 +3105,61 @@ function egp_tocPursuitOfGod() {
       '_id' => 'chapter-01',
       'title' => 'Following Hard After God',
       'subtitle' => 'Chapter I',
-      'url' => '/aw-tozer-pursuit-of-god/chapter-01-following-hard-after-god',
+      'url' => '/classic-works/aw-tozer-pursuit-of-god/chapter-01-following-hard-after-god',
     ],
     [
       '_id' => 'chapter-02',
       'title' => 'The Blessedness of Possessing Nothing',
       'subtitle' => 'Chapter II',
-      'url' => '/aw-tozer-pursuit-of-god/chapter-02-the-blessedness-of-possessing-nothing',
+      'url' => '/classic-works/aw-tozer-pursuit-of-god/chapter-02-the-blessedness-of-possessing-nothing',
     ],
     [
       '_id' => 'chapter-03',
       'title' => 'Removing the Veil',
       'subtitle' => 'Chapter III',
-      'url' => '/aw-tozer-pursuit-of-god/chapter-03-removing-the-veil',
+      'url' => '/classic-works/aw-tozer-pursuit-of-god/chapter-03-removing-the-veil',
     ],
     [
       '_id' => 'chapter-04',
       'title' => 'Apprehending God',
       'subtitle' => 'Chapter IV',
-      'url' => '/aw-tozer-pursuit-of-god/chapter-04-apprehending-god',
+      'url' => '/classic-works/aw-tozer-pursuit-of-god/chapter-04-apprehending-god',
     ],
     [
       '_id' => 'chapter-05',
       'title' => 'The Universal Presence',
       'subtitle' => 'Chapter V',
-      'url' => '/aw-tozer-pursuit-of-god/chapter-05-the-universal-presence',
+      'url' => '/classic-works/aw-tozer-pursuit-of-god/chapter-05-the-universal-presence',
     ],
     [
       '_id' => 'chapter-06',
       'title' => 'The Speaking Voice',
       'subtitle' => 'Chapter VI',
-      'url' => '/aw-tozer-pursuit-of-god/chapter-06-the-speaking-voice',
+      'url' => '/classic-works/aw-tozer-pursuit-of-god/chapter-06-the-speaking-voice',
     ],
     [
       '_id' => 'chapter-07',
       'title' => 'The Gaze of the Soul',
       'subtitle' => 'Chapter VII',
-      'url' => '/aw-tozer-pursuit-of-god/chapter-07-the-gaze-of-the-soul',
+      'url' => '/classic-works/aw-tozer-pursuit-of-god/chapter-07-the-gaze-of-the-soul',
     ],
     [
       '_id' => 'chapter-08',
       'title' => 'Restoring the Creator–Creature Relation',
       'subtitle' => 'Chapter VIII',
-      'url' => '/aw-tozer-pursuit-of-god/chapter-08-restoring-the-creator-creature-relation',
+      'url' => '/classic-works/aw-tozer-pursuit-of-god/chapter-08-restoring-the-creator-creature-relation',
     ],
     [
       '_id' => 'chapter-09',
       'title' => 'Meekness and Rest',
       'subtitle' => 'Chapter IX',
-      'url' => '/aw-tozer-pursuit-of-god/chapter-09-meekness-and-rest',
+      'url' => '/classic-works/aw-tozer-pursuit-of-god/chapter-09-meekness-and-rest',
     ],
     [
       '_id' => 'chapter-10',
       'title' => 'The Sacrament of Living',
       'subtitle' => 'Chapter X',
-      'url' => '/aw-tozer-pursuit-of-god/chapter-10-the-sacrament-of-living',
+      'url' => '/classic-works/aw-tozer-pursuit-of-god/chapter-10-the-sacrament-of-living',
     ],
   ]));
 }
@@ -3266,20 +3266,23 @@ function page_metadataViaToken($token) {
         }
       );
 
+      // establish the parent URL
+      $parentURL = '/classic-works/pamphili-eusebius-ecclesiastical-history';
+
       $output = (object) [
         '_id' => $token,
         'title' => $toc[$rowIndex]->title,
-        'subtitle' => '“Ecclesiastical History” – ' . $toc[$rowIndex]->subtitle,
+        'subtitle' => new BS_Link(['to' => $parentURL], '“Ecclesiastical History”') . ' – ' . $toc[$rowIndex]->subtitle,
         'parent' => 'Eusebius – Ecclesiastical History',
-        'parentURL' => '/classic-works/pamphili-eusebius-ecclesiastical-history',
+        'parentURL' => $parentURL,
         'variant' => 'ClassicWorks',
         'url' => $toc[$rowIndex]->url,
         'sequence' => $toc[$rowIndex]->_id,
-        'source' => '/classic-works/pamphili-eusebius-ecclesiastical-history/' . $toc[$rowIndex]->_id . '.php',
+        'source' => $parentURL . '/' . $toc[$rowIndex]->_id . '.php',
         'book' => $toc[$rowIndex],
         'previous' => $toc[$rowIndex - 1]
           ? ['url' => $toc[$rowIndex - 1]->url, 'title' => $toc[$rowIndex - 1]->subtitle . ' – ' . $toc[$rowIndex - 1]->title]
-          : ['url' => '/classic-works', 'title' => 'Classic Works'],
+          : ['url' => $parentURL, 'title' => 'Table of Contents'],
         'next' => $toc[$rowIndex + 1]
           ? ['url' => $toc[$rowIndex + 1]->url, 'title' => $toc[$rowIndex + 1]->subtitle . ' – ' . $toc[$rowIndex + 1]->title]
           : ['url' => '/classic-works', 'title' => 'Classic Works'],
@@ -3302,20 +3305,23 @@ function page_metadataViaToken($token) {
         }
       );
 
+      // establish the parent URL
+      $parentURL = '/classic-works/thomas-kempis-imitation-of-christ';
+
       $output = (object) [
         '_id' => $token,
         'title' => $toc[$rowIndex]->title,
-        'subtitle' => '“The Imitation of Christ” – ' . $toc[$rowIndex]->subtitle,
+        'subtitle' => new BS_Link(['to' => $parentURL], '“The Imitation of Christ”') . ' – ' . $toc[$rowIndex]->subtitle,
         'parent' => 'Kempis – The Imitation of Christ',
-        'parentURL' => '/classic-works/thomas-kempis-imitation-of-christ',
+        'parentURL' => $parentURL,
         'variant' => 'ClassicWorks',
         'url' => $toc[$rowIndex]->url,
         'sequence' => $toc[$rowIndex]->_id,
-        'source' => '/classic-works/thomas-kempis-imitation-of-christ/' . $toc[$rowIndex]->_id . '.php',
+        'source' => $parentURL . '/' . $toc[$rowIndex]->_id . '.php',
         'book' => $toc[$rowIndex],
         'previous' => $toc[$rowIndex - 1]
           ? ['url' => $toc[$rowIndex - 1]->url, 'title' => $toc[$rowIndex - 1]->subtitle . ' – ' . $toc[$rowIndex - 1]->title]
-          : ['url' => '/classic-works', 'title' => 'Classic Works'],
+          : ['url' => $parentURL, 'title' => 'Table of Contents'],
         'next' => $toc[$rowIndex + 1]
           ? ['url' => $toc[$rowIndex + 1]->url, 'title' => $toc[$rowIndex + 1]->subtitle . ' – ' . $toc[$rowIndex + 1]->title]
           : ['url' => '/classic-works', 'title' => 'Classic Works'],
@@ -3344,20 +3350,23 @@ function page_metadataViaToken($token) {
         }
       );
 
+      // establish the parent URL
+      $parentURL = '/classic-works/aw-tozer-pursuit-of-god';
+
       $output = (object) [
         '_id' => $token,
         'title' => $toc[$rowIndex]->title,
-        'subtitle' => '“The Pursuit of God” – ' . $toc[$rowIndex]->subtitle,
+        'subtitle' => new BS_Link(['to' => $parentURL], '“The Pursuit of God”') . ' – ' . $toc[$rowIndex]->subtitle,
         'parent' => 'A.W. Tozer – The Pursuit of God',
-        'parentURL' => '/classic-works/aw-tozer-pursuit-of-god',
+        'parentURL' => $parentURL,
         'variant' => 'ClassicWorks',
         'url' => $toc[$rowIndex]->url,
         'sequence' => $toc[$rowIndex]->_id,
-        'source' => '/classic-works/aw-tozer-pursuit-of-god/' . $toc[$rowIndex]->_id . '.php',
+        'source' => $parentURL . '/' . $toc[$rowIndex]->_id . '.php',
         'book' => $toc[$rowIndex],
         'previous' => $toc[$rowIndex - 1]
           ? ['url' => $toc[$rowIndex - 1]->url, 'title' => $toc[$rowIndex - 1]->subtitle . ' – ' . $toc[$rowIndex - 1]->title]
-          : ['url' => '/classic-works', 'title' => 'Classic Works'],
+          : ['url' => $parentURL, 'title' => 'Table of Contents'],
         'next' => $toc[$rowIndex + 1]
           ? ['url' => $toc[$rowIndex + 1]->url, 'title' => $toc[$rowIndex + 1]->subtitle . ' – ' . $toc[$rowIndex + 1]->title]
           : ['url' => '/classic-works', 'title' => 'Classic Works'],
