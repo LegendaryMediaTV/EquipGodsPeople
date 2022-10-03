@@ -3098,6 +3098,72 @@ function egp_tocImitationOfChrist() {
   ]));
 }
 
+/** Tozer’s Pursuit of God chapters */
+function egp_tocPursuitOfGod() {
+  return json_decode(json_encode([
+    [
+      '_id' => 'chapter-01',
+      'title' => 'Following Hard After God',
+      'subtitle' => 'Chapter I',
+      'url' => '/aw-tozer-pursuit-of-god/chapter-01-following-hard-after-god',
+    ],
+    [
+      '_id' => 'chapter-02',
+      'title' => 'The Blessedness of Possessing Nothing',
+      'subtitle' => 'Chapter II',
+      'url' => '/aw-tozer-pursuit-of-god/chapter-02-the-blessedness-of-possessing-nothing',
+    ],
+    [
+      '_id' => 'chapter-03',
+      'title' => 'Removing the Veil',
+      'subtitle' => 'Chapter III',
+      'url' => '/aw-tozer-pursuit-of-god/chapter-03-removing-the-veil',
+    ],
+    [
+      '_id' => 'chapter-04',
+      'title' => 'Apprehending God',
+      'subtitle' => 'Chapter IV',
+      'url' => '/aw-tozer-pursuit-of-god/chapter-04-apprehending-god',
+    ],
+    [
+      '_id' => 'chapter-05',
+      'title' => 'The Universal Presence',
+      'subtitle' => 'Chapter V',
+      'url' => '/aw-tozer-pursuit-of-god/chapter-05-the-universal-presence',
+    ],
+    [
+      '_id' => 'chapter-06',
+      'title' => 'The Speaking Voice',
+      'subtitle' => 'Chapter VI',
+      'url' => '/aw-tozer-pursuit-of-god/chapter-06-the-speaking-voice',
+    ],
+    [
+      '_id' => 'chapter-07',
+      'title' => 'The Gaze of the Soul',
+      'subtitle' => 'Chapter VII',
+      'url' => '/aw-tozer-pursuit-of-god/chapter-07-the-gaze-of-the-soul',
+    ],
+    [
+      '_id' => 'chapter-08',
+      'title' => 'Restoring the Creator–Creature Relation',
+      'subtitle' => 'Chapter VIII',
+      'url' => '/aw-tozer-pursuit-of-god/chapter-08-restoring-the-creator-creature-relation',
+    ],
+    [
+      '_id' => 'chapter-09',
+      'title' => 'Meekness and Rest',
+      'subtitle' => 'Chapter IX',
+      'url' => '/aw-tozer-pursuit-of-god/chapter-09-meekness-and-rest',
+    ],
+    [
+      '_id' => 'chapter-10',
+      'title' => 'The Sacrament of Living',
+      'subtitle' => 'Chapter X',
+      'url' => '/aw-tozer-pursuit-of-god/chapter-10-the-sacrament-of-living',
+    ],
+  ]));
+}
+
 /** crash the page rendering and display the given item */
 function page_crash($item) {
   die(new BS_Preformatted(['item' => $item]));
@@ -3133,6 +3199,20 @@ function page_metadataViaToken($token) {
   switch ($token) {
     case '':
       $output = (object) ['url' => '/', 'source' => '/index.php'];
+
+      break;
+
+    case 'aw-tozer-pursuit-of-god':
+      $output = (object) [
+        '_id' => $token,
+        'title' => 'Tozer – The Pursuit of God',
+        'subtitle' => 'by A.W. Tozer',
+        'parent' => 'Classic Works',
+        'variant' => 'ClassicWorks',
+        'url' => '/classic-works/' . $token,
+        'sequence' => 'Tozer Pursuit of God',
+        'source' => '/classic-works/' . $token . '/index.php',
+      ];
 
       break;
 
@@ -3232,6 +3312,48 @@ function page_metadataViaToken($token) {
         'url' => $toc[$rowIndex]->url,
         'sequence' => $toc[$rowIndex]->_id,
         'source' => '/classic-works/thomas-kempis-imitation-of-christ/' . $toc[$rowIndex]->_id . '.php',
+        'book' => $toc[$rowIndex],
+        'previous' => $toc[$rowIndex - 1]
+          ? ['url' => $toc[$rowIndex - 1]->url, 'title' => $toc[$rowIndex - 1]->subtitle . ' – ' . $toc[$rowIndex - 1]->title]
+          : ['url' => '/classic-works', 'title' => 'Classic Works'],
+        'next' => $toc[$rowIndex + 1]
+          ? ['url' => $toc[$rowIndex + 1]->url, 'title' => $toc[$rowIndex + 1]->subtitle . ' – ' . $toc[$rowIndex + 1]->title]
+          : ['url' => '/classic-works', 'title' => 'Classic Works'],
+      ];
+
+      break;
+
+    case 'chapter-01-following-hard-after-god':
+    case 'chapter-02-the-blessedness-of-possessing-nothing':
+    case 'chapter-03-removing-the-veil':
+    case 'chapter-04-apprehending-god':
+    case 'chapter-05-the-universal-presence':
+    case 'chapter-06-the-speaking-voice':
+    case 'chapter-07-the-gaze-of-the-soul':
+    case 'chapter-08-restoring-the-creator-creature-relation':
+    case 'chapter-09-meekness-and-rest':
+    case 'chapter-10-the-sacrament-of-living':
+      // get the table of contents
+      $toc = egp_tocPursuitOfGod();
+
+      // find the specific chapter
+      $rowIndex = array_search_callback(
+        $toc,
+        function ($chapter) use ($token) {
+          return $chapter->_id === substr($token, 0, 10);
+        }
+      );
+
+      $output = (object) [
+        '_id' => $token,
+        'title' => $toc[$rowIndex]->title,
+        'subtitle' => '“The Pursuit of God” – ' . $toc[$rowIndex]->subtitle,
+        'parent' => 'A.W. Tozer – The Pursuit of God',
+        'parentURL' => '/classic-works/aw-tozer-pursuit-of-god',
+        'variant' => 'ClassicWorks',
+        'url' => $toc[$rowIndex]->url,
+        'sequence' => $toc[$rowIndex]->_id,
+        'source' => '/classic-works/aw-tozer-pursuit-of-god/' . $toc[$rowIndex]->_id . '.php',
         'book' => $toc[$rowIndex],
         'previous' => $toc[$rowIndex - 1]
           ? ['url' => $toc[$rowIndex - 1]->url, 'title' => $toc[$rowIndex - 1]->subtitle . ' – ' . $toc[$rowIndex - 1]->title]

@@ -10,7 +10,7 @@ $items = [
   ],
   [
     'title' => 'A.W. Tozer – The Pursuit of God',
-    'url' => '/classic-works',
+    'url' => '/classic-works/aw-tozer-pursuit-of-god',
   ],
 ];
 
