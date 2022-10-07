@@ -477,6 +477,7 @@ class BS_HTMLPage {
       ],
       ['title' => 'Bible Reading Plans', 'url' => '/bible-reading-plans'],
       ['title' => 'Discipleship Tools', 'url' => '/discipleship-tools'],
+      ['title' => 'Teach Yourself Greek', 'url' => '/teach-yourself-greek'],
       [
         '_id' => 'classic-works',
         'title' => 'Classic Works',
@@ -1071,6 +1072,13 @@ class BS_TableHeader extends BS_HTML {
   }
 }
 
+class BS_TableRow extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'tr';
+    return parent::render();
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////// Layout
 ////////////////////////////////////////////////////////////////////////////////
@@ -1442,8 +1450,22 @@ class BS_Button extends BS_ButtonHTML {
 
 class BS_Collapse extends BS_Division {
   function render() {
+    $name = $this->properties['name'];
+    unset($this->properties['name']);
+
     $this->properties['className'][] = 'collapse';
-    return parent::render();
+
+    $toggler = $name && $this->properties['id']
+      ? new BS_Button([
+        'bsDataToggle' => 'collapse',
+        'bsDataTarget' => $this->properties['id'],
+        'ariaExpanded' => false,
+        'variant' => 'link',
+        'className' => 'px-0',
+      ], 'toggle ' . $name)
+      : '';
+
+    return $toggler . parent::render();
   }
 }
 

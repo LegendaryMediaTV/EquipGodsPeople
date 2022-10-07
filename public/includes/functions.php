@@ -62,6 +62,10 @@ function egp_bb($input, $text = false) {
         $output = egp_lexiconConvert('H', $match[1]);
         return $text ? $output : new BS_Hebrew(null, $output);
       },
+      '/\[greekPronounce\](.+?)\[\/greekPronounce\]/' => function ($match) use ($text) {
+        $output = egp_greekPronounce($match[1]);
+        return $text ? $output : new BS_Italics(null, $output);
+      },
 
       // lexicon link
       '/\[strongs id="([^"]+)"( tvm="([^"]+)"( tvm2="([^"]+)")?)? \/\]/' => function ($match) use ($text) {
@@ -377,6 +381,127 @@ function egp_documentViaID($documents, $_id) {
   }
 
   return $output;
+}
+
+/** convert Greek code to a pronunciation */
+function egp_greekPronounce($code) {
+  static $greek = array();
+
+  // cache various things that affect pronunciation
+  if (!$greek) {
+    $greek['consonants'] = array('b' => 'b', 'g' => 'g', 'd' => 'd', 'z' => 'dz', 'y' => 'th', 'k' => 'k', 'l' => 'l', 'm' => 'm', 'n' => 'n', 'x' => 'ks', 'p' => 'p', 'r' => 'r', 's' => 's', 'v' => 's', 't' => 't', 'f' => 'f', 'c' => 'kh', 'q' => 'ps');
+    $greek['vowels'] = array('a' => 'ah', 'e' => 'eh', 'h' => 'ay', 'i' => 'ee', 'o' => 'aw', 'u' => 'oo', 'w' => 'oh');
+    $greek['hard'] = array('a' => 'hah', 'e' => 'heh', 'h' => 'hay', 'i' => 'hee', 'o' => 'hah', 'r' => 'rh', 'u' => 'hoo', 'w' => 'hoh');
+    $greek['diphthongs'] = array('ai' => 'ai', 'ei' => 'ay', 'oi' => 'oy', 'ui' => 'wee', 'au' => 'ow', 'ou' => 'oo', 'eu' => 'yoo', 'hu' => 'yoo');
+    $greek['clusters'] = array('bd', 'bl', 'br', 'gl', 'gn', 'gr', 'dr', 'yl', 'yn', 'yr', 'kl', 'kn', 'kr', 'kt', 'mn', 'pl', 'pn', 'pr', 'pt', 'sb', 'sy', 'sk', 'skl', 'sm', 'sp', 'spl', 'st', 'str', 'sf', 'sfr', 'sc', 'tr', 'fy', 'fl', 'fr', 'cy', 'cl', 'cr');
+    $greek['nasals'] = array('gg', 'gk', 'gc', 'gx');
+    $greek['availableModifiers'] = array('+', ')', '(', '-', '_', '\\', '/', '=', '|');
+    $greek['punctuation'] = array(',', '.', ':', ';', '?', '\'', ' ');
+  }
+
+  // un-escape brackets
+  $word = str_replace(array('&#091;', '&#093;'), array('[', ']'), $code);
+
+  // process input
+  $text = '';
+  if ($word != '') { // has given a word
+    // split into individual letters with modifiers
+    $length = strlen($word = strtolower($word));
+    $letters = array();
+    $modifiers = array();
+    for ($j = 0; $j < $length; $j++) {
+      if (in_array($word[$j], $greek['availableModifiers']))
+        $modifiers[] = $word[$j];
+      else {
+        $letters[] = array('letter' => $word[$j], 'modifiers' => $modifiers);
+        $modifiers = array();
+      }
+    }
+
+    // join chunks (diphthongs and consonant clusters
+    $length = count($letters);
+    $chunks = array();
+    $modifiers = array();
+    for ($j = 0; $j < $length; $j++) {
+      if (in_array($letters[$j]['letter'] . $letters[$j + 1]['letter'] . $letters[$j + 2]['letter'], $greek['clusters'])) { // current letter and next two make consonant cluster
+        $chunks[] = array('letters' => $letters[$j]['letter'] . $letters[$j + 1]['letter'] . $letters[$j + 2]['letter'], 'modifiers' => array_merge($letters[$j]['modifiers'], $letters[$j + 1]['modifiers'], $letters[$j + 2]['modifiers']));
+        $j += 2;
+      } elseif (in_array($letters[$j]['letter'] . $letters[$j + 1]['letter'], $greek['clusters'])) { // current letter and next make consonant cluster
+        $chunks[] = array('letters' => $letters[$j]['letter'] . $letters[$j + 1]['letter'], 'modifiers' => array_merge($letters[$j]['modifiers'], $letters[$j + 1]['modifiers']));
+        $j++;
+      } elseif (isset($greek['diphthongs'][$letters[$j]['letter'] . $letters[$j + 1]['letter']]) && !in_array('+', $letters[$j + 1]['modifiers'])) { // current letter and next make diphthong and there’s no diaeresis/dialytika over the second vowel
+        $chunks[] = array('letters' => $letters[$j]['letter'] . $letters[$j + 1]['letter'], 'modifiers' => array_merge($letters[$j]['modifiers'], $letters[$j + 1]['modifiers']));
+        $j++;
+      } else
+        $chunks[] = array('letters' => $letters[$j]['letter'], 'modifiers' => $letters[$j]['modifiers']);
+    }
+    $chunkCount = count($chunks);
+
+    $vowel = false;
+    $accented = false;
+    for ($j = 0; $j < $chunkCount; $j++) {
+      if (
+        in_array($chunks[$j]['letters'], $greek['punctuation'])
+        || ($vowel // only one vowel/diphthong
+          && !(!(preg_match('/[aehiouw]/', $chunks[$j]['letters'])) // current letter is a consonant/cluster
+            && ($j == $chunkCount - 1 // last letter(s) is consonant/cluster
+              || ( // split multiple consonants (first to previous syllable, rest to next syllable)
+                !(preg_match('/[aehiouw]/', $chunks[$j + 1]['letters'])) // next letter is a consonant
+                && (preg_match('/[aehiouw]/', $chunks[$j - 1]['letters'])) // previous letter is a vowel
+              )
+            )
+          )
+        )
+      ) {
+        if ($accented) $text .= '’'; // indicate emphasis
+
+        if (in_array($chunks[$j]['letters'], $greek['punctuation'])) // is punctuation
+          $text .= $chunks[$j]['letters']; // add punctuation
+        else
+          $text .= '-'; // add syllable marker
+
+        $vowel = false; // reset syllable vowel indicator
+        $accented = false; // reset accented indicator
+      }
+
+      // determine accent for current syllable
+      if (in_array('\\', $chunks[$j]['modifiers']) || in_array('/', $chunks[$j]['modifiers']) || in_array('=', $chunks[$j]['modifiers']))
+        $accented = true;
+
+      // determine if current syllable has a vowel
+      if (preg_match('/[aehiouw]/', $chunks[$j]['letters']))
+        $vowel = true;
+
+      if (isset($greek['diphthongs'][$chunks[$j]['letters']])) // is a diphthong (hard or soft)
+        $text .= (in_array('(', $chunks[$j]['modifiers']) ? 'h' : '') . $greek['diphthongs'][$chunks[$j]['letters']];
+      elseif (isset($greek['vowels'][$chunks[$j]['letters']])) // is a single vowel (hard or soft)
+      {
+        if (in_array('(', $chunks[$j]['modifiers']))
+          $text .= $greek['hard'][$chunks[$j]['letters']];
+        elseif ($chunks[$j]['letters'] == 'i' && (substr($chunks[$j - 1]['letters'], -1) == 's' || substr($chunks[$j - 1]['letters'], -1) == 'i')) // I is preceded by an S, use short sound
+          $text .= 'ih';
+        else
+          $text .= $greek['vowels'][$chunks[$j]['letters']];
+      } else { // is a consonant/cluster
+        $chunkLength = strlen($chunks[$j]['letters']);
+        for ($k = 0; $k < $chunkLength; $k++) {
+          if ($k == 0 && $chunks[$j]['letters'][$k] == 'r' && in_array('(', $chunks[$j]['modifiers'])) // begins with R
+            $text .= $greek['hard'][$chunks[$j]['letters'][$k]];
+          elseif ($k == 0 && $chunks[$j]['letters'][$k] == 'z' && (!$j || in_array($chunks[$j - 1]['letters'], $greek['punctuation']))) // begins with Z
+            $text .= 'z';
+          else {
+            if ($k == $chunkLength - 1 && $j < $chunkCount - 1 && in_array($chunks[$j]['letters'][$k] . substr($chunks[$j + 1]['letters'], 0, 1), $greek['nasals']))  // ends with a gamma nasal
+              $text .= 'n';
+            $text .= $greek['consonants'][$chunks[$j]['letters'][$k]];
+          }
+        }
+      }
+    }
+
+    if ($accented) $text .= '’';
+  }
+
+  return $text;
 }
 
 /** determine the inflection name using the given flags */
@@ -3413,6 +3538,21 @@ function page_metadataViaToken($token) {
 
       break;
 
+    case 'greek-alphabet':
+      $output = (object) [
+        '_id' => $token,
+        'title' => 'Greek Alphabet',
+        'subtitle' => 'learn New Testament Koine Greek',
+        'variant' => 'WordStudy',
+        'url' => '/teach-yourself-greek/' . $token,
+        'sequence' => 'Greek Alphabet',
+        'source' => '/teach-yourself-greek/' . $token . '.php',
+        'previous' => ['url' => '/teach-yourself-greek', 'title' => 'Teach Yourself Greek – Table of Contents'],
+        'next' => ['url' => '/teach-yourself-greek/pronunciation-and-punctuation', 'title' => 'Pronunciation and Punctuation'],
+      ];
+
+      break;
+
     case 'lexicons-word-study':
       $output = (object) [
         '_id' => $token,
@@ -3436,6 +3576,35 @@ function page_metadataViaToken($token) {
         'url' => '/classic-works/' . $token,
         'sequence' => 'Eusebius Ecclesiastical History',
         'source' => '/classic-works/' . $token . '/index.php',
+      ];
+
+      break;
+
+    case 'pronunciation-and-punctuation':
+      $output = (object) [
+        '_id' => $token,
+        'title' => 'Pronunciation and Punctuation',
+        'subtitle' => 'learn New Testament Koine Greek',
+        'variant' => 'WordStudy',
+        'url' => '/teach-yourself-greek/' . $token,
+        'sequence' => 'Pronunciation and Punctuation',
+        'source' => '/teach-yourself-greek/' . $token . '.php',
+        'previous' => ['url' => '/teach-yourself-greek/greek-alphabet', 'title' => 'Greek Alphabet'],
+        'next' => ['url' => '/teach-yourself-greek', 'title' => 'Teach Yourself Greek – Table of Contents'],
+      ];
+
+      break;
+
+    case 'teach-yourself-greek':
+      $output = (object) [
+        '_id' => $token,
+        'title' => 'Teach Yourself Greek',
+        'subtitle' => 'learn New Testament Koine Greek',
+        'variant' => 'WordStudy',
+        'url' => '/' . $token,
+        'sequence' => 'Teach Yourself Greek',
+        'source' => '/' . $token . '/index.php',
+        'next' => ['url' => '/' . $token . '/greek-alphabet', 'title' => 'Greek Alphabet'],
       ];
 
       break;
