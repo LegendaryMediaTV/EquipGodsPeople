@@ -201,7 +201,7 @@ function egp_biblePassage($query) {
       return (object) [
         'testament' => $testament,
         'title' => $testament->title,
-        'url' => '/bible-search/' . $testament->_id,
+        'url' => '/bible-study-tools/parallel-bible/' . $testament->_id,
       ];
     }
 
@@ -211,7 +211,7 @@ function egp_biblePassage($query) {
       return (object) [
         'range' => $range,
         'title' => $range->title,
-        'url' => '/bible-search/' . $range->_id,
+        'url' => '/bible-study-tools/parallel-bible/' . $range->_id,
       ];
     }
   }
@@ -3354,15 +3354,41 @@ function page_metadataViaToken($token) {
 
       break;
 
+    case 'bible-concordance':
+      $output = (object) [
+        '_id' => $token,
+        'title' => 'Bible Concordance',
+        'subtitle' => 'strict keyword search of the Bible',
+        'variant' => 'BibleStudyTools',
+        'url' => '/bible-study-tools/' . $token,
+        'sequence' => 'Bible Concordance',
+        'source' => '/' . $token . '.php',
+      ];
+
+      break;
+
     case 'bible-search':
       $output = (object) [
         '_id' => $token,
         'title' => 'Bible Search',
-        'subtitle' => 'search, read, and compare multiple versions of the Bible',
-        'variant' => 'BibleSearch',
+        'subtitle' => 'search and compare multiple versions of the Bible',
+        'variant' => 'BibleStudyTools',
+        'url' => '/bible-study-tools/' . $token,
+        'sequence' => 'Bible Search',
+        'source' => '/' . $token . '.php',
+      ];
+
+      break;
+
+    case 'bible-study-tools':
+      $output = (object) [
+        '_id' => $token,
+        'title' => 'Bible Study Tools',
+        'subtitle' => 'get more out of your Bible',
+        'variant' => 'BibleStudyTools',
         'url' => '/' . $token,
-        'sequence' => 'BIble Search',
-        'source' => '/' . $token . '/index.php',
+        'sequence' => 'Bible Study Tools',
+        'source' => '/' . $token . '.php',
       ];
 
       break;
@@ -3580,6 +3606,19 @@ function page_metadataViaToken($token) {
 
       break;
 
+    case 'parallel-bible':
+      $output = (object) [
+        '_id' => $token,
+        'title' => 'Parallel Bible',
+        'subtitle' => 'read and compare multiple versions of the Bible',
+        'variant' => 'BibleStudyTools',
+        'url' => '/bible-study-tools/' . $token,
+        'sequence' => 'Parallel Bible',
+        'source' => '/' . $token . '/index.php',
+      ];
+
+      break;
+
     case 'pronunciation-and-punctuation':
       $output = (object) [
         '_id' => $token,
@@ -3646,32 +3685,32 @@ function page_metadataViaToken($token) {
 
         switch ($row['Collection']) {
           case 'bible-books':
-            $output->variant = 'BibleSearch';
-            $output->parent = 'Bible Search';
-            $output->parentURL = '/bible-search';
-            $output->subtitle = 'search, read, and compare multiple versions of the Bible';
-            $output->source = $output->parentURL . '/book-' . $output->sequence . '.php';
+            $output->variant = 'BibleStudyTools';
+            $output->parent = 'Parallel Bible';
+            $output->parentURL = '/bible-study-tools/parallel-bible';
+            $output->subtitle = 'read and compare multiple versions of the Bible';
+            $output->source = '/parallel-bible/book-' . $output->sequence . '.php';
 
             break;
 
           case 'bible-chapters':
-            $output->variant = 'BibleSearch';
-            $output->parent = 'Bible Search';
-            $output->parentURL = '/bible-search';
-            $output->subtitle = 'search, read, and compare multiple versions of the Bible';
-            $output->source = $output->parentURL . '/bible-chapter-template.php';
+            $output->variant = 'BibleStudyTools';
+            $output->parent = 'Parallel Bible';
+            $output->parentURL = '/bible-study-tools/parallel-bible';
+            $output->subtitle = 'read and compare multiple versions of the Bible';
+            $output->source = '/parallel-bible/bible-chapter-template.php';
 
             break;
 
           case 'bible-ranges':
             if (!$output->parent) return false;
 
-            $output->variant = 'BibleSearch';
-            $output->parent = 'Bible Search';
-            $output->parentURL = '/bible-search';
+            $output->variant = 'BibleStudyTools';
+            $output->parent = 'Parallel Bible';
+            $output->parentURL = '/bible-study-tools/parallel-bible';
             $output->url = $output->parentURL . '/' . $output->_id;
-            $output->subtitle = 'search, read, and compare multiple versions of the Bible';
-            $output->source = $output->parentURL . '/range-' . $output->_id . '.php';
+            $output->subtitle = 'read and compare multiple versions of the Bible';
+            $output->source = '/parallel-bible/range-' . $output->_id . '.php';
 
             break;
 

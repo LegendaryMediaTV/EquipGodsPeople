@@ -28,10 +28,10 @@ $html->add(new BS_Container(
       },
       [
         [
-          '_id' => 'FeatureBibleSearch',
-          'title' => 'Bible Search',
+          '_id' => 'FeatureBibleStudyTools',
+          'title' => 'Bible Study Tools',
           'subtitle' => 'search, read, and compare multiple versions of the Bible',
-          'url' => '/bible-search',
+          'url' => '/bible-study-tools',
         ],
         [
           '_id' => 'FeatureWordStudy',

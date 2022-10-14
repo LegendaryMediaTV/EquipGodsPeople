@@ -215,7 +215,7 @@ class BS_HTMLPage {
 
   function renderFooter() {
     $navItems = [
-      ['url' => '/bible-search', 'title' => 'Bible Search'],
+      ['url' => '/bible-study-tools', 'title' => 'Bible Study Tools'],
       ['url' => '/egp-blog', 'title' => 'EGP Blog'],
       ['url' => '/lexicons-word-study', 'title' => 'Lexicons (Word Study)'],
       ['url' => '/bible-reading-plans', 'title' => 'Bible Reading Plans'],
@@ -399,7 +399,7 @@ class BS_HTMLPage {
       '<meta name="robots" content="noindex,nofollow">' .
 
       // add Font Awesome icons: https://cdnjs.com/libraries/font-awesome
-      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />' .
+      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />' .
 
       // add Google Fonts
       '<link href="https://fonts.googleapis.com" rel="preconnect">' .
@@ -458,7 +458,22 @@ class BS_HTMLPage {
 
     $navItems = [
       ['title' => 'Home', 'url' => '/'],
-      ['title' => 'Bible Search', 'url' => '/bible-search'],
+      [
+        '_id' => 'bible-study-tools',
+        'title' => 'Bible Study Tools',
+        'url' => '/bible-study-tools',
+        'children' => [
+          ['title' => 'Bible Search', 'url' => '/bible-study-tools/bible-search'],
+          [
+            'title' => 'Parallel Bible',
+            'url' => '/bible-study-tools/parallel-bible'
+          ],
+          [
+            'title' => 'Bible Concordance',
+            'url' => '/bible-study-tools/bible-concordance'
+          ],
+        ],
+      ],
       ['title' => 'EGP Blog', 'url' => '/egp-blog'],
       [
         '_id' => 'lexicons-word-study',
@@ -473,11 +488,11 @@ class BS_HTMLPage {
             'title' => 'New Testament Greek',
             'url' => '/lexicons-word-study/new-testament-greek',
           ],
+          ['title' => 'Teach Yourself Greek', 'url' => '/teach-yourself-greek'],
         ],
       ],
       ['title' => 'Bible Reading Plans', 'url' => '/bible-reading-plans'],
       ['title' => 'Discipleship Tools', 'url' => '/discipleship-tools'],
-      ['title' => 'Teach Yourself Greek', 'url' => '/teach-yourself-greek'],
       [
         '_id' => 'classic-works',
         'title' => 'Classic Works',
@@ -539,10 +554,10 @@ class BS_HTMLPage {
               ),
 
               new BS_Textbox([
-                "name" => 'search',
-                "placeholder" => 'search',
-                "ariaLabel" => 'search',
-                "type" => 'search',
+                'name' => 'search',
+                'placeholder' => 'search',
+                'ariaLabel' => 'search',
+                'type' => 'search',
               ]),
 
               new BS_Button(
@@ -609,21 +624,18 @@ class BS_HTMLPage {
 
   function renderScripts() {
     return
-      // add Bootstrap 5 JS: https://getbootstrap.com/docs/5.1/getting-started/introduction/
-      '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>' .
+      // add Bootstrap 5 JS: https://getbootstrap.com/docs/5.2/getting-started/introduction/
+      '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>' .
 
       // add Axios and React
       ($this->metadata->react
         ?
         // add Axios JS: https://cdnjs.com/libraries/axios
-        '<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>' .
+        '<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js" integrity="sha512-bHeT+z+n8rh9CKrSrbyfbINxu7gsBmSHlDCb3gUF1BjmjDzKhoKspyB71k0CIRBSjE5IVQiMMVBgCWjF60qsvA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>' .
 
-        // add React 17 JS: https://reactjs.org/docs/add-react-to-a-website.html
-        '<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>' .
-        '<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>' .
-
-        // add React Beautiful DnD: https://github.com/atlassian/react-beautiful-dnd/blob/master/docs/about/installation.md
-        '<script src="https://unpkg.com/react-beautiful-dnd@13.1.0/dist/react-beautiful-dnd.min.js"></script>'
+        // add React 18 JS: https://reactjs.org/docs/add-react-to-a-website.html
+        '<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>' .
+        '<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>'
 
         : '') .
 
@@ -2018,13 +2030,13 @@ class BS_BibleLink extends BS_Link {
 
     // no passage provided, use a default link
     if (!$passage) {
-      $this->properties['to'] = '/bible-search';
+      $this->properties['to'] = '/bible-study-tools/parallel-bible';
 
       if (!count($this->children))
         $this->children[] = 'Bible Search';
     } else {
       // customize the link and add default child
-      $this->properties['to'] = $passage->url ?: $passage->chapter->url ?: '/bible-search';
+      $this->properties['to'] = $passage->url ?: $passage->chapter->url ?: '/bible-study-tools/parallel-bible';
       if (!count($this->children))
         $this->children[] = $passage->title;
 
@@ -2395,21 +2407,26 @@ class BS_BiblePreviousNext extends BS_PreviousNext {
     // previous
     if ($selectedIndex >= 1) {
       $this->properties['previous'] = (object) [
-        'url' => '/bible-search/' . $itemIDs[$selectedIndex - 1],
+        'url' => '/bible-study-tools/parallel-bible/' . $itemIDs[$selectedIndex - 1],
         'title' => $itemTitles[$selectedIndex - 1],
       ];
     } else {
       $this->properties['previous'] = (object) [
-        'url' => '/bible-search',
-        'title' => 'Bible Search',
+        'url' => '/bible-study-tools/parallel-bible',
+        'title' => 'Parallel Bible',
       ];
     }
 
     // next
     if ($selectedIndex < $itemCount - 1) {
       $this->properties['next'] = (object) [
-        'url' => '/bible-search/' . $itemIDs[$selectedIndex + 1],
+        'url' => '/bible-study-tools/parallel-bible/' . $itemIDs[$selectedIndex + 1],
         'title' => $itemTitles[$selectedIndex + 1],
+      ];
+    } else {
+      $this->properties['next'] = (object) [
+        'url' => '/bible-study-tools/parallel-bible',
+        'title' => 'Parallel Bible',
       ];
     }
 
@@ -2425,7 +2442,7 @@ class BS_BibleSearchForm extends BS_Form {
     unset($this->properties['versions']);
 
     // set properties
-    $this->properties['url'] = '/bible-search';
+    $this->properties['url'] = '/bible-study-tools/bible-search';
     $this->properties['className'][] = 'row gx-1 mb-5';
 
     // convert versions to dropdown options
@@ -2451,7 +2468,7 @@ class BS_BibleSearchForm extends BS_Form {
         'name' => 'search',
         'type' => 'search',
         'value' => $search ?: $_POST['search'],
-        'placeholder' => 'Bible passage or text'
+        'placeholder' => 'phrase or keywords'
       ])
     );
 
@@ -2481,7 +2498,6 @@ class BS_BibleSearchForm extends BS_Form {
   }
 }
 
-// TODO: BibleSearchForm
 // TODO: BibleSearchScriptures
 
 class BS_BlogEntries extends BS_Row {
@@ -2799,6 +2815,70 @@ class BS_LexiconLetterSelector extends BS_ListGroup {
         ]
       );
     }
+
+    return parent::render();
+  }
+}
+
+class BS_ParallelBibleForm extends BS_Form {
+  function render() {
+    $search = $this->properties['search'];
+    unset($this->properties['search']);
+    $versions = $this->properties['versions'];
+    unset($this->properties['versions']);
+
+    // set properties
+    $this->properties['url'] = '/bible-study-tools/parallel-bible';
+    $this->properties['className'][] = 'row gx-1 mb-5';
+
+    // convert versions to dropdown options
+    $versionOptions = [];
+    foreach ($versions as $version) {
+      // only use public versions that aren't for goodies or goodies are enabled
+      if ($version->public && !($version->goodies && !$_SESSION['goodies']))
+        $versionOptions[] = (object)['_id' => $version->_id, 'title' => $version->title];
+    }
+
+    // retrieve selected Bible versions
+    $selected = egp_bibleVersionsSelected();
+    $selectedCount = count($selected);
+    // page_crash($selected);
+
+    // form column comfiguration
+    $formCol = ['xs' => 12, 'md' => 6, 'lg' => 4, 'xl' => 3, 'xxl' => 2, 'className' => 'mb-1'];
+
+    // add search textbox
+    $this->children[] = new BS_Col(
+      $formCol,
+      new BS_Textbox([
+        'name' => 'search',
+        'type' => 'search',
+        'value' => $search ?: $_POST['search'],
+        'placeholder' => 'Bible book, chapter, or passage'
+      ])
+    );
+
+    // add versions
+    $this->children[] = implode('', array_map(
+      function ($slot) use ($versionOptions, $selected, $selectedCount, $formCol) {
+        return new BS_Col(
+          $formCol,
+          new BS_Select([
+            'name' => 'versions[]',
+            'options' => array_merge([(object)['_id' => '', 'title' => 'slot ' . $slot]], $versionOptions),
+            'selected' => $slot <= $selectedCount ? $selected[$slot - 1] : ''
+          ])
+        );
+      },
+
+      range(1, 7)
+    ));
+
+    // add submit button
+    $this->children[] = new BS_Col(
+      $formCol,
+      new BS_Button(['type' => 'submit', 'className' => 'w-100'], 'Search')
+    );
 
     return parent::render();
   }

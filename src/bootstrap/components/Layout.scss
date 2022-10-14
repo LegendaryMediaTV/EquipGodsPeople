@@ -111,14 +111,14 @@
       url("./images/banners/bible-reading-plans.jpg");
   }
 
-  &.BibleSearch {
+  &.BibleStudyTools {
     background-color: $red;
     background-image: linear-gradient(
         to bottom right,
         rgba(darken($red, 30%), 0.8),
         rgba($red, 0.5)
       ),
-      url("./images/banners/bible-search.jpg");
+      url("./images/banners/bible-study-tools.jpg");
   }
 
   &.ClassicWorks {

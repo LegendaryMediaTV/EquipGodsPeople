@@ -46,14 +46,14 @@
     }
   }
 
-  #FeatureBibleSearch {
+  #FeatureBibleStudyTools {
     background-color: $red;
     background-image: linear-gradient(
         to bottom right,
         rgba(darken($red, 30%), 0.8),
         rgba($red, 0.5)
       ),
-      url("./images/features/bible-search.jpg");
+      url("./images/features/bible-study-tools.jpg");
   }
 
   #FeatureBibleReadingPlans {

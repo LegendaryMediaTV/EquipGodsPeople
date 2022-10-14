@@ -23,7 +23,7 @@ $html->add(new BS_Container(
   ['fluid' => true, 'className' => 'py-section'],
 
   // search form
-  new BS_BibleSearchForm(['versions' => $versions, 'search' => $metadata->title]),
+  new BS_ParallelBibleForm(['versions' => $versions, 'search' => $metadata->title]),
 
   // Bible book selector
   new BS_Division(

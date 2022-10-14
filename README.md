@@ -7,7 +7,6 @@ Equip God’s People web app built on PHP
 ### Pre-launch
 
 - finish importing content from the live site:
-  - Teach Yourself Greek
   - Bible Concordance
 - Bible Search:
   - GRKS, GRKT, KJVS don't parse correctly due to TVM/TVM2

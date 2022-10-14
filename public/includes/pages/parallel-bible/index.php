@@ -30,7 +30,7 @@ $html->add(new BS_Container(
   ['fluid' => true, 'className' => 'py-section'],
 
   // search form
-  new BS_BibleSearchForm(['versions' => $versions]),
+  new BS_ParallelBibleForm(['versions' => $versions]),
 
   // Bible book selector
   new BS_Container(
@@ -48,7 +48,7 @@ $html->add(new BS_Container(
 
               new BS_ListGroup(
                 ['title' => new BS_Link(
-                  ['to' => '/bible-search/' . $testament->_id],
+                  ['to' => '/bible-study-tools/parallel-bible/' . $testament->_id],
                   $testament->title
                 )],
 
@@ -57,7 +57,7 @@ $html->add(new BS_Container(
                     return implode('', [
                       new BS_ListGroupItem(
                         [
-                          'to' => '/bible-search/' . $range->_id,
+                          'to' => '/bible-study-tools/parallel-bible/' . $range->_id,
                           'className' => 'lead bg-light'
                         ],
                         $range->title
