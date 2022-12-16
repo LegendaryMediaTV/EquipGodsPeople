@@ -969,16 +969,18 @@ import("./react-bootstrap.js").then((BS) => {
                           BS.Link,
                           {
                             to:
-                              "https://www.equipgodspeople.com/bible-study-tools/bible-search/?search=" +
+                              "/bible-study-tools/bible-search?search=" +
                               (this.state.selected.language === "hebrew"
                                 ? "%5B"
-                                : "%3C") +
+                                : "<") +
                               this.state.selected.sequence.substring(2) +
                               (this.state.selected.language === "hebrew"
                                 ? "%5D"
-                                : "%3E") +
+                                : ">") +
                               "&range=" +
-                              this.state.selected.sequence.substring(0, 1),
+                              (this.state.selected.language === "hebrew"
+                                ? "old-testament"
+                                : "new-testament"),
                             newTab: true,
                             external: false,
                             className: "btn btn-dark",

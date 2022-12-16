@@ -9,11 +9,14 @@ Equip God’s People web app built on PHP
 - finish importing content from the live site:
   - Bible Concordance
 - Bible Search:
+  - searching should change the URL (like it does with pagination)
+  - old Strong's queries (e.g., "<0025>") don't match as 100% and aren't in canonical order
+  - new Strong's queries (e.g., "G1") should silently convert to the old format (e.g., "<0001>") before searching
+  - use the new format for Strong's queries
   - GRKS, GRKT, KJVS don't parse correctly due to TVM/TVM2
   - GRKT doesn't show translinear definitions
   - GRKS/T don't support Greek color coding system
   - add support for linking to and bolding specific verses within a chapter
-  - when searches don't match a passage, then it should do a scripture search
 - search engine:
   - make each version/page/etc have Searchable and Search Result fields that is updated when the build is executed
   - make the search API query the Searchable fields and return the area, Search Result, relevancy

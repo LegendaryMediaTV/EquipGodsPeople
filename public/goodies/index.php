@@ -1,6 +1,6 @@
 <?php
 // add basic functionality
-require_once('../api/functions.php');
+require_once('../includes/functions.php');
 
 // start a PHP session
 session_start();

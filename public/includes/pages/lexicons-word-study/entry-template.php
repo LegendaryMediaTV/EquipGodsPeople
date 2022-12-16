@@ -21,6 +21,22 @@ if ($metadata->equivalents)
   $summary['Equivalents'] = $metadata->equivalents;
 if ($metadata->occurrences)
   $summary['Usage Count'] = $metadata->occurrences;
+if ($metadata->strongs) {
+  $summary['Search'] =
+    new BS_Link(
+      [
+        'to' =>
+        '/bible-study-tools/bible-search?search='
+          . ($metadata->testament === 'Old Testament' ? '%5B' : '<')
+          . str_pad(substr($metadata->strongs->_id, 1), 4, '0', STR_PAD_LEFT)
+          . ($metadata->testament === 'Old Testament' ? '%5D' : '>')
+          . '&range='
+          . ($metadata->testament === 'Old Testament' ? 'old-testament' : 'new-testament')
+      ],
+
+      'Find “' . $metadata->word . '” in the Bible (' . $metadata->testament . ')'
+    );
+}
 
 // retrieve lexicon definitions
 $sql =

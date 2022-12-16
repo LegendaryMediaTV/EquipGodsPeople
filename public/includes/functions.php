@@ -102,9 +102,31 @@ function egp_bibleBooks($query = false) {
 
 /** look up a Bible chapter */
 function egp_bibleChapter($query) {
-  $chapters = egp_bibleChapters('|' . $query . '|');
+  // chapter coordinates
+  if (preg_match('/^[0-9]{6}$/', $query)) {
+    global $db;
 
-  return count($chapters) ? $chapters[0] : false;
+    // build the SQL query
+    $sql =
+      "SELECT *" .
+      "\nFROM Documents" .
+      "\nWHERE Collection = 'bible-chapters'" .
+      "\nAND Sequence = ?" .
+      "\nLIMIT 1";
+
+    // query the database
+    $row = $db->row($sql, [$query]);
+
+    // record found, return the parsed document
+    if ($row) return json_decode($row['Document']);
+    // record not found
+    else return null;
+    // 
+  } else {
+    $chapters = egp_bibleChapters('|' . $query . '|');
+
+    return count($chapters) ? $chapters[0] : false;
+  }
 }
 
 /** retrieve all Bible chapters */
@@ -117,8 +139,12 @@ function egp_bibleChapters($query = false) {
 /** parse the requested Bible passage into chapter, selected verses, and title */
 function egp_biblePassage($query) {
   if ($query) {
-    // split the passage into chapter and verses
-    [$passageChapter, $passageVerses] = explode(':', $query, 2);
+    // split coordinates/passage into chapter and verses
+    if (preg_match('/^[0-9]{6}[0-9]{3}?$/', $query)) {
+      $passageChapter = substr($query, 0, 6);
+      $passageVerses = substr($query, 6, 3);
+    } else
+      [$passageChapter, $passageVerses] = explode(':', $query, 2);
 
     // look up as Bible chapter
     $chapter = egp_bibleChapter($passageChapter);
@@ -315,41 +341,56 @@ function egp_bibleVersions() {
 }
 
 /** set/get selected versions */
-function egp_bibleVersionsSelected() {
-  static $output;
-
-  if (!$output) {
-    $output = [];
-
-    // convert available versions to an array of IDs
+function egp_bibleVersionsSelected($objects = false) {
+  // retrieve available versions and convert to an array of IDs
+  static $availableIDs, $availableVersions;
+  if (!$availableIDs) {
     $availableIDs = [];
     $availableVersions = egp_bibleVersions();
     foreach ($availableVersions as $version) {
       if ($version->public && !($version->goodies && !$_SESSION['goodies']))
         $availableIDs[] = $version->_id;
     }
+  }
 
-    // pull the current selection
-    if ($_POST['versions'])
-      $versions = $_POST['versions'];
-    elseif ($_SESSION['versions'])
-      $versions = $_SESSION['versions'];
-    else
-      $versions = [];
-    $versions[] = 'esv';
+  $output = [];
 
-    // validate the current selection
-    foreach ($versions as $version) {
-      if ($version && array_search($version, $availableIDs) !== false)
-        $output[] = $version;
-    }
+  // pull the current selection
+  if ($_POST['versions'])
+    $versions = $_POST['versions'];
+  elseif ($_SESSION['versions'])
+    $versions = $_SESSION['versions'];
+  else
+    $versions = [];
 
-    // ensure there is a version selection
-    if (!count($output))
-      $output = $_SESSION['goodies'] ? ['nasb', 'kjvs', 'nlt'] : ['asv', 'kjvs', 'ylt'];
+  // validate the current selection
+  foreach ($versions as $version) {
+    if ($version && array_search($version, $availableIDs) !== false)
+      $output[] = $version;
+  }
 
-    // update the session variable
-    $_SESSION['versions'] = $output;
+  // ensure there is a version selection
+  if (!count($output))
+    $output = $_SESSION['goodies'] ? ['nasb', 'kjvs', 'nlt'] : ['asv', 'kjvs', 'ylt'];
+
+  // update the session variable
+  $_SESSION['versions'] = $output;
+
+  // use objects instead of IDs when requested
+  if ($objects) {
+    $output = array_map(
+      function ($versionID) use ($availableVersions) {
+        $index = array_search_callback(
+          $availableVersions,
+          function ($version) use ($versionID) {
+            return $version->_id === $versionID;
+          }
+        );
+
+        return $availableVersions[$index];
+      },
+      $output
+    );
   }
 
   return $output;

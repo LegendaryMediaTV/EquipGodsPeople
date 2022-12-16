@@ -934,6 +934,15 @@ $font-family-hebrew: "David Libre", serif;
  ***** Tables *****
  *****************/
 
+.d-table,
+.d-sm-table,
+.d-md-table,
+.d-lg-table,
+.d-xl-table,
+.d-xxl-table {
+  border-collapse: collapse;
+}
+
 // td {
 //   font-weight: 300;
 // }

@@ -1,7 +1,7 @@
 <?php
 // parse the requested URL
 $pageURL = strtolower($_SERVER['REDIRECT_URL'] ?? $_SERVER['REQUEST_URI']);
-$pageURL = str_replace('?' . $_SERVER['QUERY_STRING'], '', $pageURL);
+$pageURL = explode('?', $pageURL)[0];
 
 // route the admin JavaScript file for local development
 if ($pageURL === '/dist/admin-main.js' && $_SERVER['SERVER_NAME'] === 'localhost') {

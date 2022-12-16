@@ -122,44 +122,52 @@ $html->add(new BS_Container(
       'Some of these consonants can be categorized as follows:',
     ),
 
-    new BS_Table(
-      null,
-      new BS_TableBody(
-        null,
+    new BS_ResponsiveTable([
+      'columns' => [
+        ['_id' => 'type', 'name' => '', 'title' => 'Category'],
+        [
+          '_id' => 'voiceless',
+          'name' => 'Voiceless [em](i.e., without voice box)[/em]',
+          'title' => '',
+        ],
+        [
+          '_id' => 'voice',
+          'name' => 'Voice [em](i.e., using voice box)[/em]',
+          'title' => '',
+        ],
+        [
+          '_id' => 'aspirated',
+          'name' => 'Aspirated [em](i.e., blowing air)[/em]',
+          'title' => '',
+        ],
+      ],
+      'items' => [
+        [
+          'type' => new BS_Bold(null, 'palatals/gutturals [em](i.e., made in the throat/palate)[/em]'),
+          'voiceless' => new BS_Span(['title' => 'kappa'], '[greekCode]k[/greekCode]'),
+          'voice' => new BS_Span(['title' => 'gamma'], '[greekCode]g[/greekCode]'),
+          'aspirated' => new BS_Span(['title' => 'chi'], '[greekCode]c[/greekCode]'),
+        ],
 
-        new BS_TableRow(
-          null,
-          new BS_TableCellData(),
-          new BS_TableCellHeader(null, 'voiceless [em](i.e., without voice box)[/em]'),
-          new BS_TableCellHeader(null, 'voice [em](i.e., using voice box)[/em]'),
-          new BS_TableCellHeader(null, 'aspirated [em](i.e., blowing air)[/em]'),
-        ),
+        [
+          'type' => new BS_Bold(null, 'labials [em](i.e., made with the lips)[/em]'),
+          'voiceless' => new BS_Span(['title' => 'pi'], '[greekCode]p[/greekCode]'),
+          'voice' => new BS_Span(['title' => 'beta'], '[greekCode]b[/greekCode]'),
+          'aspirated' => new BS_Span(['title' => 'phi'], '[greekCode]f[/greekCode]'),
+        ],
 
-        new BS_TableRow(
-          null,
-          new BS_TableCellHeader(null, 'palatals/gutturals [em](i.e., made in the throat/palate)[/em]'),
-          new BS_TableCellData(null, '[greekCode]k[/greekCode]'),
-          new BS_TableCellData(null, '[greekCode]g[/greekCode]'),
-          new BS_TableCellData(null, '[greekCode]c[/greekCode]'),
-        ),
-
-        new BS_TableRow(
-          null,
-          new BS_TableCellHeader(null, 'labials [em](i.e., made with the lips)[/em]'),
-          new BS_TableCellData(null, '[greekCode]p[/greekCode]'),
-          new BS_TableCellData(null, '[greekCode]b[/greekCode]'),
-          new BS_TableCellData(null, '[greekCode]f[/greekCode]'),
-        ),
-
-        new BS_TableRow(
-          null,
-          new BS_TableCellHeader(null, 'dentals [em](i.e., tip of the tongue by the teeth)[/em]'),
-          new BS_TableCellData(null, '[greekCode]t[/greekCode]'),
-          new BS_TableCellData(null, '[greekCode]d[/greekCode]'),
-          new BS_TableCellData(null, '[greekCode]y[/greekCode]'),
-        ),
-      ),
-    ),
+        [
+          'type' => new BS_Bold(null, 'dentals [em](i.e., tip of the tongue by the teeth)[/em]'),
+          'voiceless' => new BS_Span(['title' => 'tau'], '[greekCode]t[/greekCode]'),
+          'voice' => new BS_Span(['title' => 'delta'], '[greekCode]d[/greekCode]'),
+          'aspirated' => new BS_Span(['title' => 'theta'], '[greekCode]y[/greekCode]'),
+        ],
+      ],
+      'expand' => 'md',
+      'className' => 'w-100',
+      'rowClassName' => 'py-3 py-md-0',
+      'colClassName' => 'py-md-2',
+    ]),
 
     new BS_Paragraph(
       null,

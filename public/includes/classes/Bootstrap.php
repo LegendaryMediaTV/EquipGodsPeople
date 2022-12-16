@@ -1,4 +1,10 @@
 <?php
+
+// determine the breakpoint CSS qualifier
+function breakpointCSS($breakpoint) {
+  return $breakpoint && $breakpoint !== 'xs' ? '-' . $breakpoint : '';
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////// HTML Core
 ////////////////////////////////////////////////////////////////////////////////
@@ -399,7 +405,7 @@ class BS_HTMLPage {
       '<meta name="robots" content="noindex,nofollow">' .
 
       // add Font Awesome icons: https://cdnjs.com/libraries/font-awesome
-      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />' .
+      '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />' .
 
       // add Google Fonts
       '<link href="https://fonts.googleapis.com" rel="preconnect">' .
@@ -409,7 +415,7 @@ class BS_HTMLPage {
       '<link href="https://fonts.googleapis.com/css2?family=Signika:wght@300;400&display=swap" rel="stylesheet">' .
 
       // add site CSS
-      '<link href="/dist/main.css?v=2022-02-11" rel="stylesheet">' .
+      '<link href="/dist/main.css?v=2022-12-15" rel="stylesheet">' .
 
       // add PWA content
       '<link sizes="180x180" href="/apple-touch-icon.png" rel="apple-touch-icon">' .
@@ -625,13 +631,13 @@ class BS_HTMLPage {
   function renderScripts() {
     return
       // add Bootstrap 5 JS: https://getbootstrap.com/docs/5.2/getting-started/introduction/
-      '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>' .
+      '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>' .
 
       // add Axios and React
       ($this->metadata->react
         ?
         // add Axios JS: https://cdnjs.com/libraries/axios
-        '<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js" integrity="sha512-bHeT+z+n8rh9CKrSrbyfbINxu7gsBmSHlDCb3gUF1BjmjDzKhoKspyB71k0CIRBSjE5IVQiMMVBgCWjF60qsvA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>' .
+        '<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js" integrity="sha512-zJYu9ICC+mWF3+dJ4QC34N9RA0OVS1XtPbnf6oXlvGrLGNB8egsEzu/5wgG90I61hOOKvcywoLzwNmPqGAdATA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>' .
 
         // add React 18 JS: https://reactjs.org/docs/add-react-to-a-website.html
         '<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>' .
@@ -799,7 +805,7 @@ class BS_Icon extends BS_HTML {
     $variant = $this->properties['variant'];
     unset($this->properties['variant']);
 
-    // add FontAwesome/Bootstrap classes
+    // add Font Awesome / Bootstrap classes
     $this->properties['className'][] = $name;
     if ($variant) $this->properties['className'][] = 'text-' . $variant;
 
@@ -1056,41 +1062,6 @@ class BS_Superscript extends BS_HTML {
   }
 }
 
-class BS_TableBody extends BS_HTML {
-  function render() {
-    if (!$this->properties['tag']) $this->properties['tag'] = 'tbody';
-    return parent::render();
-  }
-}
-
-class BS_TableCellData extends BS_HTML {
-  function render() {
-    if (!$this->properties['tag']) $this->properties['tag'] = 'td';
-    return parent::render();
-  }
-}
-
-class BS_TableCellHeader extends BS_HTML {
-  function render() {
-    if (!$this->properties['tag']) $this->properties['tag'] = 'th';
-    return parent::render();
-  }
-}
-
-class BS_TableHeader extends BS_HTML {
-  function render() {
-    if (!$this->properties['tag']) $this->properties['tag'] = 'thead';
-    return parent::render();
-  }
-}
-
-class BS_TableRow extends BS_HTML {
-  function render() {
-    if (!$this->properties['tag']) $this->properties['tag'] = 'tr';
-    return parent::render();
-  }
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 ////////// Layout
 ////////////////////////////////////////////////////////////////////////////////
@@ -1279,6 +1250,41 @@ class BS_Table extends BS_HTML {
   }
 }
 
+class BS_TableBody extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'tbody';
+    return parent::render();
+  }
+}
+
+class BS_TableCellData extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'td';
+    return parent::render();
+  }
+}
+
+class BS_TableCellHeader extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'th';
+    return parent::render();
+  }
+}
+
+class BS_TableHeader extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'thead';
+    return parent::render();
+  }
+}
+
+class BS_TableRow extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'tr';
+    return parent::render();
+  }
+}
+
 class BS_VisuallyHidden extends BS_Span {
   function render() {
     $this->properties['className'][] = 'visually-hidden';
@@ -1316,6 +1322,33 @@ class BS_Select extends BS_HTML {
 
     // add Bootstrap classes
     $this->properties['className'][] = 'form-select';
+
+    // convert options property to children
+    if ($options) {
+      foreach ($options as $option) {
+        // ensure the option is an object
+        if (is_array($option))
+          $option = (object) $option;
+
+        $this->children[] = new BS_SelectOption([
+          'item' => $option,
+          'selected' => $selected === (gettype($option) === 'object' ? $option->_id : $option)
+        ]);
+      }
+    }
+
+    return parent::render();
+  }
+}
+
+class BS_SelectGroup extends BS_HTML {
+  function render() {
+    if (!$this->properties['tag']) $this->properties['tag'] = 'optgroup';
+
+    $options = $this->properties['options'];
+    unset($this->properties['options']);
+    $selected = $this->properties['selected'];
+    unset($this->properties['selected']);
 
     // convert options property to children
     if ($options) {
@@ -1877,6 +1910,142 @@ class BS_PreviousNext extends BS_Nav {
   }
 }
 
+class BS_ResponsiveTable extends BS_Division {
+  function render() {
+    $borders = $this->properties['borders'];
+    unset($this->properties['borders']);
+    $colClassName = $this->properties['colClassName'];
+    unset($this->properties['colClassName']);
+    $columns = $this->properties['columns'];
+    unset($this->properties['columns']);
+    $expand = $this->properties['expand'];
+    unset($this->properties['expand']);
+    $items = $this->properties['items'];
+    unset($this->properties['items']);
+    $rowClassName = $this->properties['rowClassName'];
+    unset($this->properties['rowClassName']);
+
+    // normalize border values
+    if ($borders === 'all') $borders = true;
+    else if ($borders === 'none') $borders = false;
+    else if (is_null($borders)) $borders = 'rows';
+
+    // add Bootstrap class
+    $this->properties['className'][] = 'd' . breakpointCSS($expand) . '-table';
+
+    // add columns as children
+    if (is_array($columns)) {
+      $this->children[] = new BS_ResponsiveTableRow(
+        [
+          'border' => $borders === true,
+          'expand' => $expand,
+          'className' => $expand && $expand !== 'xs' ? 'd-none' : null
+        ],
+
+        ...array_map(
+          function ($column) use ($borders, $expand) {
+            return new BS_ResponsiveTableHeader(
+              [
+                'title' => $column['title'],
+                'expand' => $expand,
+                'borders' => $borders === true,
+                'align' => $column['align'],
+                'className' => 'align-bottom',
+              ],
+              $column['name']
+            );
+          },
+          $columns
+        )
+      );
+    }
+
+    // add items as children
+    if (is_array($items)) {
+      foreach ($items as $item) {
+        $this->children[] = new BS_ResponsiveTableRow(
+          [
+            'expand' => $expand,
+            'border' => $borders === 'rows',
+            'className' => $rowClassName,
+          ],
+
+          ...array_map(
+            function ($column) use ($borders, $colClassName, $expand, $item) {
+              return new BS_ResponsiveTableCell(
+                [
+                  'expand' => $expand,
+                  'borders' => $borders === true,
+                  'align' => $column['align'],
+                  'title' => !is_null($column['title']) ? $column['title'] : $column['name'],
+                  'className' => $colClassName,
+                ],
+
+                $expand && $expand !== 'xs' && !$column['noPrefix']
+                  ? new BS_Bold(
+                    ['className' => 'd-inline d' . breakpointCSS($expand) . '-none'],
+                    $column['title'] ?: $column['name'],
+                    ': '
+                  )
+                  : null,
+
+                $item[$column['_id']]
+              );
+            },
+            $columns
+          ),
+        );
+      }
+    }
+
+    return parent::render();
+  }
+}
+
+class BS_ResponsiveTableCell extends BS_Division {
+  function render() {
+    $align = $this->properties['align'];
+    unset($this->properties['align']);
+    $borders = $this->properties['borders'];
+    unset($this->properties['borders']);
+    $expand = $this->properties['expand'];
+    unset($this->properties['expand']);
+
+    // add Bootstrap classes
+    $this->properties['className'][] = 'd' . breakpointCSS($expand) . '-table-cell';
+    if ($borders) $this->properties['className'][] = 'border' . breakpointCSS($expand);
+    if ($align)
+      $this->properties['className'][] = 'text' . breakpointCSS($expand) . '-' . $align;
+    $this->properties['className'][] = 'px' . breakpointCSS($expand) . '-1';
+
+    return parent::render();
+  }
+}
+
+class BS_ResponsiveTableHeader extends BS_ResponsiveTableCell {
+  function render() {
+    // bold children for standard HTML tag
+    if (!$this->properties['tag'])
+      $this->children = [new BS_Bold(null, ...$this->children)];
+
+    return parent::render();
+  }
+}
+
+class BS_ResponsiveTableRow extends BS_Division {
+  function render() {
+    $expand = $this->properties['expand'];
+    unset($this->properties['expand']);
+    $border = $this->properties['border'];
+    unset($this->properties['border']);
+
+    $this->properties['className'][] = 'd' . breakpointCSS($expand) . '-table-row';
+    if ($border || is_null($border)) $this->properties['className'][] = 'border-top';
+
+    return parent::render();
+  }
+}
+
 class BS_SectionHeader extends BS_Header {
   function render() {
     $label = $this->properties['label'];
@@ -2082,7 +2251,7 @@ class BS_BiblePassage extends BS_HTML {
     unset($this->properties['verses']);
 
     // parse the requested Bible passage into a passage object
-    if (gettype($passage) === 'string')
+    if (gettype($passage) === 'string' || gettype($passage) === 'integer')
       $passage = egp_biblePassage($passage);
 
     // don't render the component for invalid passages
@@ -2112,6 +2281,16 @@ class BS_BiblePassage extends BS_HTML {
       // page_crash([ 'passage' => $passage, 'version' => $version, 'verses' => $verses ]);
 
       switch ($variant) {
+        case 'content':
+          $output = $this->passageFormatted((object) [
+            'passage' => $passage,
+            'version' => $version,
+            'verses' => $verses,
+            'copyright' => false,
+          ]);
+
+          break;
+
         case 'paragraph':
           $output = new BS_Paragraph(
             null,
@@ -2433,72 +2612,6 @@ class BS_BiblePreviousNext extends BS_PreviousNext {
     return parent::render();
   }
 }
-
-class BS_BibleSearchForm extends BS_Form {
-  function render() {
-    $search = $this->properties['search'];
-    unset($this->properties['search']);
-    $versions = $this->properties['versions'];
-    unset($this->properties['versions']);
-
-    // set properties
-    $this->properties['url'] = '/bible-study-tools/bible-search';
-    $this->properties['className'][] = 'row gx-1 mb-5';
-
-    // convert versions to dropdown options
-    $versionOptions = [];
-    foreach ($versions as $version) {
-      // only use public versions that aren't for goodies or goodies are enabled
-      if ($version->public && !($version->goodies && !$_SESSION['goodies']))
-        $versionOptions[] = (object)['_id' => $version->_id, 'title' => $version->title];
-    }
-
-    // retrieve selected Bible versions
-    $selected = egp_bibleVersionsSelected();
-    $selectedCount = count($selected);
-    // page_crash($selected);
-
-    // form column comfiguration
-    $formCol = ['xs' => 12, 'md' => 6, 'lg' => 4, 'xl' => 3, 'xxl' => 2, 'className' => 'mb-1'];
-
-    // add search textbox
-    $this->children[] = new BS_Col(
-      $formCol,
-      new BS_Textbox([
-        'name' => 'search',
-        'type' => 'search',
-        'value' => $search ?: $_POST['search'],
-        'placeholder' => 'phrase or keywords'
-      ])
-    );
-
-    // add versions
-    $this->children[] = implode('', array_map(
-      function ($slot) use ($versionOptions, $selected, $selectedCount, $formCol) {
-        return new BS_Col(
-          $formCol,
-          new BS_Select([
-            'name' => 'versions[]',
-            'options' => array_merge([(object)['_id' => '', 'title' => 'slot ' . $slot]], $versionOptions),
-            'selected' => $slot <= $selectedCount ? $selected[$slot - 1] : ''
-          ])
-        );
-      },
-
-      range(1, 7)
-    ));
-
-    // add submit button
-    $this->children[] = new BS_Col(
-      $formCol,
-      new BS_Button(['type' => 'submit', 'className' => 'w-100'], 'Search')
-    );
-
-    return parent::render();
-  }
-}
-
-// TODO: BibleSearchScriptures
 
 class BS_BlogEntries extends BS_Row {
   function render() {
@@ -2844,7 +2957,7 @@ class BS_ParallelBibleForm extends BS_Form {
     $selectedCount = count($selected);
     // page_crash($selected);
 
-    // form column comfiguration
+    // form column configuration
     $formCol = ['xs' => 12, 'md' => 6, 'lg' => 4, 'xl' => 3, 'xxl' => 2, 'className' => 'mb-1'];
 
     // add search textbox
