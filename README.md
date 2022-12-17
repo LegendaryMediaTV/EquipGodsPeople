@@ -9,7 +9,6 @@ Equip God’s People web app built on PHP
 - finish importing content from the live site:
   - Bible Concordance
 - Bible Search:
-  - searching should change the URL (like it does with pagination)
   - old Strong's queries (e.g., "<0025>") don't match as 100% and aren't in canonical order
   - new Strong's queries (e.g., "G1") should silently convert to the old format (e.g., "<0001>") before searching
   - use the new format for Strong's queries

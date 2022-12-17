@@ -24,7 +24,7 @@ $metadata = page_metadata($pageURL);
 
 // enforce the URL
 if ($pageURL !== $metadata->url) {
-  if ($_SERVER['SERVER_NAME'] === 'localhost') {
+  if ($_SERVER['SERVER_NAME'] === 'localhost' && $metadata->_id !== 'bible-search') {
     echo 'Requested: ' . $pageURL . '<br>';
     echo 'Metadata: ' . var_export($metadata, true);
   } else {

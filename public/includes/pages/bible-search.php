@@ -22,11 +22,6 @@ if (!$page) $page = 1;
 // number of results on the page
 define('EGP_PAGINATION', 50);
 
-// accommodate for submitted version changes
-$selected = egp_bibleVersionsSelected(true);
-$selectedCount = count($selected);
-// page_crash($selected);
-
 if ($search) {
   // parameters haven't changed, use cached results
   if ($search === $_SESSION['bible-search']['search'] && $range === $_SESSION['bible-search']['range']) {
@@ -215,7 +210,7 @@ foreach ($versions as $version) {
 
 // collect/format version copyrights
 $copyrights = ['verse' => ''];
-foreach ($selected as $version)
+foreach ($metadata->selected as $version)
   $copyrights[$version->_id] = new BS_Paragraph(['className' => 'text-muted small'], $version->copyright);
 
 // form column configuration
@@ -262,13 +257,13 @@ $html->add(new BS_Container(
     ),
 
     implode('', array_map(
-      function ($slot) use ($versionOptions, $selected, $selectedCount, $formCol) {
+      function ($slot) use ($versionOptions, $metadata, $formCol) {
         return new BS_Col(
           $formCol,
           new BS_Select([
             'name' => 'versions[]',
             'options' => array_merge([(object)['_id' => '', 'title' => 'slot ' . $slot]], $versionOptions),
-            'selected' => $slot <= $selectedCount ? $selected[$slot - 1]->_id : ''
+            'selected' => $slot <= $metadata->selectedCount ? $metadata->selected[$slot - 1]->_id : ''
           ])
         );
       },
@@ -284,7 +279,7 @@ $html->add(new BS_Container(
   ),
 
   new BS_Container(
-    ['fluid' => $selectedCount < 2 ? 'lg' : ($selectedCount < 3 ? 'xxl' : true)],
+    ['fluid' => $metadata->selectedCount < 2 ? 'lg' : ($metadata->selectedCount < 3 ? 'xxl' : true)],
 
     // $_POST ? new BS_Preformatted(['item' => $_POST, 'title' => 'POST']) : null,
 
@@ -311,7 +306,7 @@ $html->add(new BS_Container(
             $matchesCount <= EGP_PAGINATION ? ' (' . $matchesCount . ' ' . ($matchesCount === 1 ? 'match' : 'matches') . ')' : null,
           ),
 
-          // new BS_Preformatted(['item' => $selected, 'title' => 'Selected']),
+          // new BS_Preformatted(['item' => $metadata->selected, 'title' => 'Selected']),
 
           // new BS_Preformatted(['item' => $matches, 'title' => 'Matches']),
 
@@ -324,19 +319,19 @@ $html->add(new BS_Container(
                 'noPrefix' => true,
               ],
               ...array_map(
-                function ($version) use ($selectedCount) {
+                function ($version) use ($metadata) {
                   return [
                     '_id' => $version->_id,
                     'name' => $version->title,
-                    'noPrefix' => $selectedCount === 1
+                    'noPrefix' => $metadata->selectedCount === 1
                   ];
                 },
-                $selected
+                $metadata->selected
               ),
             ],
             'items' => [
               ...array_map(
-                function ($verse) use ($matches, $selected) {
+                function ($verse) use ($matches, $metadata) {
                   $item =  [];
 
                   $item['verse'] =
@@ -351,7 +346,7 @@ $html->add(new BS_Container(
                       )
                     );
 
-                  foreach ($selected as $version) {
+                  foreach ($metadata->selected as $version) {
                     $item[$version->_id] =
                       new BS_BiblePassage([
                         'passage' => $verse,

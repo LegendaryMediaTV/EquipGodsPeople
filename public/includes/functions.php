@@ -3419,6 +3419,19 @@ function page_metadataViaToken($token) {
         'source' => '/' . $token . '.php',
       ];
 
+
+      // accommodate for submitted version changes
+      $output->selected = egp_bibleVersionsSelected(true);
+      $output->selectedCount = count($output->selected);
+      // page_crash($output->selected);
+
+      // convert key posted data to a query string
+      if ($_POST['search']) {
+        $output->url .= '?search=' . urlencode($_POST['search']);
+        if ($_POST['range'])
+          $output->url .= '&range=' . urlencode($_POST['range']);
+      }
+
       break;
 
     case 'bible-study-tools':
