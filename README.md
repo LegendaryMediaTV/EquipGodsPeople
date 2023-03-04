@@ -9,9 +9,6 @@ Equip God’s People web app built on PHP
 - finish importing content from the live site:
   - Bible Concordance
 - Bible Search:
-  - old Strong's queries (e.g., "<0025>") don't match as 100% and aren't in canonical order
-  - new Strong's queries (e.g., "G1") should silently convert to the old format (e.g., "<0001>") before searching
-  - use the new format for Strong's queries
   - GRKS, GRKT, KJVS don't parse correctly due to TVM/TVM2
   - GRKT doesn't show translinear definitions
   - GRKS/T don't support Greek color coding system

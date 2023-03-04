@@ -970,13 +970,12 @@ import("./react-bootstrap.js").then((BS) => {
                           {
                             to:
                               "/bible-study-tools/bible-search?search=" +
-                              (this.state.selected.language === "hebrew"
-                                ? "%5B"
-                                : "<") +
-                              this.state.selected.sequence.substring(2) +
-                              (this.state.selected.language === "hebrew"
-                                ? "%5D"
-                                : ">") +
+                              this.state.selected.language
+                                .substring(0, 1)
+                                .toUpperCase() +
+                              parseInt(
+                                this.state.selected.sequence.substring(2)
+                              ) +
                               "&range=" +
                               (this.state.selected.language === "hebrew"
                                 ? "old-testament"

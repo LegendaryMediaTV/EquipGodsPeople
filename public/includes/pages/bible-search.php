@@ -24,7 +24,7 @@ define('EGP_PAGINATION', 50);
 
 if ($search) {
   // parameters haven't changed, use cached results
-  if ($search === $_SESSION['bible-search']['search'] && $range === $_SESSION['bible-search']['range']) {
+  if ($search === $_SESSION['bible-search']['search'] && $range === $_SESSION['bible-search']['range'] && false) {
     $matches = $_SESSION['bible-search']['matches'];
     $matchesCount = $_SESSION['bible-search']['matchesCount'];
   }
@@ -83,6 +83,7 @@ if ($search) {
     // break search criteria into keywords
     $keywords = egp_getKeywords($search);
     $keywordCount = count($keywords);
+    // page_crash($keywords);
 
     // get exact matches by keyword
     $exact = [];
@@ -92,7 +93,7 @@ if ($search) {
         'FROM equipgod_old.BibleKeywords',
         'WHERE',
         ($rangeFilter ? $rangeFilter . ' AND' : ''),
-        'CONCAT_WS(\',\', Automatic, Manual) LIKE \'' . str_replace('\'', '\\\'', $keywords[0]) . '\'',
+        'CONCAT_WS(\',\', Automatic, Manual) LIKE \'%' . str_replace('\'', '\\\'', $keywords[0]) . '%\'',
       ]);
 
       $rows = $db->rows($sql);
@@ -509,7 +510,11 @@ $html->add(new BS_Container(
 ));
 
 
-// convert given string to keywords
+/**
+ * convert given string to keywords
+ * @param string $in query string
+ * @return string[] array of keywords
+ */
 function egp_getKeywords($in) {
   $out = [];
 
@@ -527,6 +532,12 @@ function egp_getKeywords($in) {
       // remove brackets around words
       if (($word[0] == '[' || $word[strlen($word) - 1] == ']') && !preg_match('/^\[[0-9]{4}\]$/', $word))
         $word = str_replace(['[', ']'], '', $word);
+
+      // convert new Strong's Numbers format to the old format
+      if (preg_match('/^g[0-9]{1,4}$/', $word))
+        $word = '<' . str_pad(intval(substr($word, 1)), 4, '0', STR_PAD_LEFT) . '>';
+      elseif (preg_match('/^h[0-9]{1,4}$/', $word))
+        $word = '[' . str_pad(intval(substr($word, 1)), 4, '0', STR_PAD_LEFT) . ']';
 
       // add new words that aren’t to be skipped
       if ($word && !in_array($word, $skip) && !in_array($word, $out))

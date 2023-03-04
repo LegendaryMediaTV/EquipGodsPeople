@@ -4,6 +4,7 @@ $languageCount = count($languages);
 for ($languageIndex = 0; $languageIndex < $languageCount; $languageIndex++) {
   if ($languages[$languageIndex]->_id === $metadata->language) break;
 }
+// page_crash($metadata);
 
 // define basic summary
 $summary = [];
@@ -27,9 +28,8 @@ if ($metadata->strongs) {
       [
         'to' =>
         '/bible-study-tools/bible-search?search='
-          . ($metadata->testament === 'Old Testament' ? '%5B' : '<')
-          . str_pad(substr($metadata->strongs->_id, 1), 4, '0', STR_PAD_LEFT)
-          . ($metadata->testament === 'Old Testament' ? '%5D' : '>')
+          . strtoupper(substr($metadata->language, 0, 1))
+          . substr($metadata->strongs->_id, 1)
           . '&range='
           . ($metadata->testament === 'Old Testament' ? 'old-testament' : 'new-testament')
       ],
